@@ -3,6 +3,9 @@
 !gradle/wrapper/gradle-wrapper.jar
 /out
 
+### meta info ###
+application.properties
+
 ### STS ###
 .apt_generated
 .classpath
