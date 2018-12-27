@@ -20,16 +20,16 @@ public class JwtService {
     @Value("${JWT.SECRET}")
     private String SECRET;
 
-    public String create(final int user_idx) {
+    public String create(final String id) {
         try {
+
+            return JWT.create()
+                    .withIssuer(ISSUER)
+                    .withClaim("user_id", id)
+                    .sign(Algorithm.HMAC256(SECRET));
+
             //토큰 생성 빌더 객체 생성
-            JWTCreator.Builder b = JWT.create();
-            //토큰 생성자 명시
-            b.withIssuer(ISSUER);
-            //토큰 payload 작성, key - value 형식, 객체도 가능
-            b.withClaim("user_idx", user_idx);
-            //토큰 해싱해서 반환
-            return b.sign(Algorithm.HMAC256(SECRET));
+
         } catch (JWTCreationException JwtCreationException) {
             log.info(JwtCreationException.getMessage());
         }
@@ -45,7 +45,7 @@ public class JwtService {
             //토큰 검증
             DecodedJWT decodedJWT = jwtVerifier.verify(token);
             //토큰 payload 반환, 정상적인 토큰이라면 토큰 주인(사용자) 고유 ID, 아니라면 -1
-            return new Token(decodedJWT.getClaim("user_idx").asLong().intValue());
+            return new Token(decodedJWT.getClaim("user_id").asLong().intValue());
         } catch (JWTVerificationException jve) {
             log.error(jve.getMessage());
         } catch (Exception e) {

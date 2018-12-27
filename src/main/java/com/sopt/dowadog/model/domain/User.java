@@ -1,26 +1,29 @@
 package com.sopt.dowadog.model.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sopt.dowadog.model.domain.auditing.DateEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 
 @Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User extends DateEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private String id;
 
     private String password;
+    private String nickname;
     private String name;
     private String birth;
     private String phone;

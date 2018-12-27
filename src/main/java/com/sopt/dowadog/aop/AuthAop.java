@@ -61,7 +61,7 @@ public class AuthAop {
 
             //todo User정보 가져와서 처리해야함
             User user = new User();
-            user.setId(1);
+            user.setId("kohen");
             user.setName("sungchan");
 
             //유효 사용자 검사
