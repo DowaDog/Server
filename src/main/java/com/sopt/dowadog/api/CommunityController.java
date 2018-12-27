@@ -1,7 +1,5 @@
-package com.sopt.dowadog.api.controller;
+package com.sopt.dowadog.api;
 
-
-import com.sopt.dowadog.model.DefaultRes;
 import com.sopt.dowadog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,8 +21,8 @@ public class CommunityController {
     //커뮤니티 리스트 조회
     @GetMapping
     public ResponseEntity readCommunityList
-            (@RequestParam(name="page", defaultValue="0",required=false)int page,
-             @RequestParam(name="limit", defaultValue="10", required=false)int limit) {
+    (@RequestParam(name="page", defaultValue="0",required=false)int page,
+     @RequestParam(name="limit", defaultValue="10", required=false)int limit) {
 
         return new ResponseEntity(userService.readUserList(), HttpStatus.NOT_FOUND);
     }
