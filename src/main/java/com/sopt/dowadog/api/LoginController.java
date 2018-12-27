@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import static com.sopt.dowadog.model.DefaultRes.FAIL_DEFAULT_RES;
-
 @Slf4j
 @Controller
 @RequestMapping("/api/login")
@@ -29,12 +27,6 @@ public class LoginController {
         this.authService = authService;
     }
 
-    /**
-     * 로그인
-     *
-     * @param loginReq 로그인 객체
-     * @return ResponseEntity
-     */
     @PostMapping("login")
     public ResponseEntity login(@RequestBody final LoginReq loginReq) {
         try {

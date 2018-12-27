@@ -20,12 +20,6 @@ public class JwtService {
     @Value("${JWT.SECRET}")
     private String SECRET;
 
-    /**
-     * 토큰 생성
-     *
-     * @param user_idx 토큰에 담길 로그인한 사용자의 회원 고유 IDX
-     * @return 토큰
-     */
     public String create(final int user_idx) {
         try {
             //토큰 생성 빌더 객체 생성
@@ -42,13 +36,9 @@ public class JwtService {
         return null;
     }
 
-    /**
-     * 토큰 해독
-     *
-     * @param token 토큰
-     * @return 로그인한 사용자의 회원 고유 IDX
-     */
     public Token decode(final String token) {
+
+        //todo 예외부분 throw 해서 호출부분( AOP 에서 처리하도록 변경 )
         try {
             //토큰 해독 객체 생성
             final JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(SECRET)).withIssuer(ISSUER).build();

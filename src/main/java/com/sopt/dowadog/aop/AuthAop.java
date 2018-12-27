@@ -22,9 +22,9 @@ public class AuthAop {
 
     @Autowired
     JwtService jwtService;
-    /**
-     * 실패 시 기본 반환 Response
-     */
+
+
+    //실패 시 기본 반환 Response
     private final static DefaultRes DEFAULT_RES = DefaultRes.builder().status(401).message("인증 실패").build();
     private final static ResponseEntity<DefaultRes> RES_RESPONSE_ENTITY = new ResponseEntity<>(DEFAULT_RES, HttpStatus.UNAUTHORIZED);
 
@@ -58,7 +58,8 @@ public class AuthAop {
         if (token == null) {
             return RES_RESPONSE_ENTITY;
         } else {
-//            final User user = userMapper.findByUserIdx(token.getUser_idx());
+
+            //todo User정보 가져와서 처리해야함
             User user = new User();
             user.setId(1);
             user.setName("sungchan");
@@ -67,7 +68,8 @@ public class AuthAop {
             if (user == null) return RES_RESPONSE_ENTITY;
             return pjp.proceed(pjp.getArgs());
         }
-
     }
+
+
 }
 
