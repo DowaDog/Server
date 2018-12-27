@@ -1,7 +1,7 @@
 package com.sopt.dowadog.service;
 
-import com.sopt.dowadog.model.DefaultRes;
-import com.sopt.dowadog.model.LoginReq;
+import com.sopt.dowadog.model.common.DefaultRes;
+import com.sopt.dowadog.model.common.LoginReq;
 import com.sopt.dowadog.model.domain.User;
 import com.sopt.dowadog.repository.UserRepository;
 import com.sopt.dowadog.util.ResponseMessage;

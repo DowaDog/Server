@@ -1,6 +1,6 @@
 package com.sopt.dowadog.aop;
 
-import com.sopt.dowadog.model.DefaultRes;
+import com.sopt.dowadog.model.common.DefaultRes;
 import com.sopt.dowadog.model.domain.User;
 import com.sopt.dowadog.service.JwtService;
 import org.aspectj.lang.ProceedingJoinPoint;

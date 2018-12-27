@@ -1,7 +1,7 @@
 package com.sopt.dowadog.api;
 
-import com.sopt.dowadog.model.DefaultRes;
-import com.sopt.dowadog.model.LoginReq;
+import com.sopt.dowadog.model.common.DefaultRes;
+import com.sopt.dowadog.model.common.LoginReq;
 import com.sopt.dowadog.service.AuthService;
 import com.sopt.dowadog.util.ResponseMessage;
 import com.sopt.dowadog.util.StatusCode;
