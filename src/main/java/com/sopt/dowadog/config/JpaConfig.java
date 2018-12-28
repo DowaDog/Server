@@ -73,7 +73,7 @@ public class JpaConfig {
 
         properties.put("hibernate.hbm2ddl.auto", this.ddl);
         properties.put("hibernate.dialect", this.dialect);
-        properties.put("hibernate.physical_naming_strategy", namingStrategy);
+        properties.put("hibernate.physical_naming_strategy", namingStrategy);//스네이크형식을 자동으로 카멜케이스로 바꿔준다.
 
         entityManagerBean.setJpaPropertyMap(properties);
 
