@@ -10,6 +10,8 @@ import com.sopt.dowadog.util.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CommunityCommentService {
 
@@ -20,12 +22,29 @@ public class CommunityCommentService {
     @Autowired
     CommunityRepository communityRepository;
 
-
-    public DefaultRes<CommunityComment> createCommunityComment(int communityId, CommunityComment communityComment){
-
+    public DefaultRes<CommunityComment> createCommunityComment(CommunityComment communityComment,  int communityId){
         // todo 여기 예외처리들 null이라던가
         communityComment.setCommunity(communityRepository.findById(communityId).get());
 
-        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_USER, communityCommentRepository.save(communityComment));
+        return DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_COMMENT, communityCommentRepository.save(communityComment));
+    }
+
+    public DefaultRes<List<CommunityComment>> readCommunityCommentList(int communityId){
+
+        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_COMMENT, communityCommentRepository.findByCommunityId(communityId));
+    }
+
+    public DefaultRes<CommunityComment> updateCommunityComment(CommunityComment modifiedCommunityComment, int communityId){
+
+        CommunityComment communityComment = communityCommentRepository.getOne(communityId);
+        communityComment.setDetail(modifiedCommunityComment.getDetail());
+
+        return DefaultRes.res(StatusCode.OK, ResponseMessage.UPDATE_COMMENT, communityComment);
+    }
+
+    public DefaultRes<CommunityComment> deleteCommunityComment(int communityId){
+
+        communityCommentRepository.deleteById(communityId);
+        return DefaultRes.res(StatusCode.OK, ResponseMessage.DELETE_COMMENT);
     }
 }
