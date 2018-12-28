@@ -1,8 +1,6 @@
-package com.sopt.dowadog.api;
+package com.sopt.dowadog.controller.api;
 
 
-import com.sopt.dowadog.annotation.Auth;
-import com.sopt.dowadog.repository.AnimalRepository;
 import com.sopt.dowadog.service.AnimalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

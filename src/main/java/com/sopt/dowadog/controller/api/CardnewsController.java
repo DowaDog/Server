@@ -1,15 +1,12 @@
-package com.sopt.dowadog.api;
+package com.sopt.dowadog.controller.api;
 
 import com.sopt.dowadog.service.CardnewsContentsService;
 import com.sopt.dowadog.service.CardnewsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import javax.xml.ws.Response;
 
 @RequestMapping("api/cardnews")
 @Controller

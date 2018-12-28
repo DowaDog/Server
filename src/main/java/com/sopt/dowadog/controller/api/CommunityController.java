@@ -1,4 +1,4 @@
-package com.sopt.dowadog.api;
+package com.sopt.dowadog.controller.api;
 
 import com.sopt.dowadog.model.domain.Community;
 import com.sopt.dowadog.model.domain.CommunityComment;
