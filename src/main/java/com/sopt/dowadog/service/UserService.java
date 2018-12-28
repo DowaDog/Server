@@ -16,6 +16,10 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
+    public DefaultRes<User> createUser(User user) {
+        return DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER, userRepository.save(user));
+
+    }
 
     public DefaultRes<List<User>> readUserList() {
         final List<User> userList = userRepository.findAll();
