@@ -87,9 +87,9 @@ java -jar "파일명"
 | TYPE | URI                                                          | 설명                                                         |
 | ---- | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | GET  | /animals/emergency?page={page}&limit={limit}                 | 긴급 유기동물 목록                                           |
-| GET  | /animals?searchParam={searchParam}&page={page}&limit={limit} | 유기 동물 목록<br />searchParam {<br />type, startDate, endDate, care or region, tag, story<br />} 최신순 |
-| GET  | /animals/{animalId}                                          | 스토리 있는 유기동물 리스트 보기                             |
-| POST | /animals/{animalId}/registrations                            | 스토리 있는 유기동물 리스트 보기                             |
-| POST | /animals/{animalId}/likes                                    | 스토리 있는 유기동물 리스트 보기                             |
+| GET  | /animals?searchParam={searchParam}&page={page}&limit={limit} | 최신순 유기 동물 목록<br />searchParam : type(String), startDate(Date), endDate(Date), region(String), tag(String), story(boolean) |
+| GET  | /animals/{animalId}                                          | 유기동물 조회                                                |
+| POST | /animals/{animalId}/registrations                            | 유기동물 신청서 작성                                         |
+| POST | /animals/{animalId}/likes                                    | 유기동물 좋아요                                              |
 
 
