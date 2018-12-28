@@ -1,6 +1,5 @@
 package com.sopt.dowadog.model.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sopt.dowadog.model.domain.auditing.DateEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,20 +14,20 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties(value={"hibernateLazyInitializer", "handler"})
-public class Community extends DateEntity {
+public class Registration extends DateEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String title;
-    @Column(columnDefinition = "TEXT")
-    private String detail;
-
-    @OneToMany(mappedBy="community", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    private List<CommunityImg> communityImg;
+    //todo 신청서 정보들 기획 나오면 추가될 칼럼들
 
     @ManyToOne
+    @JoinColumn(nullable=false)
     private User user;
+
+    @ManyToOne
+    private Animal animal;
+
 
 }

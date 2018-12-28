@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @JsonIgnoreProperties(value={"hibernateLazyInitializer", "handler"})
@@ -42,9 +43,10 @@ public class Animal extends DateEntity {
     private String thumbnailImg;
 
     @ManyToOne
-            //(fetch = FetchType.LAZY)
-//    @JoinColumn(name="care_id")
     private Care care;
+
+    @OneToMany(mappedBy="animal", fetch=FetchType.LAZY)
+    private List<Registration> registration;
 
 
 }

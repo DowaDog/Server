@@ -8,9 +8,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Transient;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -39,5 +39,16 @@ public class User extends DateEntity {
     @JsonIgnore
     private MultipartFile profileImgFile;
 
+    @OneToMany(mappedBy="user", fetch = FetchType.LAZY)
+    private List<Community> community;
+
+    @ManyToMany
+    @JoinTable(name="user_cardnews_scrap", joinColumns = @JoinColumn(name="user_id"), inverseJoinColumns = @JoinColumn(name="cardnews_id"))
+    private List<Cardnews> scrapedCardnews = new ArrayList<Cardnews>();
+
+
+    @ManyToMany
+    @JoinTable(name="user_cardnews_education", joinColumns = @JoinColumn(name="user_id"), inverseJoinColumns = @JoinColumn(name="cardnews_id"))
+    private List<Cardnews> educatedCardnews = new ArrayList<Cardnews>();
 }
 
