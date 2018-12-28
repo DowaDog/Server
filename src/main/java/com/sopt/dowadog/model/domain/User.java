@@ -50,5 +50,8 @@ public class User extends DateEntity {
     @ManyToMany
     @JoinTable(name="user_cardnews_education", joinColumns = @JoinColumn(name="user_id"), inverseJoinColumns = @JoinColumn(name="cardnews_id"))
     private List<Cardnews> educatedCardnews = new ArrayList<Cardnews>();
+
+    @OneToMany(mappedBy="user", fetch=FetchType.LAZY, cascade = CascadeType.PERSIST)
+    private List<Mailbox> mailbox;
 }
 
