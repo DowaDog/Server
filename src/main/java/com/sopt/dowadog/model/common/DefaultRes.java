@@ -1,4 +1,4 @@
-package com.sopt.dowadog.model;
+package com.sopt.dowadog.model.common;
 
 import com.sopt.dowadog.util.ResponseMessage;
 import com.sopt.dowadog.util.StatusCode;

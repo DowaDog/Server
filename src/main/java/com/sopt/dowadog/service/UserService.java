@@ -1,6 +1,6 @@
 package com.sopt.dowadog.service;
 
-import com.sopt.dowadog.model.DefaultRes;
+import com.sopt.dowadog.model.common.DefaultRes;
 import com.sopt.dowadog.model.domain.User;
 import com.sopt.dowadog.repository.UserRepository;
 import com.sopt.dowadog.util.ResponseMessage;
@@ -16,6 +16,10 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
+    public DefaultRes<User> createUser(User user) {
+        return DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER, userRepository.save(user));
+
+    }
 
     public DefaultRes<List<User>> readUserList() {
         final List<User> userList = userRepository.findAll();
