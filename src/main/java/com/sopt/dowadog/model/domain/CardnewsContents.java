@@ -10,21 +10,23 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
+@JsonIgnoreProperties(value={"hibernateLazyInitializer", "handler"})
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties(value={"hibernateLazyInitializer", "handler"})
-public class CommunityComment extends DateEntity {
+public class CardnewsContents extends DateEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    private String title;
     @Column(columnDefinition = "TEXT")
     private String detail;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Community community;
+    @ManyToOne
+    //@JoinColumn(name = "cardnews_id")
+    private Cardnews cardnews;
 
 }
