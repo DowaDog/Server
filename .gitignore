@@ -5,6 +5,7 @@
 
 ### meta info ###
 application.properties
+*.log
 
 ### STS ###
 .apt_generated
