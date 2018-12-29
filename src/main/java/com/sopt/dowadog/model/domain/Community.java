@@ -26,7 +26,7 @@ public class Community extends DateEntity {
     private String detail;
 
     @OneToMany(mappedBy="community", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    private List<CommunityImg> communityImg;
+    private List<CommunityImg> communityImgList;
 
     @ManyToOne
     private User user;
