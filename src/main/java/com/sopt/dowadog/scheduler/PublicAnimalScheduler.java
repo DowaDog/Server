@@ -36,7 +36,7 @@ public class PublicAnimalScheduler {
 
 
     @Scheduled(cron = "0 0 4 * * *") // 매일 새벽 4시에 동작
-    public void readPublicAnimal() throws Exception {
+    public void readPublicAnimal() throws Throwable {
 
 
         //전체 삭제 이후
