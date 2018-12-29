@@ -32,14 +32,8 @@ public class S3FileServiceImpl implements FileService {
         try {
             s3client.putObject(new PutObjectRequest(bucketName, filePath, S3Util.convert(multipartFile)));
             log.info("===================== Upload File - Done! =====================");
-
         } catch (AmazonServiceException ase) {
-            log.info("Caught an AmazonServiceException from PUT requests, rejected reasons:");
-            log.info("Error Message:    " + ase.getMessage());
-            log.info("HTTP Status Code: " + ase.getStatusCode());
-            log.info("AWS Error Code:   " + ase.getErrorCode());
-            log.info("Error Type:       " + ase.getErrorType());
-            log.info("Request ID:       " + ase.getRequestId());
+            printS3Error(ase);
         } catch (AmazonClientException ace) {
             log.info("Caught an AmazonClientException: ");
             log.info("Error Message: " + ace.getMessage());
@@ -47,6 +41,7 @@ public class S3FileServiceImpl implements FileService {
             log.info("IOE Error Message: " + ioe.getMessage());
         }
     }
+
 
     @Override
     public void fileDownload(String filePath) {
@@ -58,12 +53,7 @@ public class S3FileServiceImpl implements FileService {
             log.info("===================== Import File - Done! =====================");
 
         } catch (AmazonServiceException ase) {
-            log.info("Caught an AmazonServiceException from GET requests, rejected reasons:");
-            log.info("Error Message:    " + ase.getMessage());
-            log.info("HTTP Status Code: " + ase.getStatusCode());
-            log.info("AWS Error Code:   " + ase.getErrorCode());
-            log.info("Error Type:       " + ase.getErrorType());
-            log.info("Request ID:       " + ase.getRequestId());
+            printS3Error(ase);
         } catch (AmazonClientException ace) {
             log.info("Caught an AmazonClientException: ");
             log.info("Error Message: " + ace.getMessage());
@@ -71,5 +61,14 @@ public class S3FileServiceImpl implements FileService {
             log.info("IOE Error Message: " + ioe.getMessage());
         }
 
+    }
+
+    private void printS3Error(AmazonServiceException ase) {
+        log.info("Caught an AmazonServiceException from PUT requests, rejected reasons:");
+        log.info("Error Message:    " + ase.getMessage());
+        log.info("HTTP Status Code: " + ase.getStatusCode());
+        log.info("AWS Error Code:   " + ase.getErrorCode());
+        log.info("Error Type:       " + ase.getErrorType());
+        log.info("Request ID:       " + ase.getRequestId());
     }
 }
