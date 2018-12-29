@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Slf4j
 @Controller
-@RequestMapping("/api/login")
+@RequestMapping("api/login")
 public class LoginController {
 
 
@@ -27,7 +27,7 @@ public class LoginController {
         this.authService = authService;
     }
 
-    @PostMapping("login")
+    @PostMapping
     public ResponseEntity login(@RequestBody final LoginReq loginReq) {
         try {
             return new ResponseEntity<>(authService.login(loginReq), HttpStatus.OK);
