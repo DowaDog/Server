@@ -25,7 +25,8 @@ public class Mailbox extends DateEntity {
     String imgPath;
     String type;
 
-//    @OneToMany
+    @ManyToOne
+    private User user;
 
 
 

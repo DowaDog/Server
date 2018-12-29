@@ -1,11 +1,11 @@
 package com.sopt.dowadog.model.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sopt.dowadog.model.domain.auditing.DateEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 
@@ -14,20 +14,17 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties(value={"hibernateLazyInitializer", "handler"})
-public class CommunityComment extends DateEntity {
-
+public class CommunityImg extends DateEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(columnDefinition = "TEXT")
-    private String detail;
+    private String filePath;
+    private String originFileName;
 
     @ManyToOne
     private Community community;
 
-    @OneToOne
-    private User user;
-
+    @Transient
+    MultipartFile communityImgFile;
 }
