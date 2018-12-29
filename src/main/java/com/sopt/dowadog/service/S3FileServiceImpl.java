@@ -22,7 +22,7 @@ public class S3FileServiceImpl implements FileService {
     @Autowired
     private AmazonS3 s3client;
 
-    @Value("${jsa.s3.bucket}")
+    @Value("${cloud.aws.bucket}")
     private String bucketName;
 
 
