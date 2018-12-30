@@ -8,15 +8,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/api/animals")
+@RequestMapping("api/animals")
 @Controller
 public class AnimalController {
 
     @Autowired
     AnimalService animalService;
 
+
     //유기동물 상세 조회
-    @GetMapping("/{animalId}")
+    @GetMapping("{animalId}")
     public ResponseEntity readAnimal(@PathVariable("animalId") final int animalId){
         return new ResponseEntity(animalService.readAnimal(animalId), HttpStatus.OK);
 
@@ -26,12 +27,18 @@ public class AnimalController {
     //@PostMapping("/{animalId}/likes")
     //public ResponseEntity createAnimalLike(@)
 
-    @GetMapping("/emergency")
+    @GetMapping("emergency")
     public ResponseEntity readEmergencyAnimal(@RequestParam(name="page", defaultValue="0",required=false)int page,
                                               @RequestParam(name="limit", defaultValue="10", required=false)int limit)
     {
-      return new ResponseEntity(animalService.readEmergencyAnimal(),HttpStatus.OK);
+      return new ResponseEntity(animalService.readEmergencyAnimal(page,limit),HttpStatus.OK);
     }
 
+    /*@GetMapping()
+    public ResponseEntity readLatestAnimal(,@RequestParam(name="page", defaultValue="0",required=false)int page,
+                                           @RequestParam(name="limit", defaultValue="10", required=false)int limit ){
+
+        return new ResponseEntity(animalService.readAnimal())
+    }*/
 
 }

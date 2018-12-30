@@ -1,5 +1,6 @@
 package com.sopt.dowadog.model.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sopt.dowadog.model.domain.auditing.DateEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,26 +8,21 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Care extends DateEntity {
+public class AnimalStory extends DateEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String region;
-    private String address;
-    private String name;
-    private String tel;
+    @ManyToOne
+    private Animal animal;
 
-    private int status;
-
-    @OneToMany(mappedBy = "care", fetch = FetchType.LAZY)
-    private List<Animal> animalList;
-
+    private String filePath;
+    private String originFileName;
 }

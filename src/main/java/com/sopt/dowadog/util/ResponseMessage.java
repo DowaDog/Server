@@ -36,11 +36,11 @@ public class ResponseMessage {
 
 
     //Comment
-    public static final String READ_COMMENT = "커뮤니티 정보 조회 성공";
-    public static final String CREATED_COMMENT = "커뮤니티 정보 생성 성공";
-    public static final String UPDATE_COMMENT = "커뮤니티 정보 수정 성공";
-    public static final String DELETE_COMMENT = "커뮤니티 정보 삭제 성공";
-    public static final String NOT_FOUND_COMMENT = "커뮤니티 정보를 찾을 수 없습니다.";
+    public static final String READ_COMMENT = "댓글 정보 조회 성공";
+    public static final String CREATED_COMMENT = "댓글 정보 생성 성공";
+    public static final String UPDATE_COMMENT = "댓글 정보 수정 성공";
+    public static final String DELETE_COMMENT = "댓글 정보 삭제 성공";
+    public static final String NOT_FOUND_COMMENT = "댓글 정보를 찾을 수 없습니다.";
 
 
     //Common

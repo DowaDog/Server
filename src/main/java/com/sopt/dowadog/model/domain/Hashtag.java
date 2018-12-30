@@ -1,12 +1,12 @@
 package com.sopt.dowadog.model.domain;
 
-import com.sopt.dowadog.model.domain.auditing.DateEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,19 +14,16 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Care extends DateEntity {
+public class Hashtag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String region;
-    private String address;
-    private String name;
-    private String tel;
+    private String keyword;
 
-    private int status;
 
-    @OneToMany(mappedBy = "care", fetch = FetchType.LAZY)
-    private List<Animal> animalList;
+    @ManyToMany
+    @JoinTable(name="hashtag_animal", joinColumns = @JoinColumn(name="hashtag_id"), inverseJoinColumns = @JoinColumn(name="animal_id"))
+    private List<Animal> hashtagAnimalList = new ArrayList<Animal>();
 
 }

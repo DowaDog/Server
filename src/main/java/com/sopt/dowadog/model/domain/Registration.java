@@ -20,7 +20,15 @@ public class Registration extends DateEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+
     //todo 신청서 정보들 기획 나오면 추가될 칼럼들
+    private String address;
+    private String job;
+    private boolean stepOneAllow;
+
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "registration")
+    private RegistrationMeeting registrationMeeting;
 
     @ManyToOne
     @JoinColumn(nullable=false)

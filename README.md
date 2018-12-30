@@ -94,6 +94,7 @@ java -jar "파일명"
 
 ### 마이페이지
 
+
 | TYPE | URI                                             | 설명                  |
 | ---- | ----------------------------------------------- | --------------------- |
 | GET  | /mypage                                         | 마이페이지 조회       |
@@ -115,3 +116,81 @@ GET 마이페이지 조회할때 : view에 있는 모든 정보를 다 넘김
 - 스크랩 갯수
 
 - 내가 쓴 글 갯수
+
+
+## Log 설정
+
+### logback 사용
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+    <appender name="dailyRollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <prudent>true</prudent>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>./log/dowadog.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+
+        <encoder>
+            <pattern>%d{yyyy:MM:dd HH:mm:ss.SSS} %-5level --- [%thread] %logger{35} : %msg %n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="org.springframework.web" level="INFO"/>
+    <logger name="com.sopt.dowadog" level="INFO"/>
+    <logger name="org.hibernate.sql" level="ERROR"/>
+
+    <root level="INFO">
+        <appender-ref ref="dailyRollingFileAppender" />
+    </root>
+</configuration>
+```
+
+* maxHistory : 30일
+* Logging 수준 : Debug 이상만 세팅(전역), 각 패키지별 Logging 수준 별도 세팅
+
+
+
+
+
+# Ehcache
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="ehcache.xsd"
+         updateCheck="true" monitoring="autodetect"
+         dynamicConfig="true">
+
+    <defaultCache
+            maxElementsInMemory="10000"
+            eternal="false"
+            timeToIdleSeconds="120"
+            timeToLiveSeconds="120"
+            memoryStoreEvictionPolicy="LRU"
+            overflowToDisk="false"/>
+
+    <cache name="snapshotData"
+           maxElementsInMemory="10000"
+           eternal="false"
+           maxEntriesLocalHeap="10000"
+           maxEntriesLocalDisk="10000"
+           diskSpoolBufferSizeMB="20"
+           timeToLiveSeconds="600"
+           memoryStoreEvictionPolicy="LRU"
+           overflowToDisk="false"
+           transactionalMode="off">
+    </cache>
+</ehcache>
+```
+
+* defaultCache : 기본 캐시설정 (@Cacheable만 사용시) 
+* snapshotData : 공공데이터 조회의 경우 스케줄러를 이용한 스냅샷 데이터이므로 매번 조회하는데 연산을 쓰지 않아도 됨. 이러한 부분에 리소스를 줄이기 위해 ehCache 적용
+* 공공데이터 갱신에는 10000건 이하정도의 데이터 객체가 delete/insert 되므로 메모리에저장하는 객체 수 제한을 10000으로 정하였고, 5분의 갱신주기를 가지게끔 하였음. ( delete/insert 사이 과정에 의한 데이터 불일치 가능성때문에 큰 폭으로 설정하지 않음 )
+
