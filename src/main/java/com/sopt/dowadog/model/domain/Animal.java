@@ -45,8 +45,12 @@ public class Animal extends DateEntity {
     @ManyToOne
     private Care care;
 
+
     @OneToMany(mappedBy="animal", fetch=FetchType.LAZY)
-    private List<Registration> registration;
+    private List<AnimalStory> animalStoryList;
+
+    @OneToMany(mappedBy="animal", fetch=FetchType.LAZY)
+    private List<Registration> registrationList;
 
 
 }

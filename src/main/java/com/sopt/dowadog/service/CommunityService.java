@@ -2,14 +2,22 @@ package com.sopt.dowadog.service;
 
 import com.sopt.dowadog.model.common.DefaultRes;
 import com.sopt.dowadog.model.domain.Community;
+import com.sopt.dowadog.model.domain.CommunityImg;
+import com.sopt.dowadog.repository.CommunityImgRepository;
 import com.sopt.dowadog.repository.CommunityRepository;
 import com.sopt.dowadog.util.ResponseMessage;
+import com.sopt.dowadog.util.S3Util;
 import com.sopt.dowadog.util.StatusCode;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 public class CommunityService {
@@ -17,7 +25,35 @@ public class CommunityService {
     @Autowired
     CommunityRepository communityRepository;
 
-    public DefaultRes<Community> createCommunityService(Community community){
+    @Autowired
+    CommunityImgRepository communityImgRepository;
+
+    @Autowired
+    FileService fileService;
+
+    private static final String baseDir="dowadog/community/";
+
+    @Transactional
+    public DefaultRes<Community> createCommunityService(Community community) throws Exception {
+
+        List<MultipartFile> communityImgList = community.getCommunityImgFiles();
+
+        for(MultipartFile imgFile : communityImgList) {
+
+            String filePath = new StringBuilder(baseDir).
+                                    append(S3Util.getUuid()).
+                                    append(imgFile.getOriginalFilename()).toString();
+
+            fileService.fileUpload(imgFile, filePath);
+
+            CommunityImg communityImg = CommunityImg.builder()
+                                            .community(community)
+                                            .filePath(filePath)
+                                            .originFileName(imgFile.getOriginalFilename())
+                                            .build();
+            communityImgRepository.save(communityImg);
+        }
+
         return DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_COMMUNITY, communityRepository.save(community));
     }
 

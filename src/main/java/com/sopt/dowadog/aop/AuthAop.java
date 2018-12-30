@@ -2,6 +2,8 @@ package com.sopt.dowadog.aop;
 
 import com.sopt.dowadog.model.common.DefaultRes;
 import com.sopt.dowadog.model.domain.User;
+import com.sopt.dowadog.repository.CardnewsContentsRepository;
+import com.sopt.dowadog.repository.UserRepository;
 import com.sopt.dowadog.service.JwtService;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -20,9 +22,9 @@ public class AuthAop {
 
     private final static String AUTHORIZATION = "Authorization";
 
-    @Autowired
-    JwtService jwtService;
+    private final UserRepository userRepository;
 
+    private final JwtService jwtService;
 
     //실패 시 기본 반환 Response
     private final static DefaultRes DEFAULT_RES = DefaultRes.builder().status(401).message("인증 실패").build();
@@ -35,7 +37,9 @@ public class AuthAop {
 //    private final JwtService jwtService;
 
 
-    public AuthAop(final HttpServletRequest httpServletRequest) {
+    public AuthAop(UserRepository userRepository, JwtService jwtService, final HttpServletRequest httpServletRequest) {
+        this.userRepository = userRepository;
+        this.jwtService = jwtService;
         this.httpServletRequest = httpServletRequest;
 //        this.userMapper = userMapper;
 //        this.jwtService = jwtService;
@@ -58,8 +62,9 @@ public class AuthAop {
         if (token == null) {
             return RES_RESPONSE_ENTITY;
         } else {
-
             //todo User정보 가져와서 처리해야함
+
+            //User user = userRepository.findById();
             User user = new User();
             user.setId("kohen");
             user.setName("sungchan");

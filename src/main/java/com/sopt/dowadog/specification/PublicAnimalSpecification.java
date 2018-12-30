@@ -33,7 +33,7 @@ public class PublicAnimalSpecification {
                         break;
                     case "remainNoticeDate":
                         Predicate remainDatePredicate =
-                                cb.lessThan(root.get("noticeEdt").as(LocalDate.class),
+                                cb.lessThanOrEqualTo(root.get("noticeEdt").as(LocalDate.class),
                                         LocalDate.now().plusDays((int)value));
                         predicates.add(remainDatePredicate);
                         break;
