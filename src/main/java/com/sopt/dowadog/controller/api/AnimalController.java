@@ -1,13 +1,16 @@
 package com.sopt.dowadog.controller.api;
 
 
+import com.sopt.dowadog.model.dto.FilterDto;
 import com.sopt.dowadog.service.AnimalService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RequestMapping("api/animals")
 @Controller
 public class AnimalController {
@@ -34,11 +37,15 @@ public class AnimalController {
       return new ResponseEntity(animalService.readEmergencyAnimal(page,limit),HttpStatus.OK);
     }
 
-    /*@GetMapping()
-    public ResponseEntity readLatestAnimal(,@RequestParam(name="page", defaultValue="0",required=false)int page,
+
+
+    //유기동물 필터 넣기
+    @GetMapping()
+    public ResponseEntity readLatestAnimal(@ModelAttribute FilterDto filterDto, @RequestParam(name="page", defaultValue="0",required=false)int page,
                                            @RequestParam(name="limit", defaultValue="10", required=false)int limit ){
 
-        return new ResponseEntity(animalService.readAnimal())
-    }*/
+
+        return new ResponseEntity(animalService.readAnimal(filterDto,page,limit),HttpStatus.OK);
+    }
 
 }
