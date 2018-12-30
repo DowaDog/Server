@@ -58,7 +58,8 @@ public class CardnewsController {
         return new ResponseEntity(cardnewsService.readCardnewsList(type), HttpStatus.OK);
     }
 
-    @GetMapping("/{cardnewsId}/contents")
+
+    @GetMapping("{cardnewsId}/contents")
     public ResponseEntity readAllCardnewsContentsList(@PathVariable("cardnewsId")int cardnewsId,
                                                       @RequestParam(name="page", defaultValue="0",required = false)int page,
                                                       @RequestParam(name="limit",defaultValue = "10", required=false)int limit){

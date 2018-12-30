@@ -33,6 +33,7 @@ public class User extends DateEntity {
     private String type;
     private String profileImg;
     private boolean pushAllow;
+    private boolean termsAllow;
 
 
     @Transient
@@ -40,18 +41,28 @@ public class User extends DateEntity {
     private MultipartFile profileImgFile;
 
     @OneToMany(mappedBy="user", fetch = FetchType.LAZY)
-    private List<Community> community;
+    private List<Community> communityList;
+
+    @OneToMany(mappedBy="user", fetch = FetchType.LAZY)
+    private List<Registration> registrationList;
+
+    @OneToMany(mappedBy="user", fetch=FetchType.LAZY, cascade = CascadeType.PERSIST)
+    private List<Mailbox> mailboxList;
+
+    @ManyToMany
+    @JoinTable(name="user_animal_like", joinColumns = @JoinColumn(name="user_id"), inverseJoinColumns = @JoinColumn(name="animal_id"))
+    private List<Animal> likedAnimalList = new ArrayList<Animal>();
 
     @ManyToMany
     @JoinTable(name="user_cardnews_scrap", joinColumns = @JoinColumn(name="user_id"), inverseJoinColumns = @JoinColumn(name="cardnews_id"))
-    private List<Cardnews> scrapedCardnews = new ArrayList<Cardnews>();
-
+    private List<Cardnews> scrapedCardnewList = new ArrayList<Cardnews>();
 
     @ManyToMany
     @JoinTable(name="user_cardnews_education", joinColumns = @JoinColumn(name="user_id"), inverseJoinColumns = @JoinColumn(name="cardnews_id"))
-    private List<Cardnews> educatedCardnews = new ArrayList<Cardnews>();
+    private List<Cardnews> educatedCardnewList = new ArrayList<Cardnews>();
 
-    @OneToMany(mappedBy="user", fetch=FetchType.LAZY, cascade = CascadeType.PERSIST)
-    private List<Mailbox> mailbox;
+
+
+
 }
 
