@@ -1,5 +1,7 @@
 package com.sopt.dowadog.util;
 
+import com.sopt.dowadog.service.MyinfoService;
+
 public class ResponseMessage {
 
     //Login
@@ -46,6 +48,21 @@ public class ResponseMessage {
     public static final String INTERNAL_SERVER_ERROR = "서버 내부 에러";
 
     public static final String DB_ERROR = "데이터베이스 에러";
+
+
+    //MYPAGE
+
+    public static final String READ_MYINFO = "마이페이지 정보 조회 성공";
+    public static final String UPDATE_USER_ANIMAL = "사용자 동물 정보 수정 성공";
+    public static final String UPDATE_MYINFO = "사용자 정보 수정 성공";
+    public static final String READ_USER_LIKE = "사용자 좋아요 조회 성공";
+    public static final String READ_USER_CLIP = "사용자 스크랩 조회 성공";
+    public static final String READ_USER_COMMUNITY = "사용자 쓴글 조회 성공";
+
+
+    //MAILBOX
+
+    public static final String READ_MAILBOX = "우체통 정보 조회 성공";
 
 
 }

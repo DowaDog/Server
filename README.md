@@ -92,4 +92,26 @@ java -jar "파일명"
 | POST | /animals/{animalId}/registrations                            | 유기동물 신청서 작성                                         |
 | POST | /animals/{animalId}/likes                                    | 유기동물 좋아요                                              |
 
+### 마이페이지
 
+| TYPE | URI                                             | 설명                  |
+| ---- | ----------------------------------------------- | --------------------- |
+| GET  | /mypage                                         | 마이페이지 조회       |
+| PUT  | /mypage/animals                                 | 동물 정보 수정        |
+| PUT  | /mypage/user                                    | 사람 정보 수정        |
+| GET  | /mypage/likes/animals?page={page}&limit={limit} | 좋아요 리스트 조회    |
+| GET  | /mypage/clips?page={page}&limit={limit}         | 스크랩 리스트 조회    |
+| GET  | /mypage/community?page={page}&limit={limit}     | 내가 쓴글 리스트 조회 |
+| GET  | /mypage/mailboxes                               | /mypage우체통 조회    |
+
+GET 마이페이지 조회할때 : view에 있는 모든 정보를 다 넘김
+
+- 사용자 정보
+
+- 사용자 동물 정보
+
+- 좋아요 갯수
+
+- 스크랩 갯수
+
+- 내가 쓴 글 갯수
