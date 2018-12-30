@@ -101,7 +101,7 @@ java -jar "파일명"
 | PUT  | /mypage/animals                                 | 동물 정보 수정        |
 | PUT  | /mypage/user                                    | 사람 정보 수정        |
 | GET  | /mypage/likes/animals?page={page}&limit={limit} | 좋아요 리스트 조회    |
-| GET  | /mypage/clips?page={page}&limit={limit}         | 스크랩 리스트 조회    |
+| GET  | /mypage/scrap?page={page}&limit={limit}         | 스크랩 리스트 조회    |
 | GET  | /mypage/community?page={page}&limit={limit}     | 내가 쓴글 리스트 조회 |
 | GET  | /mypage/mailboxes                               | /mypage우체통 조회    |
 

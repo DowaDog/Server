@@ -54,7 +54,7 @@ public class ResponseMessage {
     public static final String UPDATE_USER_ANIMAL = "사용자 동물 정보 수정 성공";
     public static final String UPDATE_MYINFO = "사용자 정보 수정 성공";
     public static final String READ_USER_LIKE = "사용자 좋아요 조회 성공";
-    public static final String READ_USER_CLIP = "사용자 스크랩 조회 성공";
+    public static final String READ_USER_SCRAP = "사용자 스크랩 조회 성공";
     public static final String READ_USER_COMMUNITY = "사용자 쓴글 조회 성공";
 
 

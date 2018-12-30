@@ -19,15 +19,14 @@ public class Mailbox extends DateEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    String title;
+    private String title;
     @Column(columnDefinition = "TEXT")
-    String detail;
-    String imgPath;
-    String type;
+    private String detail;
+    private String imgPath;
+    private String type;
+    private boolean check;
 
     @ManyToOne
     private User user;
-
-
 
 }

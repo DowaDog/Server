@@ -46,7 +46,7 @@ public class User extends DateEntity {
     @OneToMany(mappedBy="user", fetch = FetchType.LAZY)
     private List<Registration> registrationList;
 
-    @OneToMany(mappedBy="user", fetch=FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy="user", fetch=FetchType.LAZY)
     private List<Mailbox> mailboxList;
 
     @ManyToMany
