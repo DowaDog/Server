@@ -7,6 +7,7 @@ import com.sopt.dowadog.util.ResponseMessage;
 import com.sopt.dowadog.util.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -31,5 +32,14 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    @Transactional
+    public Object a () {
+        // TODO 변경할 사용자 꺼내오기
+        // TODO 사용자.getEducatedCardNews().addCardNews(new CardNews());
+        User user = new User();
 
+        //user.getEducatedCardnews()
+        int x = 0;
+        return x;
+    }
 }
