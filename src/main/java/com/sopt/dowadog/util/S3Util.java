@@ -3,6 +3,8 @@ package com.sopt.dowadog.util;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.util.UUID;
+
 
 public class S3Util {
 
@@ -23,5 +25,9 @@ public class S3Util {
         fos.write(file.getBytes());
         fos.close();
         return convFile;
+    }
+
+    public static String getUuid() {
+        return UUID.randomUUID().toString().replaceAll("-", "");
     }
 }
