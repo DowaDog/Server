@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
-@Cacheable("publicData")
+@Cacheable("snapshotData")
 @Controller
 @RequestMapping("openapi/animal")
 public class PublicAnimalController {

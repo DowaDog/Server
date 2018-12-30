@@ -1,7 +1,5 @@
 package com.sopt.dowadog.util;
 
-import com.sopt.dowadog.service.MyinfoService;
-
 public class ResponseMessage {
 
     //Login
