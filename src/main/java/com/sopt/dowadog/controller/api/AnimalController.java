@@ -22,6 +22,7 @@ public class AnimalController {
     //유기동물 상세 조회
     @GetMapping("{animalId}")
     public ResponseEntity readAnimal(@PathVariable("animalId") final int animalId){
+
         return new ResponseEntity(animalService.readAnimal(animalId), HttpStatus.OK);
 
     }

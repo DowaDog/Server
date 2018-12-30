@@ -26,7 +26,8 @@ public class AnimalService {
 
     //todo 좋아요 구현
     public DefaultRes<Animal> readAnimal(final int animalId){
-        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_ANIMAL, animalRepository.findById(animalId).get());
+        
+        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_ANIMAL,animalRepository.findById(animalId).get());
 
     }
     //todo 좋아요 구현
