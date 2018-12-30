@@ -194,3 +194,26 @@ GET 마이페이지 조회할때 : view에 있는 모든 정보를 다 넘김
 * snapshotData : 공공데이터 조회의 경우 스케줄러를 이용한 스냅샷 데이터이므로 매번 조회하는데 연산을 쓰지 않아도 됨. 이러한 부분에 리소스를 줄이기 위해 ehCache 적용
 * 공공데이터 갱신에는 10000건 이하정도의 데이터 객체가 delete/insert 되므로 메모리에저장하는 객체 수 제한을 10000으로 정하였고, 5분의 갱신주기를 가지게끔 하였음. ( delete/insert 사이 과정에 의한 데이터 불일치 가능성때문에 큰 폭으로 설정하지 않음 )
 
+
+
+## @OneToMany 와 @ManyToOne의 어노테이션 사용으로 인한 무한참조
+
+#### 해결방법
+
+~~~
+도메인 클래스 상단에 다음과 같은 어노테이션 붙이기
+1) @JsonIdentityInfo(generator= ObjectIdGenerators.IntSequenceGenerator.class, property="@id")
+
+~~~
+
+ 이 결과는 @id 프로퍼티를 갖은 1씩 증가된 아이디가 생성된다. 그 이유는 Jackson이 자동으로 증가는 아이디를 형성하였기 때문이다. 이 결과 값은 클라이언트에 쓸모 없는 값임으로 이거 없이 데이터를 가져오는 방법은 밑 해결방법을 이용했더니 해결되었다.
+
+~~~
+도메인 클래스 상단에 다음과 같은 어노테이션 붙이기
+2) @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope=Animal.class
+~~~
+
+다음과 같은 방법은 Jackson이 기존의 id 값을 속성으로 잡고 독립적인 scope를 정해서 데이터를 가져올 수 있도록 하였다.
+
+
+
