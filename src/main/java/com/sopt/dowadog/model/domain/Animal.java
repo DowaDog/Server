@@ -64,5 +64,10 @@ public class Animal extends DateEntity {
     @OneToMany(mappedBy="animal")
     private List<UserAnimalLike> userAnimalLikeList;
 
+    @OneToMany(mappedBy="animal", fetch=FetchType.LAZY)
+    private List<HashtagAnimal> hashtagList;
+
+    /*@OneToMany(mappedBy = "animal", fetch = FetchType.LAZY)
+    private List<HashtagAnimal> hashtagAnimalList;*/
 
 }

@@ -49,4 +49,13 @@ public class AnimalController {
         return new ResponseEntity(animalService.readAnimal(filterDto,page,limit),HttpStatus.OK);
     }
 
+    //해쉬태그에 대한 검색
+
+    @GetMapping("/hashtags")
+    public ResponseEntity readHashtagAnimal(@RequestParam(name="tag", required=false) String tag, @RequestParam(name="page", defaultValue="0",required=false)int page,
+                                            @RequestParam(name="limit", defaultValue="10", required=false)int limit ){
+
+
+        return new ResponseEntity(animalService.readHashtagAnimalList(tag,page,limit),HttpStatus.OK);
+    }
 }
