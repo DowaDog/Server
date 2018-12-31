@@ -8,8 +8,8 @@ import com.sopt.dowadog.repository.CommunityRepository;
 import com.sopt.dowadog.util.ResponseMessage;
 import com.sopt.dowadog.util.S3Util;
 import com.sopt.dowadog.util.StatusCode;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -31,7 +31,8 @@ public class CommunityService {
     @Autowired
     FileService fileService;
 
-    private static final String baseDir="dowadog/community/";
+    @Value("${uploadpath.community}")
+    private String baseDir;
 
     @Transactional
     public DefaultRes<Community> createCommunityService(Community community) throws Exception {
@@ -44,13 +45,14 @@ public class CommunityService {
                                     append(S3Util.getUuid()).
                                     append(imgFile.getOriginalFilename()).toString();
 
-            fileService.fileUpload(imgFile, filePath);
+            fileService.fileUpload(imgFile, filePath); // s3 upload
 
             CommunityImg communityImg = CommunityImg.builder()
                                             .community(community)
                                             .filePath(filePath)
                                             .originFileName(imgFile.getOriginalFilename())
                                             .build();
+
             communityImgRepository.save(communityImg);
         }
 

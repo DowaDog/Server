@@ -77,7 +77,7 @@ public class MyinfoService {
 
         //유저가 가진 메일박스 리스트중에 안읽은 메일박스가 하나라도 존재하면 NEW 아이콘이 노출될지 결정하는 변수값을 바꿔준다
         for(Mailbox mailbox : mailboxList) {
-            if(mailbox.isCheck() == false){
+            if(mailbox.isComplete() == false){
                 mailboxUpdateStatus = true;
                 break;
             }
