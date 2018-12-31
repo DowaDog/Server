@@ -92,7 +92,30 @@ java -jar "파일명"
 | POST | /animals/{animalId}/registrations                            | 유기동물 신청서 작성                                         |
 | POST | /animals/{animalId}/likes                                    | 유기동물 좋아요                                              |
 
+### 마이페이지
 
+
+| TYPE | URI                                             | 설명                  |
+| ---- | ----------------------------------------------- | --------------------- |
+| GET  | /mypage                                         | 마이페이지 조회       |
+| PUT  | /mypage/animals                                 | 동물 정보 수정        |
+| PUT  | /mypage/user                                    | 사람 정보 수정        |
+| GET  | /mypage/likes/animals?page={page}&limit={limit} | 좋아요 리스트 조회    |
+| GET  | /mypage/scrap?page={page}&limit={limit}         | 스크랩 리스트 조회    |
+| GET  | /mypage/community?page={page}&limit={limit}     | 내가 쓴글 리스트 조회 |
+| GET  | /mypage/mailboxes                               | /mypage우체통 조회    |
+
+GET 마이페이지 조회할때 : view에 있는 모든 정보를 다 넘김
+
+- 사용자 정보
+
+- 사용자 동물 정보
+
+- 좋아요 갯수
+
+- 스크랩 갯수
+
+- 내가 쓴 글 갯수
 
 
 ## Log 설정
@@ -170,3 +193,4 @@ java -jar "파일명"
 * defaultCache : 기본 캐시설정 (@Cacheable만 사용시) 
 * snapshotData : 공공데이터 조회의 경우 스케줄러를 이용한 스냅샷 데이터이므로 매번 조회하는데 연산을 쓰지 않아도 됨. 이러한 부분에 리소스를 줄이기 위해 ehCache 적용
 * 공공데이터 갱신에는 10000건 이하정도의 데이터 객체가 delete/insert 되므로 메모리에저장하는 객체 수 제한을 10000으로 정하였고, 5분의 갱신주기를 가지게끔 하였음. ( delete/insert 사이 과정에 의한 데이터 불일치 가능성때문에 큰 폭으로 설정하지 않음 )
+
