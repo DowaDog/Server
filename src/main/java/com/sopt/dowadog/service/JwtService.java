@@ -3,7 +3,6 @@ package com.sopt.dowadog.service;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.sopt.dowadog.enumeration.JwtExpireTermEnum;
@@ -11,12 +10,10 @@ import com.sopt.dowadog.model.common.DefaultRes;
 import com.sopt.dowadog.model.common.JwtToken;
 import com.sopt.dowadog.model.common.LoginReq;
 import com.sopt.dowadog.model.common.Token;
-import com.sopt.dowadog.model.domain.User;
 import com.sopt.dowadog.repository.UserRepository;
 import com.sopt.dowadog.util.ResponseMessage;
 import com.sopt.dowadog.util.StatusCode;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -103,8 +100,6 @@ public class JwtService {
             DecodedJWT decodedJWT = jwtVerifier.verify(token);
             //토큰 payload 반환, 정상적인 토큰이라면 토큰 주인(사용자) 고유 ID, 아니라면 null
 
-            System.out.println("COME TO DECODE!!");
-            System.out.println(decodedJWT.getClaim("user_id").asString());
             return decodedJWT.getClaim("user_id").asString();
 
         } catch (JWTVerificationException jve) {
