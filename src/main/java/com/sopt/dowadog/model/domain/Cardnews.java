@@ -1,5 +1,6 @@
 package com.sopt.dowadog.model.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mysql.cj.protocol.ColumnDefinition;
 import com.sopt.dowadog.model.domain.auditing.DateEntity;
@@ -37,6 +38,10 @@ public class Cardnews extends DateEntity {
 
     @Transient
     private boolean complete;
+
+    @Transient
+    @JsonIgnore
+    private MultipartFile cardnewsImgFile;
 
     @OneToMany(mappedBy = "cardnews")
     private List<UserCardnewsEducate> userCardnewsEducateList = new ArrayList<>();

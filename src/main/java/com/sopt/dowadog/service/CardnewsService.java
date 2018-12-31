@@ -20,13 +20,13 @@ public class CardnewsService {
 
     public DefaultRes<List<Cardnews>> readCardnewsEducationList(){
         //todo enum 객체 활용!
-        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_CARDNEWS, cardnewsRepository.findByType("education"));
+        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_CARDNEWS, cardnewsRepository.findByTypeOrderByCreatedAtDesc("education"));
     }
 
     public DefaultRes<List<Cardnews>> readCardnewsKnowledgeList(int page, int limit){
         Pageable pageable = PageRequest.of(page, limit);
         //todo enum 객체 활용!
-            return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_CARDNEWS, cardnewsRepository.findByType("knowledge", pageable));
+            return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_CARDNEWS, cardnewsRepository.findByTypeOrderByCreatedAtDesc("knowledge", pageable));
     }
 
 
