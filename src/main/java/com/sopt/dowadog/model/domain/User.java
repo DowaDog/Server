@@ -21,9 +21,7 @@ public class User extends DateEntity {
 
     @Id
     private String id;
-
     private String password;
-    private String nickname;
     private String name;
     private String birth;
     private String phone;
@@ -82,10 +80,6 @@ public class User extends DateEntity {
         }
         return false;
     }
-
-
-
-
 
 }
 
