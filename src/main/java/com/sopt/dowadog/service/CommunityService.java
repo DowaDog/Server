@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -37,24 +38,31 @@ public class CommunityService {
     @Transactional
     public DefaultRes<Community> createCommunityService(Community community) throws Exception {
 
-        List<MultipartFile> communityImgList = community.getCommunityImgFiles();
+        List<MultipartFile> communityImgFileList = community.getCommunityImgFiles();
+        List<CommunityImg> communityImgList = new ArrayList();
 
-        for(MultipartFile imgFile : communityImgList) {
+        if(community.getCommunityImgFiles() != null) {
+            for (MultipartFile imgFile : communityImgFileList) {
 
-            String filePath = new StringBuilder(baseDir).
-                                    append(S3Util.getUuid()).
-                                    append(imgFile.getOriginalFilename()).toString();
+                String filePath = new StringBuilder(baseDir).
+                        append(S3Util.getUuid()).
+                        append(imgFile.getOriginalFilename()).toString();
 
-            fileService.fileUpload(imgFile, filePath); // s3 upload
+                fileService.fileUpload(imgFile, filePath); // s3 upload
 
-            CommunityImg communityImg = CommunityImg.builder()
-                                            .community(community)
-                                            .filePath(filePath)
-                                            .originFileName(imgFile.getOriginalFilename())
-                                            .build();
+                CommunityImg communityImg = CommunityImg.builder()
+                        .community(community)
+                        .filePath(filePath)
+                        .originFileName(imgFile.getOriginalFilename())
+                        .build();
 
-            communityImgRepository.save(communityImg);
+                communityImgList.add(communityImgRepository.save(communityImg));
+            }
+            community.setCommunityImgList(communityImgList);
+
         }
+
+
 
         return DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_COMMUNITY, communityRepository.save(community));
     }
