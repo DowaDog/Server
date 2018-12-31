@@ -1,5 +1,7 @@
 package com.sopt.dowadog.model.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.sopt.dowadog.model.domain.auditing.DateEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,6 +16,7 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope=CommunityImg.class)
 public class CommunityImg extends DateEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +28,4 @@ public class CommunityImg extends DateEntity {
     @ManyToOne
     private Community community;
 
-    @Transient
-    MultipartFile communityImgFile;
 }

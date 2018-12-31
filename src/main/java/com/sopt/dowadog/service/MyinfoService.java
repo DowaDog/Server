@@ -1,8 +1,6 @@
 package com.sopt.dowadog.service;
 
-import com.sopt.dowadog.model.domain.Community;
-import com.sopt.dowadog.model.domain.Mailbox;
-import com.sopt.dowadog.model.domain.User;
+import com.sopt.dowadog.model.domain.*;
 import com.sopt.dowadog.model.dto.MyinfoDto;
 import com.sopt.dowadog.model.common.DefaultRes;
 import com.sopt.dowadog.repository.MailboxRepository;
@@ -65,23 +63,22 @@ public class MyinfoService {
     //UserID로 정보가져오기
     public DefaultRes<MyinfoDto> readMypageByUserId(final String userId) {
         User user = userRepository.findById(userId).get(); //user에 사용자 아이디 주고 정보 저장
-        //좋아요 갯수
-        int likeCount = user.getLikedAnimalList().size();
-        //스크랩 갯수
-        int scrapCount = user.getScrapedCardnewList().size();
-        //내가쓴글 갯수
-        int communityCount = user.getCommunityList().size();
-        boolean mailboxUpdateStatus = false;
+//        좋아요 갯수
+        int likeCount = user.getAnimalLikeCount();
+//        스크랩 갯수
+        int scrapCount = user.getCardnewsScrapCount();
+//        내가쓴글 갯수
+        int communityCount = user.getWrittenCommunityCount();
+        boolean mailboxUpdateStatus = user.isNewMailbox();
 
-        List<Mailbox> mailboxList = user.getMailboxList();
 
         //유저가 가진 메일박스 리스트중에 안읽은 메일박스가 하나라도 존재하면 NEW 아이콘이 노출될지 결정하는 변수값을 바꿔준다
-        for(Mailbox mailbox : mailboxList) {
-            if(mailbox.isCheck() == false){
-                mailboxUpdateStatus = true;
-                break;
-            }
-        }
+//        for(Mailbox mailbox : mailboxList) {
+//            if(mailbox.isComplete() == false){
+//                mailboxUpdateStatus = true;
+//                break;
+//            }
+//        }
 
         //todo 입양한 동물에 대한 이름을 넣는것인지, 2마리이상이면 어떤거인지..
 
@@ -105,40 +102,36 @@ public class MyinfoService {
         user.setPhone(modifiedUser.getPhone());
         user.setEmail(modifiedUser.getEmail());
         user.setBirth(modifiedUser.getBirth());
-        //userRepository.save(user);
+        userRepository.save(user);
         return DefaultRes.res(StatusCode.OK, ResponseMessage.UPDATE_MYINFO, user);
     }
 
     //todo 좋아요 등등의 page limit 갯수 정하기
 
     //사용자 좋아요 리스트 조회
-    public DefaultRes<User> readLikeListByUserId(int page, int limit, String userId){
+    public DefaultRes<List<UserAnimalLike>> readLikeListByUserId(int page, int limit, String userId){
         Pageable pageable = PageRequest.of(page, limit);
 
         User user = userRepository.findById(userId).get();
-        user.getLikedAnimalList();
 
-        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_USER_LIKE,user);
+        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_USER_LIKE, user.getUserAnimalLikeList());
     }
 
     //사용자 스크랩 리스트 조회
-    public DefaultRes<User> readClipsListByUserId(int page, int limit, String userId){
+    public DefaultRes<List<UserCardnewsScrap>> readClipsListByUserId(int page, int limit, String userId){
         Pageable pageable = PageRequest.of(page, limit);
 
         User user = userRepository.findById(userId).get();
-        user.getScrapedCardnewList();
 
-
-        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_USER_SCRAP,user);
+        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_USER_SCRAP, user.getUserCardnewsScrapList());
     }
     //사용자 작성한 글 리스트 조회
-    public DefaultRes<User> readCommunityListByUserId(int page, int limit, String userId){
+    public DefaultRes<List<Community>> readCommunityListByUserId(int page, int limit, String userId){
         Pageable pageable = PageRequest.of(page, limit);
 
         User user = userRepository.findById(userId).get();
-        user.getCommunityList();
 
-        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_USER_COMMUNITY,user);
+        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_USER_COMMUNITY, user.getCommunityList());
     }
 
     public DefaultRes<Mailbox> readMailboxesUserId(String userId){

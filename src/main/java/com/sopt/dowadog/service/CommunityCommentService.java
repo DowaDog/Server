@@ -31,7 +31,7 @@ public class CommunityCommentService {
 
     public DefaultRes<List<CommunityComment>> readCommunityCommentList(int communityId){
 
-        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_COMMENT, communityCommentRepository.findByCommunityId(communityId));
+        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_COMMENT, communityCommentRepository.findByCommunityIdOrderByCreatedAtDesc(communityId));
     }
 
     public DefaultRes<CommunityComment> updateCommunityComment(CommunityComment modifiedCommunityComment, int communityId){

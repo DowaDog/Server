@@ -22,6 +22,9 @@ public class CardnewsContents extends DateEntity {
     private int id;
 
     private String title;
+
+    private String thumnailImg;
+
     @Column(columnDefinition = "TEXT")
     private String detail;
 

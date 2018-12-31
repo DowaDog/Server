@@ -8,10 +8,8 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class RestTemplateConfig {
 
-
-
     @Bean
-    public RestTemplate estTemplate() {
+    public RestTemplate restTemplate() {
         SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
         RestTemplate restTemplate = new RestTemplate(requestFactory);
         return restTemplate;

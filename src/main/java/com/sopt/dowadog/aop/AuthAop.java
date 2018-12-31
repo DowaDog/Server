@@ -53,7 +53,9 @@ public class AuthAop {
 
     @Around("auth()")
     public Object around(final ProceedingJoinPoint pjp) throws Throwable {
+
         final String jwt = httpServletRequest.getHeader(AUTHORIZATION);
+        //httpServletRequest.setAttribute("type", token.);
 
         if (jwt == null) return RES_RESPONSE_ENTITY;
         //토큰 해독

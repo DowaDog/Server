@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @JsonIgnoreProperties(value={"hibernateLazyInitializer", "handler"})
@@ -19,8 +21,6 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Cardnews extends DateEntity {
-
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,13 +32,17 @@ public class Cardnews extends DateEntity {
 
     private String type;
 
-    private String img_path;
+    private String imgPath;
 
 
     @Transient
     private boolean complete;
 
-//    @Transient
-//    MultipartFile cardnewsimg;
+    @OneToMany(mappedBy = "cardnews")
+    private List<UserCardnewsEducate> userCardnewsEducateList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "cardnews")
+    private List<UserCardnewsScrap> userCardnewsScrapList = new ArrayList<>();
+
 }
 

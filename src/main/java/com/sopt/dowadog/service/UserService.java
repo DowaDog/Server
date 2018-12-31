@@ -7,6 +7,7 @@ import com.sopt.dowadog.util.ResponseMessage;
 import com.sopt.dowadog.util.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -31,9 +32,8 @@ public class UserService {
         return userRepository.findAll();
     }
 
+
     public String a(){
         return null;
-    }
-
-
+     }
 }

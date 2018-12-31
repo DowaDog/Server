@@ -25,6 +25,7 @@ public class Registration extends DateEntity {
     private String address;
     private String job;
     private boolean stepOneAllow;
+    private boolean tempProtect; //임시보호 여부
 
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "registration")
