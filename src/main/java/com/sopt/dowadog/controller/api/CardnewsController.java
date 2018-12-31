@@ -78,7 +78,7 @@ public class CardnewsController {
         token.getUser_idx();
         //todo userService에서 type받아서 educatedCardnews List에 채워서 반환하는 메소드 만들어야댐
         //     지금은 빈메소드인 상태!!
-        return new ResponseEntity(userService.a(), HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
 }

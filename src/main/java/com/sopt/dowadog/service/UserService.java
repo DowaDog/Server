@@ -32,14 +32,8 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    @Transactional
-    public Object a () {
-        // TODO 변경할 사용자 꺼내오기
-        // TODO 사용자.getEducatedCardNews().addCardNews(new CardNews());
-        User user = new User();
 
-        //user.getEducatedCardnews()
-        int x = 0;
-        return x;
-    }
+    public String a(){
+        return null;
+     }
 }

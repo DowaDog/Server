@@ -32,7 +32,7 @@ public class CommunityController {
     }
 
     //커뮤니티 글 조회
-    @GetMapping("/{communityId}")
+    @GetMapping("{communityId}")
     public Object readCommunity(@PathVariable("communityId")int communityId) {
         return new ResponseEntity(communityService.readCommunityById(communityId), HttpStatus.OK);
     }
@@ -40,20 +40,20 @@ public class CommunityController {
 
     //커뮤니티 글 생성
     @PostMapping
-    public ResponseEntity createCommunity(Community community) {
+    public ResponseEntity createCommunity(Community community) throws Exception {
         return new ResponseEntity(communityService.createCommunityService(community), HttpStatus.CREATED);
     }
 
 
     //커뮤니티 글 수정
-    @PutMapping("/{communityId}")
+    @PutMapping("{communityId}")
     public ResponseEntity updateCommunity(Community community, @PathVariable("communityId") int communityId) {
         return new ResponseEntity(communityService.updateCommunityById(community, communityId), HttpStatus.OK);
     }
 
 
     //커뮤니티 글 삭제
-    @DeleteMapping("/{communityId}")
+    @DeleteMapping("{communityId}")
     public ResponseEntity deleteCommunity(@PathVariable("communityId") int communityId) {
 
         return new ResponseEntity(communityService.deleteCommunityById(communityId), HttpStatus.OK);
@@ -71,21 +71,21 @@ public class CommunityController {
     }
 
     //특정 커뮤니티 글의 댓글 작성
-    @PostMapping("/{communityId}/comments")
+    @PostMapping("{communityId}/comments")
     public ResponseEntity createComment(@RequestBody CommunityComment communityComment, @PathVariable(name="communityId") int communityId) {
 
         return new ResponseEntity(communityCommentService.createCommunityComment(communityComment, communityId), HttpStatus.OK);
     }
 
     //댓글 수정
-    @PutMapping("/comments/{commnetId}")
+    @PutMapping("comments/{commnetId}")
     public ResponseEntity updateComment(@RequestBody CommunityComment communityComment, @PathVariable("commnetId") int commentId) {
 
         return new ResponseEntity(communityCommentService.updateCommunityComment(communityComment, commentId), HttpStatus.OK);
     }
 
     //댓글 삭제
-    @DeleteMapping("/comments/{commentId}")
+    @DeleteMapping("comments/{commentId}")
     public ResponseEntity deleteComment(@PathVariable("commentId") int commentId) {
         return new ResponseEntity(communityCommentService.deleteCommunityComment(commentId), HttpStatus.OK);
     }
