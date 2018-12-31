@@ -5,6 +5,8 @@ public class ResponseMessage {
     //Login
     public static final String LOGIN_SUCCESS = "로그인 성공";
     public static final String LOGIN_FAIL = "로그인 실패";
+    public static final String AUTH_FAIL = "인증 실패";
+    public static final String AUTH_SUCCESS = "인증 성공";
 
     //Signup
     public static final String READ_USER = "회원 정보 조회 성공";

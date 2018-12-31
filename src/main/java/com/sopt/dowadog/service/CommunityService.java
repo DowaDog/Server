@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -68,7 +69,7 @@ public class CommunityService {
     }
 
     public DefaultRes<Page<Community>> readCommunityList(int page, int limit){
-        Pageable pageable = PageRequest.of(page, limit);
+        Pageable pageable = PageRequest.of(page, limit, Sort.Direction.DESC, "createdAt");
 
         return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_COMMUNITY, communityRepository.findAll(pageable));
     }

@@ -22,6 +22,7 @@ public class AnimalController {
     //유기동물 상세 조회
     @GetMapping("{animalId}")
     public ResponseEntity readAnimal(@PathVariable("animalId") final int animalId){
+
         return new ResponseEntity(animalService.readAnimal(animalId), HttpStatus.OK);
 
     }
@@ -48,4 +49,13 @@ public class AnimalController {
         return new ResponseEntity(animalService.readAnimal(filterDto,page,limit),HttpStatus.OK);
     }
 
+    //해쉬태그에 대한 검색
+
+    @GetMapping("/hashtags")
+    public ResponseEntity readHashtagAnimal(@RequestParam(name="tag", required=false) String tag, @RequestParam(name="page", defaultValue="0",required=false)int page,
+                                            @RequestParam(name="limit", defaultValue="10", required=false)int limit ){
+
+
+        return new ResponseEntity(animalService.readHashtagAnimalList(tag,page,limit),HttpStatus.OK);
+    }
 }
