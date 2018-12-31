@@ -49,17 +49,40 @@ public class User extends DateEntity {
     @OneToMany(mappedBy="user", fetch=FetchType.LAZY)
     private List<Mailbox> mailboxList;
 
-    @ManyToMany
-    @JoinTable(name="user_animal_like", joinColumns = @JoinColumn(name="user_id"), inverseJoinColumns = @JoinColumn(name="animal_id"))
-    private List<Animal> likedAnimalList = new ArrayList<Animal>();
 
-    @ManyToMany
-    @JoinTable(name="user_cardnews_scrap", joinColumns = @JoinColumn(name="user_id"), inverseJoinColumns = @JoinColumn(name="cardnews_id"))
-    private List<Cardnews> scrapedCardnewList = new ArrayList<Cardnews>();
 
-    @ManyToMany
-    @JoinTable(name="user_cardnews_education", joinColumns = @JoinColumn(name="user_id"), inverseJoinColumns = @JoinColumn(name="cardnews_id"))
-    private List<Cardnews> educatedCardnewList = new ArrayList<Cardnews>();
+    @OneToMany(mappedBy = "user")
+    private List<UserAnimalLike> userAnimalLikeList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<UserCardnewsScrap> userCardnewsScrapList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<UserCardnewsEducate> userCardnewsEducatedList = new ArrayList();
+
+    @JsonIgnore
+    public int getAnimalLikeCount() {
+        return this.userAnimalLikeList.size();
+    }
+
+    @JsonIgnore
+    public int getCardnewsScrapCount() {
+        return this.userCardnewsScrapList.size();
+    }
+
+    @JsonIgnore
+    public int getWrittenCommunityCount() {
+        return this.communityList.size();
+    }
+
+    @JsonIgnore
+    public boolean isNewMailbox() {
+        for(Mailbox mailbox : mailboxList){
+            if(!mailbox.isComplete()) return true;
+        }
+        return false;
+    }
+
 
 
 

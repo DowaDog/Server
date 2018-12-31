@@ -36,6 +36,7 @@ public class Animal extends DateEntity {
     private String kindCd;
     private String age;
     private String weight;
+    private boolean noticing; // 입양 공고 진행 여부
 
     @Temporal(TemporalType.DATE)
     private Date noticeStdt;
@@ -51,6 +52,9 @@ public class Animal extends DateEntity {
 
     @OneToMany(mappedBy="animal", fetch=FetchType.LAZY)
     private List<Registration> registrationList;
+
+    @OneToMany(mappedBy="animal")
+    private List<UserAnimalLike> userAnimalLikeList;
 
 
 }

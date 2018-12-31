@@ -13,15 +13,14 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AnimalStory extends DateEntity {
+@IdClass(UserCardnewsId.class)
+public class UserCardnewsScrap extends DateEntity {
+    @Id
+    @ManyToOne
+    private User user;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
     @ManyToOne
-    private Animal animal;
+    private Cardnews cardnews;
 
-    private String filePath;
-    private String originFileName;
 }

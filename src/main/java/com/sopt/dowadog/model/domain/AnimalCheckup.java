@@ -1,6 +1,6 @@
 package com.sopt.dowadog.model.domain;
 
-import com.sopt.dowadog.model.domain.auditing.DateEntity;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,15 +13,14 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AnimalStory extends DateEntity {
+public class AnimalCheckup {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne
-    private Animal animal;
+    private String inoculation; // code 테이블것 사용할예정
 
-    private String filePath;
-    private String originFileName;
+    @ManyToOne
+    AnimalUserAbort animalUserAbort;
 }
