@@ -46,10 +46,10 @@ public class VerifyAop {
         //헤더에 값 안들어 있으면 401 던짐
         if(jwt == null) return RES_RESPONSE_ENTITY;
 
-        final JwtService.Token token = jwtService.decode(jwt);
+        final String userId = jwtService.decode(jwt);
 
         //token값 없어도 401 던짐
-        if(token == null){
+        if(userId == null){
             return RES_RESPONSE_ENTITY;
         } else {
 

@@ -59,20 +59,17 @@ public class AuthAop {
 
         if (jwt == null) return RES_RESPONSE_ENTITY;
         //토큰 해독
-        final JwtService.Token token = jwtService.decode(jwt);
+        final String userId = jwtService.decode(jwt);
         //토큰 검사
-        if (token == null) {
+        if (userId == null) {
             return RES_RESPONSE_ENTITY;
         } else {
             //todo User정보 가져와서 처리해야함
 
-            //User user = userRepository.findById();
-            User user = new User();
-            user.setId("kohen");
-            user.setName("sungchan");
-
+            User user = userRepository.getOne(userId);
             //유효 사용자 검사
             if (user == null) return RES_RESPONSE_ENTITY;
+
             return pjp.proceed(pjp.getArgs());
         }
     }
