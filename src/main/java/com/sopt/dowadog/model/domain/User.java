@@ -60,6 +60,29 @@ public class User extends DateEntity {
     @OneToMany(mappedBy = "user")
     private List<UserCardnewsEducate> userCardnewsEducatedList = new ArrayList();
 
+    @JsonIgnore
+    public int getAnimalLikeCount() {
+        return this.userAnimalLikeList.size();
+    }
+
+    @JsonIgnore
+    public int getCardnewsScrapCount() {
+        return this.userCardnewsScrapList.size();
+    }
+
+    @JsonIgnore
+    public int getWrittenCommunityCount() {
+        return this.communityList.size();
+    }
+
+    @JsonIgnore
+    public boolean isNewMailbox() {
+        for(Mailbox mailbox : mailboxList){
+            if(!mailbox.isComplete()) return true;
+        }
+        return false;
+    }
+
 
 
 
