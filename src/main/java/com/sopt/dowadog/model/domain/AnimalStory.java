@@ -1,6 +1,5 @@
 package com.sopt.dowadog.model.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sopt.dowadog.model.domain.auditing.DateEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
