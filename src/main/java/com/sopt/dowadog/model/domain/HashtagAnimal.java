@@ -3,6 +3,7 @@ package com.sopt.dowadog.model.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,6 +22,7 @@ import javax.persistence.*;
 public class HashtagAnimal {
 
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Id
     @ManyToOne
     private Hashtag hashtag;

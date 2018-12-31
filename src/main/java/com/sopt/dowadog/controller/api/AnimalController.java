@@ -58,4 +58,10 @@ public class AnimalController {
 
         return new ResponseEntity(animalService.readHashtagAnimalList(tag,page,limit),HttpStatus.OK);
     }
+    // 좋아요 기능
+    //todo 토큰이 들어가면, 유저인덱스 넣는 부분
+    @PostMapping("{animalId}/likes")
+    public ResponseEntity createUserLike(@PathVariable("animalId") final int animalId){
+        return new ResponseEntity(animalService.createUserAnimalLike(animalId),HttpStatus.OK);
+    }
 }

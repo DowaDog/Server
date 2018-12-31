@@ -50,6 +50,9 @@ public class Animal extends DateEntity {
 
     private String thumbnailImg;
 
+    @Transient
+    private boolean isLikeed;
+
     @ManyToOne
     private Care care;
 
@@ -62,10 +65,13 @@ public class Animal extends DateEntity {
     private List<Registration> registrationList;
 
     @OneToMany(mappedBy="animal")
-    private List<UserAnimalLike> userAnimalLikeList;
+    private List<UserAnimalLike> userAnimalLikeList;//이거 굳이 필요해..? ㅠ... 동물을 기준으로 좋아요 한 사람을 쭉 ...보여주는...정보... 필요한가....
 
-    @OneToMany(mappedBy="animal", fetch=FetchType.LAZY)
-    private List<HashtagAnimal> hashtagList;
+
+
+
+//    @OneToMany(mappedBy="animal", fetch=FetchType.LAZY)
+//    private List<HashtagAnimal> hashtagList;
 
     /*@OneToMany(mappedBy = "animal", fetch = FetchType.LAZY)
     private List<HashtagAnimal> hashtagAnimalList;*/
