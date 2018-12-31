@@ -32,7 +32,7 @@ public class Cardnews extends DateEntity {
 
     private String type;
 
-    private String img_path;
+    private String imgPath;
 
 
     @Transient

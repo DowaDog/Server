@@ -42,20 +42,18 @@ public class CardnewsController {
     @Autowired
     CardnewsContentsService cardnewsContentsService;
 
-    @GetMapping("/education")
-    public ResponseEntity readCardnewsEducationList(@RequestParam("type")String type){
+    @GetMapping("education")
+    public ResponseEntity readCardnewsEducationList(){
 
-        //todo 교육 이수 완료 정보 줘야함
-
-        return new ResponseEntity(cardnewsService.readCardnewsList(type), HttpStatus.OK);
+        //todo 교육 이수 완료 정보 줘야댐
+        return new ResponseEntity(cardnewsService.readCardnewsEducationList(), HttpStatus.OK);
     }
 
-    @GetMapping("/knowledge")
-    public ResponseEntity  readCardnewsKnowledgeList(@RequestParam("type")String type,
-                                                     @RequestParam(name="page", defaultValue="0",required = false)int page,
+    @GetMapping("knowledge")
+    public ResponseEntity  readCardnewsKnowledgeList(@RequestParam(name="page", defaultValue="0",required = false)int page,
                                                      @RequestParam(name="limit", defaultValue = "10", required=false)int limit){
 
-        return new ResponseEntity(cardnewsService.readCardnewsList(type), HttpStatus.OK);
+        return new ResponseEntity(cardnewsService.readCardnewsKnowledgeList(page,limit), HttpStatus.OK);
     }
 
 
@@ -67,8 +65,8 @@ public class CardnewsController {
         return new ResponseEntity(cardnewsContentsService.readAllCardnewsContentsList(cardnewsId),HttpStatus.OK);
     }
 
-    @PostMapping("/cardnews/{cardnewsId}/complete")
-    public ResponseEntity createComplete(@PathVariable("cardnesId")int cardnewsId){
+    @PostMapping("cardnews/{cardnewsId}/complete")
+    public ResponseEntity createComplete(@PathVariable("cardnewsId")int cardnewsId){
         final String jwt = httpServletRequest.getHeader(AUTHORIZATION);
 
         final JwtService.Token token = jwtService.decode(jwt);
@@ -77,6 +75,7 @@ public class CardnewsController {
         User user = new User();
         user.setId("Rdd");
 
+        token.getUser_idx();
         //todo userService에서 type받아서 educatedCardnews List에 채워서 반환하는 메소드 만들어야댐
         //     지금은 빈메소드인 상태!!
         return new ResponseEntity(HttpStatus.OK);

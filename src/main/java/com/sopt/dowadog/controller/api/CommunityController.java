@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RequestMapping("api/community")
 @Controller
 public class CommunityController {
@@ -60,8 +62,10 @@ public class CommunityController {
 
 
     //특정 커뮤니티 글의 댓글 리스트 조회
-    @GetMapping("{communityId}/comments")
-    public ResponseEntity readCommentList(@PathVariable("communityId") int communityId) {
+    @GetMapping("/{communityId}/comments")
+    public ResponseEntity readCommentList(@PathVariable("communityId") int communityId, HttpServletRequest req) {
+
+        //req.getAttribute("name");
 
         return new ResponseEntity(communityCommentService.readCommunityCommentList(communityId), HttpStatus.CREATED);
     }
