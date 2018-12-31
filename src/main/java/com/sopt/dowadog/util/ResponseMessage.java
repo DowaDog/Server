@@ -8,6 +8,10 @@ public class ResponseMessage {
 
     //Signup
     public static final String READ_USER = "회원 정보 조회 성공";
+    public static final String ABLE_USER = "id 생성 가능";
+    public static final String UNABLE_USER = "이미 존재하는 id";
+    public static final String ABLE_EMAIL = "email 사용 가능";
+    public static final String UNABLE_EMAIL = "이미 존재하는 email";
     public static final String NOT_FOUND_USER = "회원을 찾을 수 없습니다.";
     public static final String CREATED_USER = "회원 가입 성공";
     public static final String UPDATE_USER = "회원 정보 수정 성공";
