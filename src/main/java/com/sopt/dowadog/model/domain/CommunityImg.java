@@ -1,6 +1,7 @@
 package com.sopt.dowadog.model.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.sopt.dowadog.model.domain.auditing.DateEntity;
 import lombok.AllArgsConstructor;
@@ -25,6 +26,7 @@ public class CommunityImg extends DateEntity {
     private String filePath;
     private String originFileName;
 
+    @JsonIgnore
     @ManyToOne
     private Community community;
 

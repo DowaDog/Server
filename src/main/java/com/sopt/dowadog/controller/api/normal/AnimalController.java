@@ -1,4 +1,4 @@
-package com.sopt.dowadog.controller.api;
+package com.sopt.dowadog.controller.api.normal;
 
 
 import com.sopt.dowadog.model.dto.FilterDto;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
-@RequestMapping("api/animals")
+@RequestMapping("api/normal/animals")
 @Controller
 public class AnimalController {
 
@@ -57,5 +57,11 @@ public class AnimalController {
 
 
         return new ResponseEntity(animalService.readHashtagAnimalList(tag,page,limit),HttpStatus.OK);
+    }
+    // 좋아요 기능
+    //todo 토큰이 들어가면, 유저인덱스 넣는 부분
+    @PostMapping("{animalId}/likes")
+    public ResponseEntity createUserLike(@PathVariable("animalId") final int animalId){
+        return new ResponseEntity(animalService.createUserAnimalLike(animalId),HttpStatus.OK);
     }
 }

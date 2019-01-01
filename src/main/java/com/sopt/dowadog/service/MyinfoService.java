@@ -23,53 +23,25 @@ public class MyinfoService {
     @Autowired
     MailboxRepository mailboxRepository;
 
-
-    //<마이페이지>
-    //userID 정보 가져와서
-    //좋아요 갯수-0
-    //스크랩 갯수-0
-    //내가 쓴글 갯수-0
-    //사용자 정보
-
-    //우체통 화면
-
-
-    //todo <동물 정보 수정> userID 정보 가져와서 동물 정보 이름 종류 몸무게 나이
-
-    //<사용자 정보 수정>
-    //userID 정보 가져와서
-    //이름
-    //연락처
-    //이메일
-
-    //<좋아요 조회>
-    //userID 정보 가져와서
-
-    //<스크랩 조회>
-    //userID 정보 가져와서
-
-    //<내가 쓴글 조회>
-    //userID 정보 가져와서
-
-    //<우체통 조회>
-
-
-    //userID 가져와서 animal 정보 가져오기  -> 이름 종류 몸무게 나이
-    //userID 가져와서 좋아요, 스크랩, 내가쓴글 리스트 가져오기
-
-
     //todo 우체통 API작성 controller 작성하기 테이블도 구성되야함
 
     //UserID로 정보가져오기
     public DefaultRes<MyinfoDto> readMypageByUserId(final String userId) {
+
         User user = userRepository.findById(userId).get(); //user에 사용자 아이디 주고 정보 저장
-//        좋아요 갯수
+        String userName = user.getName();
+
+        //입양된 동물의 마지막 리스트 이름
+        String animalName = user.getUserAdoptAnimalName();
+
+//      좋아요 갯수
         int likeCount = user.getAnimalLikeCount();
 //        스크랩 갯수
         int scrapCount = user.getCardnewsScrapCount();
 //        내가쓴글 갯수
         int communityCount = user.getWrittenCommunityCount();
-        boolean mailboxUpdateStatus = user.isNewMailbox();
+
+        boolean mailboxUpdateStatus = user.isNewMailbox(); //메일박스 새로운게 있는지 확인
 
 
         //유저가 가진 메일박스 리스트중에 안읽은 메일박스가 하나라도 존재하면 NEW 아이콘이 노출될지 결정하는 변수값을 바꿔준다
@@ -80,20 +52,17 @@ public class MyinfoService {
 //            }
 //        }
 
-        //todo 입양한 동물에 대한 이름을 넣는것인지, 2마리이상이면 어떤거인지..
-
         MyinfoDto myinfoDto = MyinfoDto.builder()
+                                 .userName(userName)
                                  .userLike(likeCount)
                                  .userScrap(scrapCount)
                                  .userCommunity(communityCount)
                                  .mailboxUpdated(mailboxUpdateStatus)
+                                 .animalName(animalName)
                                  .build();
 
-        //todo 사용자 정보 모두 보내기 , 우체통 보내기
         return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_MYINFO, myinfoDto);
     }
-
-    //todo 마이페이지 로그아웃
 
     //사용자 정보 수정
     public DefaultRes<User> updateUserInfoByUserId(User modifiedUser, final String userId){
@@ -110,9 +79,17 @@ public class MyinfoService {
 
     //사용자 좋아요 리스트 조회
     public DefaultRes<List<UserAnimalLike>> readLikeListByUserId(int page, int limit, String userId){
+        User user = userRepository.findById(userId).get();
         Pageable pageable = PageRequest.of(page, limit);
 
-        User user = userRepository.findById(userId).get();
+        //int start = new PageRequest(page, limit).getOffset(); //검색을 7원하는 페이지,  페이지당 건수 , 정렬 방법
+        //int end = (start + new pageable(page , limit).getPageSize()) > user.getAnimalLikeCount() ? user.getAnimalLikeCount() : (start + user.getAnimalLikeCount());
+        // 시작 페이지 와 페이지의 크기를 더한것, 이 좋아요 리스트 개수보다 많으면
+        //user.subList(start, end), pageable, user.getAnimalLikeCount();
+
+
+        //List<UserAnimalLike> page = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), pageable.getSort());
+        //return page;
 
         return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_USER_LIKE, user.getUserAnimalLikeList());
     }

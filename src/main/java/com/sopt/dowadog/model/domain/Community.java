@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.sopt.dowadog.model.domain.auditing.DateEntity;
+import com.sopt.dowadog.model.dto.CommunityDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,9 +34,10 @@ public class Community extends DateEntity {
     @Column(columnDefinition = "TEXT")
     private String detail;
 
-    @OneToMany(mappedBy="community", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy="community", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<CommunityImg> communityImgList;
 
+    @JsonIgnore
     @ManyToOne
     private User user;
 
@@ -47,5 +49,25 @@ public class Community extends DateEntity {
         Date createdAt = this.getCreatedAt();
         return (new DateTime(createdAt).toLocalDate()).equals(new LocalDate());
     }
+
+    public boolean getAuth(String userId){
+        return userId.equals(this.user.getId());
+    }
+
+    @JsonIgnore
+    public CommunityDto getCommunityDto() {
+        return CommunityDto.builder()
+                .id(this.id)
+                .title(this.title)
+                .detail(this.detail)
+                .communityImgList(this.communityImgList)
+                .userId(this.user.getId())
+                .today(this.isToday())
+                .createdAt(this.getCreatedAt())
+                .updatedAt(this.getUpdatedAt())
+                .build();
+    }
+
+
 
 }

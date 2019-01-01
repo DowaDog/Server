@@ -20,6 +20,10 @@ public class ResponseMessage {
     public static final String DELETE_USER = "회원 탈퇴 성공";
 
 
+    // 좋아요 기능
+    public static final String CREATED_LIKE = "좋아요 추가 성공";
+    public static final String DELETED_LIKE = "좋아요 취소 성공";
+
 
     //유기동물 관련 리스폰스 메세지
     public static final String READ_ANIMAL = "동물 조회 성공";

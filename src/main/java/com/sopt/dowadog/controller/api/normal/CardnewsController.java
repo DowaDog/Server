@@ -1,4 +1,4 @@
-package com.sopt.dowadog.controller.api;
+package com.sopt.dowadog.controller.api.normal;
 
 import com.sopt.dowadog.annotation.Auth;
 import com.sopt.dowadog.model.domain.User;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
-@RequestMapping("api/cardnews")
+@RequestMapping("api/normal/cardnews")
 @Controller
 public class CardnewsController {
 

@@ -8,13 +8,17 @@ import com.sopt.dowadog.service.JwtService;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 
 @Aspect
 @Component
@@ -31,47 +35,74 @@ public class AuthAop {
     private final static ResponseEntity<DefaultRes> RES_RESPONSE_ENTITY = new ResponseEntity<>(DEFAULT_RES, HttpStatus.UNAUTHORIZED);
 
     private final HttpServletRequest httpServletRequest;
-//
-//    private final UserMapper userMapper;
-//
-//    private final JwtService jwtService;
 
 
     public AuthAop(UserRepository userRepository, JwtService jwtService, final HttpServletRequest httpServletRequest) {
         this.userRepository = userRepository;
         this.jwtService = jwtService;
         this.httpServletRequest = httpServletRequest;
-//        this.userMapper = userMapper;
-//        this.jwtService = jwtService;
+
     }
+
+
+
+    @Pointcut("execution(* com..service.*Service.create*(..))")
+    public void create() {}
+
+    @Pointcut("execution(* com..service.*Service.update*(..))")
+    public void update() {}
+
+    @Pointcut("execution(* com..service.*Service.delete*(..))")
+    public void delete() {}
+
 
 
     @Pointcut("@annotation(com.sopt.dowadog.annotation.Auth)")
     public void auth() {
-        // pointcut annotation 값을 참조하기 위한 dummy method
     }
+
+
+
+//    @Around("execution(* *(.., @UserId (*), ..))")
+//    public Object convertUser(ProceedingJoinPoint pjp) throws Throwable {
+//        final String jwt = httpServletRequest.getHeader("Authorization");
+//        final String userId = jwtService.decode(jwt);
+//
+//
+//        Object[] args = Arrays.stream(pjp.getArgs()).map(data -> { if(data instanceof User) { data = userId; } return data; }).toArray();
+//
+//        return pjp.proceed(args);
+//    }
+
 
     @Around("auth()")
     public Object around(final ProceedingJoinPoint pjp) throws Throwable {
-
-        final String jwt = httpServletRequest.getHeader(AUTHORIZATION);
-        //httpServletRequest.setAttribute("type", token.);
-
-        if (jwt == null) return RES_RESPONSE_ENTITY;
-        //토큰 해독
-        final String userId = jwtService.decode(jwt);
-        //토큰 검사
-        if (userId == null) {
+        if(validToken() == null) {
             return RES_RESPONSE_ENTITY;
-        } else {
-            //todo User정보 가져와서 처리해야함
-
-            User user = userRepository.getOne(userId);
-            //유효 사용자 검사
-            if (user == null) return RES_RESPONSE_ENTITY;
-
-            return pjp.proceed(pjp.getArgs());
         }
+        return pjp.proceed(pjp.getArgs());
+    }
+
+
+
+    @Around("create() || update() || delete()")
+    public Object AuthForGuest(final ProceedingJoinPoint pjp) throws Throwable{
+
+        if(validToken() == null) return DEFAULT_RES;
+        return pjp.proceed(pjp.getArgs());
+    }
+
+
+    private User validToken() throws Exception{ // User의 권한 체크 - false:인증(로그인)되지 않은 사용자, true:인증된 사용자
+        final String jwt = httpServletRequest.getHeader("Authorization");
+        if(jwt == null) return null;
+
+        final String userId = jwtService.decode(jwt);
+        if(userId == null) return null;
+
+        if(!userRepository.findById(userId).isPresent()) return null;
+
+        return userRepository.findById(userId).get();
     }
 
 

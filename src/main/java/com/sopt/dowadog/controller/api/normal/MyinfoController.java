@@ -1,4 +1,4 @@
-package com.sopt.dowadog.controller.api;
+package com.sopt.dowadog.controller.api.normal;
 
 import com.sopt.dowadog.model.domain.User;
 import com.sopt.dowadog.service.MyinfoService;
@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("api/mypage")  //URL Mapping은 myinfo 라는 의미이다.
+@RequestMapping("api/normal/mypage")  //URL Mapping은 myinfo 라는 의미이다.
 @Controller
 public class MyinfoController {
 

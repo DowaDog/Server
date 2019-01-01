@@ -1,4 +1,4 @@
-package com.sopt.dowadog.controller.api;
+package com.sopt.dowadog.controller.api.common;
 
 import com.sopt.dowadog.model.common.LoginReq;
 import com.sopt.dowadog.service.AuthService;
@@ -26,7 +26,7 @@ public class AuthController {
 
     @PostMapping("login") // 로그인은 토큰을 발급받는 수단 - JwtToken(AccessToken, RefreshToken 가짐)을 리턴.
     public ResponseEntity login(@RequestBody final LoginReq loginReq) {
-        return new ResponseEntity(jwtService.createJwtToken(loginReq), HttpStatus.OK);
+        return new ResponseEntity(jwtService.generateToken(loginReq), HttpStatus.OK);
     }
 
     @PostMapping("refresh") // 리프레시 토큰값을 통해 AccessToken 갱신
