@@ -11,7 +11,7 @@ import java.util.Objects;
 @NoArgsConstructor
 public class HashtagAnimalId implements Serializable {
 
-    private String hashtag;
+    private int hashtag;
     private Integer animal;
 
     @Override
