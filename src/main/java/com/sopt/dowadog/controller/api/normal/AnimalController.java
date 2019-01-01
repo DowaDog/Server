@@ -1,4 +1,4 @@
-package com.sopt.dowadog.controller.api;
+package com.sopt.dowadog.controller.api.normal;
 
 
 import com.sopt.dowadog.model.dto.FilterDto;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
-@RequestMapping("api/animals")
+@RequestMapping("api/normal/animals")
 @Controller
 public class AnimalController {
 
