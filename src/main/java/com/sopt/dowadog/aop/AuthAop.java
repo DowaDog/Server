@@ -2,23 +2,18 @@ package com.sopt.dowadog.aop;
 
 import com.sopt.dowadog.model.common.DefaultRes;
 import com.sopt.dowadog.model.domain.User;
-import com.sopt.dowadog.repository.CardnewsContentsRepository;
 import com.sopt.dowadog.repository.UserRepository;
 import com.sopt.dowadog.service.JwtService;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
+import java.util.Optional;
 
 @Aspect
 @Component
@@ -62,47 +57,40 @@ public class AuthAop {
     }
 
 
-
-//    @Around("execution(* *(.., @UserId (*), ..))")
-//    public Object convertUser(ProceedingJoinPoint pjp) throws Throwable {
-//        final String jwt = httpServletRequest.getHeader("Authorization");
-//        final String userId = jwtService.decode(jwt);
-//
-//
-//        Object[] args = Arrays.stream(pjp.getArgs()).map(data -> { if(data instanceof User) { data = userId; } return data; }).toArray();
-//
-//        return pjp.proceed(args);
-//    }
-
-
     @Around("auth()")
     public Object around(final ProceedingJoinPoint pjp) throws Throwable {
-        if(validToken() == null) {
+        if(validToken() == false) {
             return RES_RESPONSE_ENTITY;
         }
         return pjp.proceed(pjp.getArgs());
     }
 
 
-
+    //권한 기본적으로 필요한 작업들
     @Around("create() || update() || delete()")
     public Object AuthForGuest(final ProceedingJoinPoint pjp) throws Throwable{
 
-        if(validToken() == null) return DEFAULT_RES;
+        if(validToken() == false) return DEFAULT_RES;
         return pjp.proceed(pjp.getArgs());
     }
 
 
-    private User validToken() throws Exception{ // User의 권한 체크 - false:인증(로그인)되지 않은 사용자, true:인증된 사용자
+    private boolean validToken() throws Exception{ // User의 권한 체크 - false:인증(로그인)되지 않은 사용자, true:인증된 사용자
         final String jwt = httpServletRequest.getHeader("Authorization");
-        if(jwt == null) return null;
+
+        if(!Optional.ofNullable(jwt).isPresent()){
+            return false;
+        }
 
         final String userId = jwtService.decode(jwt);
-        if(userId == null) return null;
 
-        if(!userRepository.findById(userId).isPresent()) return null;
+        if(!Optional.ofNullable(userId).isPresent()){
+            return false;
+        }
 
-        return userRepository.findById(userId).get();
+        if(!userRepository.findById(userId).isPresent()) return false;
+
+        return true;
     }
 
 
