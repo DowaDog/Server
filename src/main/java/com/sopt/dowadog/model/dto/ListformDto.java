@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 
@@ -19,8 +20,10 @@ public class ListformDto {
     private String sexCd;
     private String kindCd;
     private String region;
+    private LocalDate noticeEddt;
     private boolean liked;
-    private Integer remailNoticeDate;
+    private boolean remainDateState;
+    private String thumbnailImg;
 }
 
 

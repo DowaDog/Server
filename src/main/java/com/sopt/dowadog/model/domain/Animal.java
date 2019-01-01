@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.sopt.dowadog.model.domain.auditing.DateEntity;
 import com.sopt.dowadog.model.dto.AnimalDetailDto;
+import com.sopt.dowadog.model.dto.ListformDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -68,7 +69,7 @@ public class Animal extends DateEntity {
 
 
 
-    // Dto builder 작업
+    // Dto builder 작업(상세보기 dto)
     public AnimalDetailDto getAnimalDetailDto() {
 
 
@@ -84,12 +85,29 @@ public class Animal extends DateEntity {
                 .noticeEddt(this.noticeEddt)
                 .noticeStdt(this.noticeStdt)
                 .processState(this.processState)
+                .specialMark(this.specialMark)
                 .region(this.care.getRegion())
                 .type(this.type)
                 .weight(this.weight)
                 .build();
 
         return animalDetailDto;
+    }
+
+
+    //리스트폼 dto
+
+    public ListformDto getListAnimalDto(){
+        ListformDto listformDto = ListformDto.builder()
+                .id(this.id)
+                .type(this.type)
+                .sexCd(this.sexCd)
+                .kindCd(this.kindCd)
+                .region(this.care.getRegion())
+                .noticeEddt(this.noticeEddt)
+                .build();
+
+        return listformDto;
     }
 
 

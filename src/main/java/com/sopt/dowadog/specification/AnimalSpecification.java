@@ -26,6 +26,7 @@ public class AnimalSpecification {
                         Predicate typePredicate =
                                 cb.like(root.get("type").as(String.class),
                                         new StringBuilder(value.toString()).append("%").toString());
+
                         predicates.add(typePredicate);
                         break;
                     case "region":
@@ -65,14 +66,12 @@ public class AnimalSpecification {
                         predicates.add(storyList);
                         break;
 
-                    case "tag" :
-                       /*Predicate tagList =
-                                cb.*/
-
-
 
                 }
+                Predicate temp = cb.greaterThan(root.get("noticeEddt").as(LocalDate.class),LocalDate.now());
+                predicates.add(temp);
             });
+
 
             return cb.and(predicates.toArray(new Predicate[0]));
         };

@@ -23,6 +23,7 @@ public class AnimalDetailDto {
     private LocalDate noticeStdt;
     private LocalDate noticeEddt;
     private String region;
+    private String specialMark;
     private boolean remainDateState;
     private String kindCd;
     private String age;

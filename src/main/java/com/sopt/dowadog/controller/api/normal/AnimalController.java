@@ -23,7 +23,7 @@ public class AnimalController {
     @GetMapping("{animalId}")
     public ResponseEntity readAnimal(@PathVariable("animalId") final int animalId){
 
-        return new ResponseEntity(animalService.readAnimal(animalId), HttpStatus.OK);
+        return new ResponseEntity(animalService.readAnimal(animalId,"1"), HttpStatus.OK);
 
     }
 
@@ -35,7 +35,7 @@ public class AnimalController {
     public ResponseEntity readEmergencyAnimal(@RequestParam(name="page", defaultValue="0",required=false)int page,
                                               @RequestParam(name="limit", defaultValue="10", required=false)int limit)
     {
-      return new ResponseEntity(animalService.readEmergencyAnimal(page,limit),HttpStatus.OK);
+      return new ResponseEntity(animalService.readEmergencyAnimal(page,limit,"1"),HttpStatus.OK);
     }
 
 
@@ -46,7 +46,7 @@ public class AnimalController {
                                            @RequestParam(name="limit", defaultValue="10", required=false)int limit ){
 
 
-        return new ResponseEntity(animalService.readAnimal(filterDto,page,limit),HttpStatus.OK);
+        return new ResponseEntity(animalService.readAnimal(filterDto,page,limit,"1"),HttpStatus.OK);
     }
 
     //해쉬태그에 대한 검색
@@ -56,12 +56,13 @@ public class AnimalController {
                                             @RequestParam(name="limit", defaultValue="10", required=false)int limit ){
 
 
-        return new ResponseEntity(animalService.readHashtagAnimalList(tag,page,limit),HttpStatus.OK);
+        return new ResponseEntity(animalService.readHashtagAnimalList(tag,page,limit,"1"),HttpStatus.OK);
     }
+
     // 좋아요 기능
     //todo 토큰이 들어가면, 유저인덱스 넣는 부분
     @PostMapping("{animalId}/likes")
     public ResponseEntity createUserLike(@PathVariable("animalId") final int animalId){
-        return new ResponseEntity(animalService.createUserAnimalLike(animalId),HttpStatus.OK);
+        return new ResponseEntity(animalService.createUserAnimalLike("1",animalId),HttpStatus.OK);
     }
 }
