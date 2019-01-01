@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("api/user")
@@ -16,13 +17,6 @@ public class UserController {
 
     @Autowired
     UserService userService;
-
-    @PostMapping
-    public ResponseEntity createUser(User user) {
-        System.out.println(user.toString());
-        return new ResponseEntity(userService.createUser(user), HttpStatus.OK);
-
-    }
 
     @GetMapping
     public ResponseEntity readAllUserList() {
