@@ -39,7 +39,7 @@ public class JwtService {
 
     private static final DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
-    public DefaultRes createJwtToken(LoginReq loginReq) {
+    public DefaultRes generateToken(LoginReq loginReq) {
         if (authService.loginCheck(loginReq)) {
             long nowTime = System.currentTimeMillis() / 1000;
 
