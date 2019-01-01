@@ -24,8 +24,8 @@ public class AnimalStory extends DateEntity {
     private int id;
 
 
+    @JsonIgnore // 다시 한번 생각해봐야함.
     @ManyToOne
-    @JsonBackReference
     private Animal animal;
 
     private String filePath;
