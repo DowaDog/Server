@@ -19,8 +19,8 @@ public class AnimalCheckup {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String inoculation; // code 테이블것 사용할예정
+    private String inoculation; // code 테이블것 사용할예정 접종한것의 이름
 
     @ManyToOne
-    AnimalUserAbort animalUserAbort;
+    AnimalUserAdopt animalUserAdopt; //입양동물 정보
 }

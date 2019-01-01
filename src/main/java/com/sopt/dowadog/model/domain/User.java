@@ -84,7 +84,15 @@ public class User extends DateEntity {
     }
 
 
+    //todo 태경 추가 코드 확인 필요 : @ 26살 성찬쓰
 
+    @OneToMany(mappedBy="user")  //즉시로딩인것 같아서 fetch 값 설정 안함
+    private List<AnimalUserAdopt> animalUserAdoptList = new ArrayList<>();
+
+    @JsonIgnore //사용자 입양 동물중 리스트 최신 제일 위에 있는 동물의 이름
+
+    public String getUserAdoptAnimalName() {return this.animalUserAdoptList.get(animalUserAdoptList.size()-1).getName();}
+//animaluser의 필드값을 가져와야한다.
 
 
 }
