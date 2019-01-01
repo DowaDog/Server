@@ -7,6 +7,9 @@
 application.properties
 *.log
 
+### SSL ###
+*.p12
+
 ### STS ###
 .apt_generated
 .classpath
