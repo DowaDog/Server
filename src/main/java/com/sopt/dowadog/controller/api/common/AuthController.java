@@ -1,4 +1,4 @@
-package com.sopt.dowadog.controller.api;
+package com.sopt.dowadog.controller.api.common;
 
 import com.sopt.dowadog.model.common.LoginReq;
 import com.sopt.dowadog.service.AuthService;

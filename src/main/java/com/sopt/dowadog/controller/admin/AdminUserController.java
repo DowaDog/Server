@@ -1,4 +1,4 @@
-package com.sopt.dowadog.controller.api;
+package com.sopt.dowadog.controller.admin;
 
 import com.sopt.dowadog.model.domain.User;
 import com.sopt.dowadog.service.UserService;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("api/user")
-public class UserController {
+public class AdminUserController {
 
     @Autowired
     UserService userService;

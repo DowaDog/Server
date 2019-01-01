@@ -1,4 +1,4 @@
-package com.sopt.dowadog.controller.api;
+package com.sopt.dowadog.controller.api.common;
 
 import com.sopt.dowadog.model.domain.User;
 import com.sopt.dowadog.repository.UserRepository;
