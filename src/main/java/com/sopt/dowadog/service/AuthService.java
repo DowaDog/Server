@@ -6,29 +6,38 @@ import com.sopt.dowadog.model.domain.User;
 import com.sopt.dowadog.repository.UserRepository;
 import com.sopt.dowadog.util.ResponseMessage;
 import com.sopt.dowadog.util.StatusCode;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class AuthService {
 
     private final UserRepository userRepository;
 
-    private final JwtService jwtService;
+
 
     public AuthService(final UserRepository userRepository, JwtService jwtService) {
         this.userRepository = userRepository;
-        this.jwtService = jwtService;
     }
 
-    public DefaultRes<JwtService.TokenRes> login(final LoginReq loginReq) {
-        final User user = userRepository.findByIdAndPassword(loginReq.getId(), loginReq.getPassword());
+    public boolean loginCheck(LoginReq loginReq) {
+//        String hashedPassword = DigestUtils.sha256Hex(loginReq.getPassword());
+        String hashedPassword = loginReq.getPassword();
+        final User user = userRepository.findByIdAndPassword(loginReq.getId(), hashedPassword);
 
-        if (user != null) {
-            //토큰 생성
-            final JwtService.TokenRes tokenDto = new JwtService.TokenRes(jwtService.create(user.getId()));
-            return DefaultRes.res(StatusCode.OK, ResponseMessage.LOGIN_SUCCESS, tokenDto);
+        if (user != null) return true;
+
+        return false;
+    }
+
+    public boolean idCheck(String userId) {
+
+        if(userRepository.findById(userId).isPresent()) {
+            return true;
         }
-
-        return DefaultRes.res(StatusCode.BAD_REQUEST, ResponseMessage.LOGIN_FAIL);
+        return false;
     }
+
 }

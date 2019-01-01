@@ -21,9 +21,7 @@ public class User extends DateEntity {
 
     @Id
     private String id;
-
     private String password;
-    private String nickname;
     private String name;
     private String birth;
     private String phone;
@@ -82,7 +80,6 @@ public class User extends DateEntity {
         }
         return false;
     }
-
 
     //todo 태경 추가 코드 확인 필요 : @ 26살 성찬쓰
 

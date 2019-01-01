@@ -1,4 +1,4 @@
-package com.sopt.dowadog.controller.api;
+package com.sopt.dowadog.controller.api.normal;
 
 import com.sopt.dowadog.annotation.Auth;
 import com.sopt.dowadog.model.domain.User;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
-@RequestMapping("api/cardnews")
+@RequestMapping("api/normal/cardnews")
 @Controller
 public class CardnewsController {
 
@@ -69,13 +69,13 @@ public class CardnewsController {
     public ResponseEntity createComplete(@PathVariable("cardnewsId")int cardnewsId){
         final String jwt = httpServletRequest.getHeader(AUTHORIZATION);
 
-        final JwtService.Token token = jwtService.decode(jwt);
+//        final jwtService.decode(jwt);
 
         //todo User 정보에서 type 가져와야함
         User user = new User();
         user.setId("Rdd");
 
-        token.getUser_idx();
+//        token.getUser_idx();
         //todo userService에서 type받아서 educatedCardnews List에 채워서 반환하는 메소드 만들어야댐
         //     지금은 빈메소드인 상태!!
         return new ResponseEntity(HttpStatus.OK);

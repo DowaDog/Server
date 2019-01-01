@@ -11,12 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("api/cardnews")
+@RequestMapping("api/admin/cardnews")
 @Controller
 @Verify
 public class AdminCardnewsController {
@@ -27,6 +24,31 @@ public class AdminCardnewsController {
     AdminCardnewsService adminCardnewsService;
     @Autowired
     CardnewsContentsService cardnewsContentsService;
+
+    //카드뉴스 교육 조회
+    @GetMapping("education")
+    public ResponseEntity readCardnewsEducationList(){
+
+        //todo 교육 이수 완료 정보 줘야댐
+        return new ResponseEntity(adminCardnewsService.readCardnewsEducationList(), HttpStatus.OK);
+    }
+
+    //카드뉴스 상식 조회
+    @GetMapping("knowledge")
+    public ResponseEntity  readCardnewsKnowledgeList(@RequestParam(name="page", defaultValue="0",required = false)int page,
+                                                     @RequestParam(name="limit", defaultValue = "10", required=false)int limit){
+
+        return new ResponseEntity(adminCardnewsService.readCardnewsKnowledgeList(page,limit), HttpStatus.OK);
+    }
+
+    //카드뉴스 컨텐츠 상세보기
+    @GetMapping("{cardnewsId}/contents")
+    public ResponseEntity readAllCardnewsContentsList(@PathVariable("cardnewsId")int cardnewsId,
+                                                      @RequestParam(name="page", defaultValue="0",required = false)int page,
+                                                      @RequestParam(name="limit",defaultValue = "10", required=false)int limit){
+
+        return new ResponseEntity(adminCardnewsService.readAllCardnewsContentsList(cardnewsId),HttpStatus.OK);
+    }
 
     //카드뉴스 대분류 작성
     @PostMapping

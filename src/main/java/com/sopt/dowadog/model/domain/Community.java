@@ -33,7 +33,7 @@ public class Community extends DateEntity {
     @Column(columnDefinition = "TEXT")
     private String detail;
 
-    @OneToMany(mappedBy="community", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy="community", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<CommunityImg> communityImgList;
 
     @ManyToOne

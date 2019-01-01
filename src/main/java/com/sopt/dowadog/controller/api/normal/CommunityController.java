@@ -1,4 +1,4 @@
-package com.sopt.dowadog.controller.api;
+package com.sopt.dowadog.controller.api.normal;
 
 import com.sopt.dowadog.model.domain.Community;
 import com.sopt.dowadog.model.domain.CommunityComment;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
-@RequestMapping("api/community")
+@RequestMapping("api/normal/community")
 @Controller
 public class CommunityController {
 

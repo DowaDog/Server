@@ -1,15 +1,26 @@
 package com.sopt.dowadog.service;
 
 import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.sopt.dowadog.enumeration.JwtExpireTermEnum;
+import com.sopt.dowadog.model.common.DefaultRes;
+import com.sopt.dowadog.model.common.JwtToken;
+import com.sopt.dowadog.model.common.LoginReq;
+import com.sopt.dowadog.model.common.Token;
+import com.sopt.dowadog.repository.UserRepository;
+import com.sopt.dowadog.util.ResponseMessage;
+import com.sopt.dowadog.util.StatusCode;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Slf4j
 @Service
@@ -20,77 +31,85 @@ public class JwtService {
     @Value("${JWT.SECRET}")
     private String SECRET;
 
-    public String create(final String id) {
-        try {
+    @Autowired
+    UserRepository userRepository;
 
-            return JWT.create()
-                    .withIssuer(ISSUER)
-                    .withClaim("user_id", id)
-                    .sign(Algorithm.HMAC256(SECRET));
+    @Autowired
+    AuthService authService;
 
-            //토큰 생성 빌더 객체 생성
+    private static final DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
-        } catch (JWTCreationException JwtCreationException) {
-            log.info(JwtCreationException.getMessage());
+    public DefaultRes createJwtToken(LoginReq loginReq) {
+        if (authService.loginCheck(loginReq)) {
+            long nowTime = System.currentTimeMillis() / 1000;
+
+            Token accessToken = createToken(loginReq.getId(), JwtExpireTermEnum.ACCESS, nowTime);
+            Token refreshToken = createToken(loginReq.getId(), JwtExpireTermEnum.REFRESH, nowTime);
+            JwtToken jwtToken = new JwtToken(accessToken, refreshToken);
+            return DefaultRes.res(StatusCode.CREATED, ResponseMessage.LOGIN_SUCCESS, jwtToken);
+
+        } else {
+            return DefaultRes.res(StatusCode.BAD_REQUEST, ResponseMessage.LOGIN_FAIL);
         }
-        return null;
     }
 
-    public Token decode(final String token) {
+    public DefaultRes renewAccessToken(String refreshToken) { //리프레시 토큰이용해서 액세스 토큰 갱신
+        long nowTime = System.currentTimeMillis() / 1000;
 
+        try {
+            String userId = decode(refreshToken);
+
+            if (userId == null) DefaultRes.res(StatusCode.UNAUTHORIZED, ResponseMessage.AUTH_FAIL);
+
+            if (authService.idCheck(userId)) {
+                return DefaultRes.res(StatusCode.CREATED, ResponseMessage.AUTH_SUCCESS, createToken(userId, JwtExpireTermEnum.ACCESS, nowTime));
+            } else {
+                return DefaultRes.res(StatusCode.UNAUTHORIZED, ResponseMessage.AUTH_FAIL);
+            }
+        } catch (Exception e){
+            return DefaultRes.res(StatusCode.UNAUTHORIZED, ResponseMessage.AUTH_FAIL);
+
+        }
+    }
+
+    private Token createToken(String userId, JwtExpireTermEnum type, long nowTime) {
+
+        long expireTime = nowTime + type.getExpireTerm();
+
+
+        Date expireDate = new Date(expireTime * 1000);
+
+        String data = JWT.create()
+                .withExpiresAt(expireDate)
+                .withIssuer(ISSUER)
+                .withClaim("user_id", userId)
+                .sign(Algorithm.HMAC256(SECRET));
+
+
+        return new Token(data, nowTime, expireTime);
+
+    }
+
+
+    public String decode(String token) throws Exception{
         //todo 예외부분 throw 해서 호출부분( AOP 에서 처리하도록 변경 )
         try {
             //토큰 해독 객체 생성
             final JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(SECRET)).withIssuer(ISSUER).build();
             //토큰 검증
             DecodedJWT decodedJWT = jwtVerifier.verify(token);
-            //토큰 payload 반환, 정상적인 토큰이라면 토큰 주인(사용자) 고유 ID, 아니라면 -1
-            return new Token(decodedJWT.getClaim("user_id").asLong().intValue());
+            //토큰 payload 반환, 정상적인 토큰이라면 토큰 주인(사용자) 고유 ID, 아니라면 null
+
+            return decodedJWT.getClaim("user_id").asString();
+
         } catch (JWTVerificationException jve) {
             log.error(jve.getMessage());
         } catch (Exception e) {
             log.error(e.getMessage());
         }
-        return new Token();
+
+        return null;
     }
 
-
-    public static class Token {
-        //토큰에 담길 정보 필드
-        //초기값을 -1로 설정함으로써 로그인 실패시 -1반환
-        private int user_idx = -1;
-
-        public Token() {
-        }
-
-        public Token(final int user_idx) {
-            this.user_idx = user_idx;
-        }
-
-        public int getUser_idx() {
-            return user_idx;
-        }
-    }
-
-    //반환될 토큰Res
-    public static class TokenRes {
-        //실제 토큰
-        private String token;
-
-        public TokenRes() {
-        }
-
-        public TokenRes(final String token) {
-            this.token = token;
-        }
-
-        public String getToken() {
-            return token;
-        }
-
-        public void setToken(String token) {
-            this.token = token;
-        }
-    }
 
 }

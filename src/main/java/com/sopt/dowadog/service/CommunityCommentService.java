@@ -31,13 +31,14 @@ public class CommunityCommentService {
 
     public DefaultRes<List<CommunityComment>> readCommunityCommentList(int communityId){
 
-        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_COMMENT, communityCommentRepository.findByCommunityIdOrderByCreatedAtDesc(communityId));
+        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_COMMENT, communityCommentRepository.findByCommunityId(communityId));
     }
 
     public DefaultRes<CommunityComment> updateCommunityComment(CommunityComment modifiedCommunityComment, int communityId){
 
         CommunityComment communityComment = communityCommentRepository.getOne(communityId);
         communityComment.setDetail(modifiedCommunityComment.getDetail());
+        communityCommentRepository.save(communityComment);
 
         return DefaultRes.res(StatusCode.OK, ResponseMessage.UPDATE_COMMENT, communityComment);
     }

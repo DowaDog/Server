@@ -2,6 +2,7 @@ package com.sopt.dowadog.specification;
 
 import com.sopt.dowadog.enumeration.PublicAnimalTypeEnum;
 import com.sopt.dowadog.model.domain.Animal;
+import com.sopt.dowadog.model.domain.AnimalStory;
 import com.sopt.dowadog.model.domain.PublicAnimal;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
@@ -47,16 +48,26 @@ public class AnimalSpecification {
                         break;
                     case "searchWord":
                         Predicate searchingWord =
-                                cb.like(root.get("care").get("region").as(String.class), new StringBuilder(value.toString()).append("%").toString());
+                                cb.like(root.get("care").get("region").as(String.class), new StringBuilder("%").append(value.toString()).append("%").toString());
                         Predicate searchingWord1 =
-                                cb.like(root.get("care").get("name").as(String.class),new StringBuilder(value.toString()).append("%").toString());
+                                cb.like(root.get("care").get("name").as(String.class),new StringBuilder("%").append(value.toString()).append("%").toString());
                         Predicate searchingWord2 =
-                                cb.like(root.get("kindCd").as(String.class),new StringBuilder(value.toString()).append("%").toString());
-
+                                cb.like(root.get("kindCd").as(String.class),new StringBuilder("%").append(value.toString()).append("%").toString());
 
                         Predicate totalList1 =
-                    cb.or(searchingWord,searchingWord1,searchingWord2);
+                                cb.or(searchingWord,searchingWord1,searchingWord2);
                         predicates.add(totalList1);
+                        break;
+                    case "story":
+
+                        Predicate storyList =
+                                cb.isNotEmpty(root.get("animalStoryList"));
+                        predicates.add(storyList);
+                        break;
+
+                    case "tag" :
+                       /*Predicate tagList =
+                                cb.*/
 
 
 

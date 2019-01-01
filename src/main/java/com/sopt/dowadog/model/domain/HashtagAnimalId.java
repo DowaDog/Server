@@ -6,11 +6,12 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.util.Objects;
 
+
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserAnimalId implements Serializable {
+public class HashtagAnimalId implements Serializable {
 
-    private String user;
+    private String hashtag;
     private Integer animal;
 
     @Override
@@ -21,14 +22,14 @@ public class UserAnimalId implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        UserAnimalId that = (UserAnimalId) o;
-        return Objects.equals(user, that.user) &&
+        HashtagAnimalId that = (HashtagAnimalId) o;
+        return Objects.equals(hashtag, that.hashtag) &&
                 Objects.equals(animal, that.animal);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(user, animal);
+        return Objects.hash(hashtag, animal);
     }
 }

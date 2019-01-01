@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface CardnewsRepository extends JpaRepository<Cardnews, Integer>, PagingAndSortingRepository<Cardnews,Integer> {
-    List<Cardnews> findByType(String type);
-    List<Cardnews> findByType(String type, Pageable pagable);
+    List<Cardnews> findByTypeOrderByCreatedAtDesc(String type);
+    List<Cardnews> findByTypeOrderByCreatedAtDesc(String type, Pageable pagable);
 }
