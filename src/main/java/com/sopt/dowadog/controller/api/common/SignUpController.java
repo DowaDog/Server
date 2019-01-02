@@ -27,12 +27,14 @@ public class SignUpController {
         return new ResponseEntity(signUpService.duplicateUserId(id), HttpStatus.OK);
     }
 
+    //Email 중복체크
     @GetMapping("duplicateEmail")
     public ResponseEntity duplicateUserEmail(@RequestBody String email){
 
         return new ResponseEntity(signUpService.duplicateUserEmail(email), HttpStatus.OK);
     }
 
+    //회원가입
     @PostMapping
     public ResponseEntity createUser(User user) {
 

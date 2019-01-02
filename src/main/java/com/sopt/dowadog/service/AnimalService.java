@@ -39,7 +39,7 @@ public class AnimalService {
 
 
 
-@Value("${cloud.aws.endpointUrl}")
+@Value("${cloud.aws.endpoint}")
 private String defaultUrl;
 
 
@@ -86,7 +86,7 @@ private String defaultUrl;
 
 
     //디데이가 15일 이내인지 아닌지에 대한 여부 메소드 구현
-    private boolean getDdayState(final LocalDate noticeEddt){
+    public boolean getDdayState(final LocalDate noticeEddt){
         Period period = Period.between(LocalDate.now(),noticeEddt);
 
         if(period.getYears()==0 && period.getMonths() ==0 && period.getDays()>=1 && period.getDays()<=15){

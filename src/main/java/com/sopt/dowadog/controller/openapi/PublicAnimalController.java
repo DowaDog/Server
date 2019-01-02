@@ -1,6 +1,7 @@
 package com.sopt.dowadog.controller.openapi;
 
 import com.sopt.dowadog.model.dto.PublicAnimalSearchDto;
+import com.sopt.dowadog.scheduler.PublicAnimalScheduler;
 import com.sopt.dowadog.service.PublicAnimalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -21,12 +22,16 @@ public class PublicAnimalController {
     @Autowired
     private PublicAnimalService publicAnimalService;
 
+
+
+
+
     @GetMapping
     public ResponseEntity readPublicAnimalList(@ModelAttribute PublicAnimalSearchDto search,
                                                @RequestParam(name="page", defaultValue="0",required=false)int page,
                                                @RequestParam(name="limit", defaultValue="10", required=false)int limit) {
 
-        return new ResponseEntity(publicAnimalService.readPublicAnimalList(search, page, limit), HttpStatus.OK);
+        return new ResponseEntity(publicAnimalService.readPublicAnimalList(search, page, limit,"1"), HttpStatus.OK);
     }
 
 }
