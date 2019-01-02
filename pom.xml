@@ -53,18 +53,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
-        <!--phone certification-->
-        <dependency>
-            <groupId> com.twilio.sdk </ groupId>
-            <artifactId> twilio </ artifactId>
-            <version> 7.33.0 </ version>
-        </ dependency>
-        <dependency>
-            <groupId>com.authy</groupId>
-            <artifactId>authy-java</artifactId>
-            <version>1.5.0</version>
-        </dependency>
-
 
         <!-- use ehcache -->
         <dependency>
