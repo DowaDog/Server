@@ -1,13 +1,13 @@
 package com.sopt.dowadog.model.domain;
 
 
+import com.sopt.dowadog.model.dto.PublicListformDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Data
@@ -43,5 +43,15 @@ public class PublicAnimal {
     private String popfile;
     private String orgNm;
     private String noticeComment;
+
+    public PublicListformDto getListAnimalDto(){
+        PublicListformDto listformDto = PublicListformDto.builder()
+                .id(this.noticeNo)
+                .sexCd(this.sexCd)
+                .kindCd(this.kindCd)
+                .thumbnailImg(this.popfile)
+                .build();
+        return listformDto;
+    }
 
 }
