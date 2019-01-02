@@ -1,6 +1,7 @@
 package com.sopt.dowadog.model.domain;
 
 
+import com.sopt.dowadog.model.dto.PublicAnimalDetailDto;
 import com.sopt.dowadog.model.dto.PublicListformDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,6 +17,9 @@ import javax.persistence.*;
 @AllArgsConstructor
 public class PublicAnimal {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
     private String noticeNo;
 
     private String age;
@@ -44,14 +48,34 @@ public class PublicAnimal {
     private String orgNm;
     private String noticeComment;
 
+    //동물 리스트 메소드
     public PublicListformDto getListAnimalDto(){
         PublicListformDto listformDto = PublicListformDto.builder()
-                .id(this.noticeNo)
+                .id(this.id)
+                .noticeNo(this.noticeNo)
                 .sexCd(this.sexCd)
                 .kindCd(this.kindCd)
                 .thumbnailImg(this.popfile)
                 .build();
         return listformDto;
+    }
+
+    //상세보기 메소드
+    public PublicAnimalDetailDto getPublicAnimalDetailDto(){
+        PublicAnimalDetailDto publicAnimalDetailDto = PublicAnimalDetailDto.builder()
+                .id(this.id)
+                .weight(this.weight)
+                .age(this.age)
+                .careName(this.careNm)
+                .careTel(this.careTel)
+                .noticeNo(this.noticeNo)
+                .happenPlace(this.happenPlace)
+                .processState(this.processState)
+                .sexCd(this.sexCd)
+                .specialMark(this.specialMark)
+                .thumbnailImg(this.popfile)
+                .build();
+        return publicAnimalDetailDto;
     }
 
 }

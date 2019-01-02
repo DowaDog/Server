@@ -8,15 +8,12 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 
 @Cacheable("snapshotData")
 @Controller
-@RequestMapping("openapi/animal")
+@RequestMapping("openapi/animals")
 public class PublicAnimalController {
 
     @Autowired
@@ -29,9 +26,19 @@ public class PublicAnimalController {
     @GetMapping
     public ResponseEntity readPublicAnimalList(@ModelAttribute PublicAnimalSearchDto search,
                                                @RequestParam(name="page", defaultValue="0",required=false)int page,
-                                               @RequestParam(name="limit", defaultValue="10", required=false)int limit) {
+                                               @RequestParam(name="limit", defaultValue="10", required=false)int limit
+                                              ) {
+
+
 
         return new ResponseEntity(publicAnimalService.readPublicAnimalList(search, page, limit,"1"), HttpStatus.OK);
+
+
+    }
+
+    @GetMapping("/{animalId}")
+    public ResponseEntity readPublicAnimalDetail(@PathVariable(name = "animalId") final int animalId){
+        return new ResponseEntity(publicAnimalService.readPublicAnimal("1",animalId),HttpStatus.OK);
     }
 
 }

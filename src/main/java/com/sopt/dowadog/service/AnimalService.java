@@ -131,7 +131,15 @@ private String defaultUrl;
     public DefaultRes<AnimalDetailDto> readAnimal(final int animalId, final String userIdx){
 
 
-        Animal animal = animalRepository.findById(animalId).get();
+
+        Optional<Animal> animalTemp = animalRepository.findById(animalId);
+        if(!animalTemp.isPresent()){
+            return DefaultRes.res(StatusCode.NO_CONTENT,ResponseMessage.NOT_FOUND_ANIMAL);
+
+        }
+
+        Animal animal = animalTemp.get();
+
 
 
 
