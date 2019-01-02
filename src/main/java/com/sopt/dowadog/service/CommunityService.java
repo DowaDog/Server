@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CommunityService {
@@ -45,7 +46,7 @@ public class CommunityService {
         List<MultipartFile> communityImgFileList = community.getCommunityImgFiles();
         List<CommunityImg> communityImgList = new ArrayList();
 
-        if(community.getCommunityImgFiles() != null) {
+        if (community.getCommunityImgFiles() != null) {
             for (MultipartFile imgFile : communityImgFileList) {
 
                 String filePath = new StringBuilder(baseDir).
@@ -68,12 +69,12 @@ public class CommunityService {
         }
 
 
-
         return DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_COMMUNITY, communityRepository.save(community));
     }
 
-    public DefaultRes<CommunityListDto> readCommunityList(User user, int page, int limit){
+    public DefaultRes<CommunityListDto> readCommunityList(User user, int page, int limit) {
         Pageable pageable = PageRequest.of(page, limit, Sort.Direction.DESC, "createdAt");
+
 
         // 레파지토리에서 페이지 객체로 가져옴
         Page<Community> communityPage = communityRepository.findAll(pageable);
@@ -86,9 +87,11 @@ public class CommunityService {
         List<CommunityDto> communityDtoList = new ArrayList<>();
 
         //레파지토리 객체값들 복사
-        for(Community community : communityList) {
+        for (Community community : communityList) {
             CommunityDto communityDto = community.getCommunityDto();
-            communityDto.setAuth(community.getAuth(user.getId()));
+
+            //
+            if (user != null) communityDto.setAuth(community.getAuth(user.getId()));
 
             communityDtoList.add(communityDto);
 
@@ -96,34 +99,66 @@ public class CommunityService {
 
         //리턴할 데이터 빌더
         CommunityListDto communityListDto = CommunityListDto.builder()
-                                                .pageable(paging)
-                                                .content(communityDtoList)
-                                                .build();
+                .pageable(paging)
+                .content(communityDtoList)
+                .build();
 
         return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_COMMUNITY, communityListDto);
     }
 
-    public DefaultRes<Community> readCommunityById(int communityId){
-        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_COMMUNITY, communityRepository.findById(communityId).get());
+    public DefaultRes<CommunityDto> readCommunityById(User user, int communityId) {
+
+        if (communityRepository.findById(communityId).isPresent()) {
+            Community community = communityRepository.findById(communityId).get();
+            CommunityDto communityDto = community.getCommunityDto();
+            if (user != null) communityDto.setAuth(community.getAuth(user.getId()));
+
+            return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_COMMUNITY, communityDto);
+        } else {
+            return DefaultRes.res(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_COMMUNITY);
+        }
+
+
     }
 
-    public DefaultRes<Community> updateCommunityById(Community modifiedCommunity, int communityId){
+    public DefaultRes<Community> updateCommunityById(User user, Community modifiedCommunity, int communityId) {
 
-        Community community = communityRepository.getOne(communityId);
+        if (!communityRepository.findById(communityId).isPresent()) {
+            return DefaultRes.res(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_COMMUNITY);
+        }
 
-        community.setTitle(modifiedCommunity.getTitle());
-        community.setDetail(modifiedCommunity.getDetail());
+        Community community = communityRepository.findById(communityId).get();
 
-        communityRepository.save(community);
+        if (checkAuth(user.getId(), community.getUser().getId())) {
+            community.setTitle(modifiedCommunity.getTitle());
+            community.setDetail(modifiedCommunity.getDetail());
 
-        return DefaultRes.res(StatusCode.OK, ResponseMessage.UPDATE_COMMUNITY, communityRepository.findById(communityId).get());
+
+            return DefaultRes.res(StatusCode.OK, ResponseMessage.UPDATE_COMMUNITY, communityRepository.save(community));
+        }
+
+        return DefaultRes.UNAUTHORIZATION;
     }
 
-    public DefaultRes<Community> deleteCommunityById(int communityId){
+    public DefaultRes deleteCommunityById(User user, int communityId) {
 
-        communityRepository.deleteById(communityId);
-        return DefaultRes.res(StatusCode.OK, ResponseMessage.DELETE_COMMUNITY);
+        if (!communityRepository.findById(communityId).isPresent()) {
+            return DefaultRes.res(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_COMMUNITY);
+        }
+
+        Community community = communityRepository.findById(communityId).get();
+
+        if (checkAuth(user.getId(), community.getUser().getId())) {
+            communityRepository.deleteById(communityId);
+            return DefaultRes.res(StatusCode.OK, ResponseMessage.DELETE_COMMUNITY);
+        }
+        return DefaultRes.UNAUTHORIZATION;
     }
+
+    private boolean checkAuth(final String loginUserId, final String userId) {
+        return loginUserId.equals(userId);
+    }
+
 
 
 }

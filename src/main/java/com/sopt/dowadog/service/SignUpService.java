@@ -28,7 +28,7 @@ public class SignUpService {
 
     //회원가입
     @Transactional
-    public DefaultRes<User> createUser(User user) {
+    public DefaultRes<User> newUser(User user) {
 
         MultipartFile profileImgFile = user.getProfileImgFile();
 
