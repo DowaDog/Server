@@ -106,7 +106,7 @@ public class PublicAnimalService {
 
     //상세보기 구현
 
-    public DefaultRes<Animal>
+    //public DefaultRes<Animal>
 
 
 }
