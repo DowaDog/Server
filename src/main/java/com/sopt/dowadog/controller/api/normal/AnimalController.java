@@ -1,8 +1,12 @@
 package com.sopt.dowadog.controller.api.normal;
 
 
+import com.sopt.dowadog.model.common.DefaultRes;
+import com.sopt.dowadog.model.domain.User;
 import com.sopt.dowadog.model.dto.FilterDto;
 import com.sopt.dowadog.service.AnimalService;
+import com.sopt.dowadog.service.JwtService;
+import com.sopt.dowadog.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,18 +22,36 @@ public class AnimalController {
     @Autowired
     AnimalService animalService;
 
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    JwtService jwtService;
+
 
     //유기동물 상세 조회
     @GetMapping("{animalId}")
-    public ResponseEntity readAnimal(@PathVariable("animalId") final int animalId){
+    public ResponseEntity readAnimal(@RequestHeader(value = "Authorization", required = false) final String jwtToken,
+            @PathVariable("animalId") final int animalId){
+        try{
+            User user = null;
+            if(jwtToken!=null){
+                user = userService.getUserByJwtToken(jwtToken);
+            }
 
-        return new ResponseEntity(animalService.readAnimal(animalId,"1"), HttpStatus.OK);
+            return new ResponseEntity(animalService.readAnimal(animalId,user), HttpStatus.OK);
+
+
+        }catch (Exception e){
+
+            return new ResponseEntity<>(DefaultRes.FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
+
+        }
+
+
 
     }
 
-    //@Auth
-    //@PostMapping("/{animalId}/likes")
-    //public ResponseEntity createAnimalLike(@)
 
     @GetMapping("emergency")
     public ResponseEntity readEmergencyAnimal(@RequestParam(name="page", defaultValue="0",required=false)int page,

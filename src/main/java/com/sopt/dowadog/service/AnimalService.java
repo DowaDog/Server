@@ -122,13 +122,31 @@ private String defaultUrl;
 
     }
 
+    // 토큰 null 일 때 좋아요(게스트) 처리
+    private boolean getLikedForGuest (final User user,final int animalId){
+        boolean stateLike;
+
+        if(user==null){
+
+            stateLike = false;
+
+
+        }else{
+            stateLike = getUserLikeState(user.getId(),animalId);
+
+        }
+
+        return stateLike;
+
+    }
+
 
 
 
 
 //유기동물 상세보기
-    //todo 좋아요 유저 인덱스 하드로 박은 거 말고 구현
-    public DefaultRes<AnimalDetailDto> readAnimal(final int animalId, final String userIdx){
+
+    public DefaultRes<AnimalDetailDto> readAnimal(final int animalId, final User user){
 
 
 
@@ -137,6 +155,8 @@ private String defaultUrl;
             return DefaultRes.res(StatusCode.NO_CONTENT,ResponseMessage.NOT_FOUND_ANIMAL);
 
         }
+
+
 
         Animal animal = animalTemp.get();
 
@@ -161,22 +181,8 @@ private String defaultUrl;
 
         animalDetailDto.setAnimalStoryList(totalStoryList);
         animalDetailDto.setThumbnailImg(getThumnailImg(animal.getThumbnailImg()));
-        //todo 좋아요 하드로 박은 거 없애야 함
-        animalDetailDto.setLiked(getUserLikeState(userIdx,animalId));
+        animalDetailDto.setLiked(getLikedForGuest(user,animalId));
         animalDetailDto.setRemainDateState(getDdayState(animal.getNoticeEddt()));
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_ANIMAL, animalDetailDto);
