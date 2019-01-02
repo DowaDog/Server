@@ -39,7 +39,7 @@ public class AnimalService {
 
 
 
-@Value("${cloud.aws.endpointUrl}")
+@Value("${cloud.aws.endpoint}")
 private String defaultUrl;
 
 
