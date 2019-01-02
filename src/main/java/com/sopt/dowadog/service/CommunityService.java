@@ -49,9 +49,7 @@ public class CommunityService {
         if (community.getCommunityImgFiles() != null) {
             for (MultipartFile imgFile : communityImgFileList) {
 
-                String filePath = new StringBuilder(baseDir).
-                        append(S3Util.getUuid()).
-                        append(imgFile.getOriginalFilename()).toString();
+                String filePath = S3Util.getFilePath(baseDir, imgFile);
 
                 fileService.fileUpload(imgFile, filePath); // s3 upload
 

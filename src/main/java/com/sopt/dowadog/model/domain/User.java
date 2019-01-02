@@ -127,5 +127,9 @@ public class User extends DateEntity {
     }
 
 
+    public boolean getAuth(String userId){
+        return userId.equals(this.id);
+    }
+
 }
 

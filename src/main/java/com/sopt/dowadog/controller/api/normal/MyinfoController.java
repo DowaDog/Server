@@ -28,7 +28,13 @@ public class MyinfoController {
     public ResponseEntity readMyinfo(@RequestHeader(value = "Authorization", required = false) String jwtToken) {
         User user = userService.getUserByJwtToken(jwtToken);
         return new ResponseEntity(myinfoService.readMypage(user), HttpStatus.OK);
+    }
 
+    //사람 정보 수정
+    @PutMapping
+    public ResponseEntity updateUserInfo(@RequestHeader(value = "Authorization", required = false) String jwtToken, User modifiedUser) {
+        User user = userService.getUserByJwtToken(jwtToken);
+        return new ResponseEntity(myinfoService.updateUserInfo(user, modifiedUser), HttpStatus.OK);
     }
 
     //내 입양동물 정보 조회
@@ -66,14 +72,7 @@ public class MyinfoController {
         }
     }
 
-    //사람 정보 수정
-//    @PutMapping("user")
-//    public ResponseEntity updateuserinfo(@RequestHeader(value = "Authorization", required = false) String jwtToken) {
-//
-//        User user = userService.getUserByJwtToken(jwtToken);
-//
-//        return new ResponseEntity(myinfoService.updateUserInfoByUserId(user, userId), HttpStatus.OK);
-//    }
+
 
     //좋아요 리스트 조회
     @GetMapping("/likes/animals")

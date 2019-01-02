@@ -27,6 +27,13 @@ public class S3Util {
         return convFile;
     }
 
+    public static String getFilePath(String baseDir, MultipartFile file){
+        return new StringBuilder(baseDir).
+                        append(S3Util.getUuid()).
+                        append(file.getOriginalFilename()).toString();
+
+    }
+
     public static String getUuid() {
         return UUID.randomUUID().toString().replaceAll("-", "");
     }

@@ -8,12 +8,15 @@ import com.sopt.dowadog.repository.MailboxRepository;
 import com.sopt.dowadog.repository.UserRepository;
 import com.sopt.dowadog.util.ResponseMessage;
 
+import com.sopt.dowadog.util.S3Util;
 import com.sopt.dowadog.util.StatusCode;
 import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MyinfoService {
@@ -24,6 +27,11 @@ public class MyinfoService {
     MailboxRepository mailboxRepository;
     @Autowired
     AnimalUserAdoptRepository animalUserAdoptRepository;
+    @Autowired
+    FileService fileService;
+
+    @Value("${uploadpath.myinfo}")
+    private String baseDir;
 
     //todo 우체통 API작성 controller 작성하기 테이블도 구성되야함
 
@@ -39,12 +47,20 @@ public class MyinfoService {
     }
 
     //사용자 정보 수정
-    public DefaultRes updateUserInfoByUserId(User modifiedUser, final String userId){
-        User user = userRepository.getOne(userId);
+    public DefaultRes updateUserInfo(User user, User modifiedUser){
+
+        if(Optional.ofNullable(modifiedUser.getProfileImgFile()).isPresent()) {
+            String filePath = S3Util.getFilePath(baseDir, modifiedUser.getProfileImgFile());
+
+            fileService.fileUpload(modifiedUser.getProfileImgFile(), filePath);
+            user.setProfileImg(filePath);
+        }
+
         user.setName(modifiedUser.getName());
         user.setPhone(modifiedUser.getPhone());
         user.setEmail(modifiedUser.getEmail());
         user.setBirth(modifiedUser.getBirth());
+
         userRepository.save(user);
         return DefaultRes.res(StatusCode.OK, ResponseMessage.UPDATE_MYINFO);
     }
