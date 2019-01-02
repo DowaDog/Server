@@ -18,7 +18,8 @@ public interface AnimalRepository extends JpaRepository<Animal,Integer>, PagingA
 
     @Query("select u from #{#entityName} u where u.noticeEddt > ?1 order by u.noticeEddt ASC")
     Page<Animal> findAllBy(LocalDate localDate, Pageable pageable);
-    //OrderByNoticeEddtAsc(Pageable pageable);
+
+
 
 
     //Page<Animal>

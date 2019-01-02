@@ -52,6 +52,7 @@ public class AuthAop {
 
 
 
+    //조회인데 로그인 필요한경우 사용
     @Pointcut("@annotation(com.sopt.dowadog.annotation.Auth)")
     public void auth() {
     }
