@@ -1,5 +1,6 @@
 package com.sopt.dowadog.model.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sopt.dowadog.model.domain.auditing.DateEntity;
 import lombok.AllArgsConstructor;
@@ -21,6 +22,7 @@ public class Mailbox extends DateEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @JsonIgnore
     @ManyToOne
     private User user;
 
@@ -30,9 +32,6 @@ public class Mailbox extends DateEntity {
     private String imgPath;
     private String type;
     private boolean complete;
-
-
-
 
 
 }

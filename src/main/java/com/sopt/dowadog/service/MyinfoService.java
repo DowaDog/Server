@@ -27,6 +27,8 @@ public class MyinfoService {
     @Autowired
     AnimalService animalService;
     @Autowired
+    CommunityService communityService;
+    @Autowired
     MailboxRepository mailboxRepository;
     @Autowired
     AnimalUserAdoptRepository animalUserAdoptRepository;
@@ -47,9 +49,6 @@ public class MyinfoService {
     //UserID로 정보가져오기
     public DefaultRes<MyinfoDto> readMypage(User user) {
 
-        System.out.println(user.getName());
-        System.out.println(user.isNewMailbox());
-        System.out.println(user.getMyinfoDto().toString());
         MyinfoDto myinfoDto = user.getMyinfoDto();
 
         return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_MYINFO, myinfoDto);
@@ -172,21 +171,28 @@ public class MyinfoService {
     }
 
     //사용자 스크랩 리스트 조회
-    public DefaultRes<List<UserCardnewsScrap>> readClipsListByUserId(int page, int limit, String userId) {
-        User user = userRepository.findById(userId).get();
-
+    public DefaultRes<List<UserCardnewsScrap>> readMyClipsList(User user) {
         return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_USER_SCRAP, user.getUserCardnewsScrapList());
     }
 
     //사용자 작성한 글 리스트 조회
-    public DefaultRes<List<Community>> readCommunityListByUserId(int page, int limit, String userId) {
-        User user = userRepository.findById(userId).get();
+    public DefaultRes<List<CommunityDto>> readMyCommunityList(User user) {
 
-        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_USER_COMMUNITY, user.getCommunityList());
+        List<Community> communityList = user.getCommunityList();
+        List<CommunityDto> communityDtoList = new ArrayList<>();
+
+        for(Community community : communityList) {
+            CommunityDto communityDto = community.getCommunityDto();
+            communityDto = communityService.setCommunityDtoAuthAndProfileImgWithUser(user, community, communityDto);
+            communityDtoList.add(communityDto);
+        }
+
+
+        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_USER_COMMUNITY, communityDtoList);
     }
 
     //우체통 리스트 조회
-    public DefaultRes<List<Mailbox>> readMailboxesUserId(User user) {
+    public DefaultRes<List<Mailbox>> readMailboxes(User user) {
         return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_MAILBOX, user.getMailboxList());
     }
 

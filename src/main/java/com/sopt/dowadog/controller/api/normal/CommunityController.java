@@ -58,7 +58,7 @@ public class CommunityController {
 
     //커뮤니티 글 조회
     @GetMapping("{communityId}")
-    public Object readCommunity
+    public ResponseEntity readCommunity
     (@RequestHeader(value = "Authorization", required = false) final String jwtToken,
      @PathVariable("communityId") int communityId) {
 

@@ -6,6 +6,7 @@ import com.sopt.dowadog.repository.UserRepository;
 import com.sopt.dowadog.util.ResponseMessage;
 import com.sopt.dowadog.util.S3Util;
 import com.sopt.dowadog.util.StatusCode;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,7 @@ public class UserService {
     }
 
 
-    public User getUserByJwtToken(String jwtToken) {
+    public User getUserByJwtToken(String jwtToken) throws Exception {
 
         String userId = jwtService.decode(jwtToken);
 

@@ -33,4 +33,8 @@ public class S3Util {
     public static String getUuid() {
         return UUID.randomUUID().toString().replaceAll("-", "");
     }
+
+    public static String getImgPath(String endPoint, String imgPath) {
+        return new StringBuilder(endPoint).append(imgPath).toString();
+    }
 }

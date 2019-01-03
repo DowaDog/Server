@@ -9,8 +9,10 @@ import com.sopt.dowadog.model.dto.CommunityDto;
 import com.sopt.dowadog.repository.CommunityCommentRepository;
 import com.sopt.dowadog.repository.CommunityRepository;
 import com.sopt.dowadog.util.ResponseMessage;
+import com.sopt.dowadog.util.S3Util;
 import com.sopt.dowadog.util.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -27,6 +29,8 @@ public class CommunityCommentService {
 
     @Autowired
     CommunityRepository communityRepository;
+    @Value("${cloud.aws.endpoint}")
+    private String s3Endpoint;
 
     //todo 여기 검증 제대로-----
 
@@ -53,7 +57,7 @@ public class CommunityCommentService {
         for(CommunityComment communityComment : communityCommentList) {
             CommentDto commentDto = communityComment.getCommentDto();
             if(user != null) commentDto.setAuth(communityComment.getAuth(user.getId()));
-
+            commentDto.setUserProfileImg(S3Util.getImgPath(s3Endpoint, communityComment.getUser().getProfileImg()));
             commentDtoList.add(commentDto);
         }
         return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_COMMENT, commentDtoList);
