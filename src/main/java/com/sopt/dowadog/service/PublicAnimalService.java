@@ -89,6 +89,7 @@ public class PublicAnimalService {
         if (search.getType() != null) filter.put("type", search.getType());
         if (search.getRegion() != null) filter.put("region", search.getRegion());
         if (search.getRemainNoticeDate() != null) filter.put("remainNoticeDate", search.getRemainNoticeDate());
+        if (search.getSearchWord()!= null) filter.put("searchWord",search.getSearchWord());
 
         Page<PublicAnimal> animals = publicAnimalRepository.findAll(PublicAnimalSpecification.searchPublicAnimal(filter), pageable);
         List<PublicAnimal> animalList = animals.getContent();
@@ -151,6 +152,7 @@ public class PublicAnimalService {
 
 
     }
+    //
 
 
 }

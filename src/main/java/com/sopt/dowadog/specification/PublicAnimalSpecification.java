@@ -37,6 +37,17 @@ public class PublicAnimalSpecification {
                                         LocalDate.now().plusDays((int)value));
                         predicates.add(remainDatePredicate);
                         break;
+                    case "searchWord" :
+                        Predicate searchWord1 = cb.like(root.get("careNm").as(String.class),
+                                new StringBuilder("%").append(value.toString()).append("%").toString());
+                        Predicate searchWord2 = cb.like(root.get("orgNm").as(String.class),
+                                new StringBuilder(value.toString()).append("%").toString());
+                        Predicate searchWord3 = cb.like(root.get("kindCd").as(String.class),
+                                new StringBuilder("%").append(value.toString()).append("%").toString());
+                        Predicate resultWord =
+                                cb.or(searchWord1,searchWord2,searchWord3);
+                        predicates.add(resultWord);
+                        break;
                 }
             });
 
