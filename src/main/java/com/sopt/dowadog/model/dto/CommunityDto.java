@@ -24,6 +24,6 @@ public class CommunityDto {
     private String userId;
     private Date createdAt;
     private Date updatedAt;
-    private boolean auth;
+    private boolean auth = false;
 
 }

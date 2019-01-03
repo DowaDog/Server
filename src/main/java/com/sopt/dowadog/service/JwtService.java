@@ -91,7 +91,7 @@ public class JwtService {
     }
 
 
-    public String decode(String token) throws Exception{
+    public String decode(String token) {
         //todo 예외부분 throw 해서 호출부분( AOP 에서 처리하도록 변경 )
         try {
             //토큰 해독 객체 생성

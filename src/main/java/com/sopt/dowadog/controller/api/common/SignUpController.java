@@ -35,10 +35,10 @@ public class SignUpController {
     }
 
     //회원가입
-    @PostMapping()
+    @PostMapping
     public ResponseEntity createUser(User user) {
 
-        return new ResponseEntity(signUpService.createUser(user), HttpStatus.OK);
+        return new ResponseEntity(signUpService.newUser(user), HttpStatus.OK);
     }
 
 //    @PostMapping("certification")

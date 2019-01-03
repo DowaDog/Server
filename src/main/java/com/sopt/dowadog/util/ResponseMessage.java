@@ -8,6 +8,8 @@ public class ResponseMessage {
     public static final String AUTH_FAIL = "인증 실패";
     public static final String AUTH_SUCCESS = "인증 성공";
 
+    public static final String NOT_FOUND = "조회 실패";
+
     //Signup
     public static final String READ_USER = "회원 정보 조회 성공";
     public static final String ABLE_USER = "id 생성 가능";

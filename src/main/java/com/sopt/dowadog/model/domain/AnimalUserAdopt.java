@@ -1,5 +1,6 @@
 package com.sopt.dowadog.model.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,19 +26,28 @@ public class AnimalUserAdopt {
     private String kind;
     @Temporal(TemporalType.DATE)
     private Date birth;
-    private int weight;
+    private String weight;
     private boolean neuterYn;
 
     private String adoptType; // 임보, 입양 만약 입보상태에서 같은 animal이 임양상태의 값으로 생성되면 삭제되어야함. 그리고 해당 유저한테 메시지 가도록 처리되야할듯.
 
+
     @OneToMany(mappedBy="animalUserAdopt", fetch = FetchType.LAZY)
     private List<AnimalCheckup> animalCheckupList;
 
+    @JsonIgnore
     @ManyToOne
     private User user;
 
+    @JsonIgnore
     @OneToOne
     private Registration registration;
+
+    @JsonIgnore
+    public boolean getAuth(String userId){
+        return userId.equals(this.user.getId());
+    }
+
 
 
 }

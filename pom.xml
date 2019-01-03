@@ -53,7 +53,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
-
         <!-- use ehcache -->
         <dependency>
             <groupId>net.sf.ehcache</groupId>

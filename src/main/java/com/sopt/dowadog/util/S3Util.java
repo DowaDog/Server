@@ -20,11 +20,14 @@ public class S3Util {
 
     public static File convert(MultipartFile file) throws IOException {
         File convFile = new File(file.getOriginalFilename());
-        convFile.createNewFile();
-        FileOutputStream fos = new FileOutputStream(convFile);
-        fos.write(file.getBytes());
-        fos.close();
         return convFile;
+    }
+
+    public static String getFilePath(String baseDir, MultipartFile file){
+        return new StringBuilder(baseDir).
+                        append(S3Util.getUuid()).
+                        append(file.getOriginalFilename()).toString();
+
     }
 
     public static String getUuid() {

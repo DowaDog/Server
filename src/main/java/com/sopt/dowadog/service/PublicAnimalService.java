@@ -60,6 +60,20 @@ public class PublicAnimalService {
 
 
     }
+    //몸무게 처리 함수
+    private String getWeigth(final String weight){
+        String temp = weight.replaceAll("\\(K","k");
+
+        return temp.replaceAll("\\)","");
+    }
+
+    //나이 처리 함수
+    private String getAge(final String age){
+
+        String temp = age.replaceAll("\\(","");
+        return temp.replaceAll("\\)","");
+    }
+
 
 
     //todo 캐시적용 해야함 ( 스케줄링타이밍동안 문제 없도록 신경써야함 )
@@ -79,7 +93,6 @@ public class PublicAnimalService {
         List<PublicAnimal> animalList = animals.getContent();
 
 
-
         for(PublicAnimal temp : animalList){
             PublicListformDto publicListformDto = temp.getListAnimalDto();
             publicListformDto.setNoticeEddt(getDate(temp.getNoticeEdt()));
@@ -90,7 +103,7 @@ public class PublicAnimalService {
 
             listform.add(publicListformDto);
         }
-
+        System.out.print(listform.size());
 
 
 
@@ -106,7 +119,38 @@ public class PublicAnimalService {
 
     //상세보기 구현
 
-    //public DefaultRes<Animal>
+    public DefaultRes<PublicAnimalDetailDto> readPublicAnimal(final String userId, final int animalId){
+
+        Optional<PublicAnimal> publicAnimal  = publicAnimalRepository.findById(animalId);
+
+        PublicAnimal publicAnimalObject = publicAnimal.get();
+
+        System.out.print(publicAnimalObject);
+
+        if(!publicAnimal.isPresent()){
+            return DefaultRes.res(StatusCode.NO_CONTENT, ResponseMessage.NOT_FOUND_ANIMAL);
+        }
+        System.out.print(getTypeAndKind(publicAnimalObject.getKindCd()).size());
+
+        //getTypeAndKind(publicAnimalObject.getKindCd()).get(0)
+        PublicAnimalDetailDto publicAnimalDetailDto = publicAnimalObject.getPublicAnimalDetailDto();
+        publicAnimalDetailDto.setType(getTypeAndKind(publicAnimalObject.getKindCd()).get(0));
+        publicAnimalDetailDto.setKindCd(getTypeAndKind(publicAnimalObject.getKindCd()).get(1));
+        publicAnimalDetailDto.setNoticeStdt(getDate(publicAnimalObject.getNoticeSdt()));
+        publicAnimalDetailDto.setNoticeEddt(getDate(publicAnimalObject.getNoticeEdt()));
+        publicAnimalDetailDto.setRegion(getRegion(publicAnimalObject.getNoticeNo()));
+        publicAnimalDetailDto.setAge(getAge(publicAnimalObject.getAge()));
+        publicAnimalDetailDto.setWeight(getWeigth(publicAnimalObject.getWeight()));
+
+
+
+
+        publicAnimalDetailDto.setRemainDateState(animalService.getDdayState(getDate(publicAnimalObject.getNoticeEdt())));
+
+        return DefaultRes.res(StatusCode.OK,ResponseMessage.READ_ANIMAL,publicAnimalDetailDto);
+
+
+    }
 
 
 }

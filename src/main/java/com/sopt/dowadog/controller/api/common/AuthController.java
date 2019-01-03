@@ -1,7 +1,6 @@
 package com.sopt.dowadog.controller.api.common;
 
 import com.sopt.dowadog.model.common.LoginReq;
-import com.sopt.dowadog.service.AuthService;
 import com.sopt.dowadog.service.JwtService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class AuthController {
 
-    @Autowired
-    AuthService authService;
 
     @Autowired
     JwtService jwtService;
