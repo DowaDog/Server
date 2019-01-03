@@ -11,6 +11,7 @@ import com.sopt.dowadog.repository.CommunityRepository;
 import com.sopt.dowadog.util.ResponseMessage;
 import com.sopt.dowadog.util.S3Util;
 import com.sopt.dowadog.util.StatusCode;
+import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -107,6 +108,8 @@ public class CommunityService {
         return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_COMMUNITY, communityRepository.findById(communityId).get());
     }
 
+
+
     public DefaultRes<Community> updateCommunityById(Community modifiedCommunity, int communityId){
 
         Community community = communityRepository.getOne(communityId);
@@ -117,6 +120,11 @@ public class CommunityService {
         communityRepository.save(community);
 
         return DefaultRes.res(StatusCode.OK, ResponseMessage.UPDATE_COMMUNITY, communityRepository.findById(communityId).get());
+    }
+
+    public DefaultRes<CommunityImg> deleteCommunityImgById(int communityImgId){
+        communityImgRepository.deleteById(communityImgId);
+        return DefaultRes.res(StatusCode.OK, ResponseMessage.DELETE_COMMUNITYIMG);
     }
 
     public DefaultRes<Community> deleteCommunityById(int communityId){
