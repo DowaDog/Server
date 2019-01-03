@@ -44,6 +44,8 @@ public class SignUpService {
             user.setProfileImg(filePath);
         }
 
+        userRepository.save(user);
+
         return DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER);
     }
 

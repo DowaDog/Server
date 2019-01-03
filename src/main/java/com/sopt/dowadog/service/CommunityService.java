@@ -41,6 +41,9 @@ public class CommunityService {
     @Value("${uploadpath.community}")
     private String baseDir;
 
+    @Value("${cloud.aws.endpoint}")
+    private String s3Endpoint;
+
     @Transactional
     public DefaultRes<Community> createCommunityService(User user, Community community) throws Exception {
 
@@ -67,7 +70,6 @@ public class CommunityService {
         community.setUser(user);
 
 
-
         return DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_COMMUNITY, communityRepository.save(community));
     }
 
@@ -89,8 +91,7 @@ public class CommunityService {
         for (Community community : communityList) {
             CommunityDto communityDto = community.getCommunityDto();
 
-            //
-            if (user != null) communityDto.setAuth(community.getAuth(user.getId()));
+            communityDto = setCommunityDtoAuthAndProfileImgWithUser(user, community, communityDto);
 
             communityDtoList.add(communityDto);
 
@@ -110,7 +111,8 @@ public class CommunityService {
         if (communityRepository.findById(communityId).isPresent()) {
             Community community = communityRepository.findById(communityId).get();
             CommunityDto communityDto = community.getCommunityDto();
-            if (user != null) communityDto.setAuth(community.getAuth(user.getId()));
+
+            communityDto = setCommunityDtoAuthAndProfileImgWithUser(user, community, communityDto);
 
             return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_COMMUNITY, communityDto);
         } else {
@@ -139,7 +141,7 @@ public class CommunityService {
         return DefaultRes.UNAUTHORIZATION;
     }
 
-    public DefaultRes<CommunityImg> deleteCommunityImgById(int communityImgId){
+    public DefaultRes<CommunityImg> deleteCommunityImgById(int communityImgId) {
         communityImgRepository.deleteById(communityImgId);
         return DefaultRes.res(StatusCode.OK, ResponseMessage.DELETE_COMMUNITYIMG);
     }
@@ -165,5 +167,10 @@ public class CommunityService {
     }
 
 
+    public CommunityDto setCommunityDtoAuthAndProfileImgWithUser(User user, Community community, CommunityDto communityDto) {
+        if (user != null) communityDto.setAuth(community.getAuth(user.getId()));
+        communityDto.setUserProfileImg(S3Util.getImgPath(s3Endpoint, community.getUser().getProfileImg()));
 
+        return communityDto;
+    }
 }
