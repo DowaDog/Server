@@ -142,17 +142,40 @@ public class PublicAnimalService {
         publicAnimalDetailDto.setRegion(getRegion(publicAnimalObject.getNoticeNo()));
         publicAnimalDetailDto.setAge(getAge(publicAnimalObject.getAge()));
         publicAnimalDetailDto.setWeight(getWeigth(publicAnimalObject.getWeight()));
-
-
-
-
         publicAnimalDetailDto.setRemainDateState(animalService.getDdayState(getDate(publicAnimalObject.getNoticeEdt())));
 
         return DefaultRes.res(StatusCode.OK,ResponseMessage.READ_ANIMAL,publicAnimalDetailDto);
 
 
     }
-    //
+
+    //긴급동물 리스트
+    public DefaultRes<PublicAnimalListDto> readEmergencyAnimalList(final User user, final int page, final int limit){
+        Pageable pageable = PageRequest.of(page,limit);
+        Page<PublicAnimal> animals = publicAnimalRepository.findAllBy(LocalDate.now().toString().replaceAll("-",""),pageable);
+
+
+        List<PublicListformDto> publicListformList = new ArrayList<>();
+
+        List<PublicAnimal> animalList = animals.getContent();
+        for(PublicAnimal temp : animalList){
+            PublicListformDto emergencyPublicAnimalList = temp.getListAnimalDto();
+            emergencyPublicAnimalList.setType(getTypeAndKind(temp.getKindCd()).get(0));
+            emergencyPublicAnimalList.setKindCd(getTypeAndKind(temp.getKindCd()).get(1));
+            emergencyPublicAnimalList.setNoticeEddt(getDate(temp.getNoticeEdt()));
+            emergencyPublicAnimalList.setRegion(getRegion(temp.getNoticeNo()));
+            emergencyPublicAnimalList.setRemainDateState(animalService.getDdayState(getDate(temp.getNoticeEdt())));
+            publicListformList.add(emergencyPublicAnimalList);
+        }
+
+        PublicAnimalListDto publicAnimalListDto = PublicAnimalListDto.builder()
+                .content(publicListformList)
+                .pageable(pageable)
+                .build();
+
+        return DefaultRes.res(StatusCode.OK,ResponseMessage.READ_ANIMAL,publicAnimalListDto);
+
+    }
 
 
 }

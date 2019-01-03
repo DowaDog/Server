@@ -18,7 +18,6 @@ public class PublicListformDto {
     //리스트 폼 dto
 
     private int id;
-    private String noticeNo;
     private String type;
     private String sexCd;
     private String kindCd;
