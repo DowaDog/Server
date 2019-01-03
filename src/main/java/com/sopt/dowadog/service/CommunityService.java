@@ -112,7 +112,23 @@ public class CommunityService {
             Community community = communityRepository.findById(communityId).get();
             CommunityDto communityDto = community.getCommunityDto();
 
+            //커뮤니티 이미지들 풀패스로 바꾸는 과정
+            List<CommunityImg> imgList = new ArrayList<>();
+            for(CommunityImg temp : community.getCommunityImgList()){
+                CommunityImg imgTemp = new CommunityImg();
+                imgTemp.setCreatedAt(temp.getCreatedAt());
+                imgTemp.setUpdatedAt(temp.getUpdatedAt());
+                imgTemp.setFilePath(S3Util.getImgPath(s3Endpoint,temp.getFilePath()));
+                imgTemp.setOriginFileName(temp.getOriginFileName());
+                imgTemp.setId(temp.getId());
+                imgList.add(imgTemp);
+            }
+            communityDto.setCommunityImgList(imgList);
             communityDto = setCommunityDtoAuthAndProfileImgWithUser(user, community, communityDto);
+
+
+
+
 
             return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_COMMUNITY, communityDto);
         } else {

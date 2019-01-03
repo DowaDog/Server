@@ -1,6 +1,7 @@
 package com.sopt.dowadog.controller.api.normal;
 
 
+import com.sopt.dowadog.annotation.Auth;
 import com.sopt.dowadog.model.common.DefaultRes;
 import com.sopt.dowadog.model.domain.User;
 import com.sopt.dowadog.model.dto.FilterDto;
@@ -129,17 +130,16 @@ public class AnimalController {
 
 
     // 좋아요 기능
+    @Auth
     @PostMapping("{animalId}/likes")
     public ResponseEntity createUserLike(@RequestHeader(name = "Authorization", required = false) String jwtToken,
                                          @PathVariable("animalId") final int animalId){
 
 
         try{
-            User user = null;
-            if(jwtToken!=null){
 
-                user = userService.getUserByJwtToken(jwtToken);
-            }
+              User user = userService.getUserByJwtToken(jwtToken);
+
 
             return new ResponseEntity(animalService.createUserAnimalLike(user,animalId),HttpStatus.OK);
 
