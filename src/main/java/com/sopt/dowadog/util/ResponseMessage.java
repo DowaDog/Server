@@ -51,7 +51,8 @@ public class ResponseMessage {
     public static final String UPDATE_COMMUNITY = "커뮤니티 정보 수정 성공";
     public static final String DELETE_COMMUNITY = "커뮤니티 정보 삭제 성공";
     public static final String NOT_FOUND_COMMUNITY = "커뮤니티 정보를 찾을 수 없습니다.";
-
+    public static final String DELETE_COMMUNITYIMG = "커뮤니티 사진 삭제 성공";
+    public static final String CREATED_COMMUNITYIMG = "커뮤니티 수정시 사진 추가";
 
     //Comment
     public static final String READ_COMMENT = "댓글 정보 조회 성공";
