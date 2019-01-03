@@ -99,7 +99,7 @@ private String defaultUrl;
     }
 
     //리스트 포멧으로 바꾸는 메소드
-    private AnimalListDto getAnimalListDto(final List<Animal> animalList ,final Pageable pageable,final String userId  ){
+    private AnimalListDto getAnimalListDto(final List<Animal> animalList ,final Pageable pageable,final User user  ){
         List<ListformDto> listform = new ArrayList<>();
 
         for(Animal temp : animalList){
@@ -107,7 +107,7 @@ private String defaultUrl;
             ListformDto listformDto = temp.getListAnimalDto();
             listformDto.setRemainDateState(getDdayState(temp.getNoticeEddt()));
             listformDto.setThumbnailImg(getThumnailImg(temp.getThumbnailImg()));
-            listformDto.setLiked(getUserLikeState(userId,temp.getId()));
+            listformDto.setLiked(getLikedForGuest(user,temp.getId()));
             listform.add(listformDto);
         }
 
@@ -156,12 +156,7 @@ private String defaultUrl;
 
         }
 
-
-
         Animal animal = animalTemp.get();
-
-
-
 
         //스토리 파일 엔드포인트 붙힌 거로 배열 작업
         List<AnimalStory> animalStories = animalStoryRepository.findAllByAnimal_Id(animalId);
@@ -190,7 +185,7 @@ private String defaultUrl;
     }
 
 //긴급한 순으로 동물 리스트보기
-    public DefaultRes<AnimalListDto> readEmergencyAnimal(final int page, final int limit, final String userId){
+    public DefaultRes<AnimalListDto> readEmergencyAnimal(final int page, final int limit, final User user){
 
         Pageable pageable = PageRequest.of(page,limit);
         Page<Animal> animals = animalRepository.findAllBy(LocalDate.now(),pageable);
@@ -200,12 +195,13 @@ private String defaultUrl;
 
 
 
-        return DefaultRes.res(StatusCode.OK,ResponseMessage.READ_ANIMAL,getAnimalListDto(animalList,pageable,userId));
+
+        return DefaultRes.res(StatusCode.OK,ResponseMessage.READ_ANIMAL,getAnimalListDto(animalList,pageable,user));
     }
 
 
 //필터 리스트 동물 보기
-    public DefaultRes<AnimalListDto> readAnimal(final FilterDto filterDto, final int page, final int limit, final String userId){
+    public DefaultRes<AnimalListDto> readAnimal(final FilterDto filterDto, final int page, final int limit, final User user){
         Map<String, Object> filter = new HashMap<>();
         Pageable pageable = PageRequest.of(page, limit,Sort.by(Sort.Direction.DESC,"createdAt"));
 
@@ -223,14 +219,14 @@ private String defaultUrl;
 
        // animalRepository.
 
-        return DefaultRes.res(StatusCode.OK,ResponseMessage.READ_ANIMAL,getAnimalListDto(animalList,pageable,userId));
+        return DefaultRes.res(StatusCode.OK,ResponseMessage.READ_ANIMAL,getAnimalListDto(animalList,pageable,user));
 
 
 
     }
 
 // 해시 태그 리스트 보기
-    public DefaultRes<AnimalListDto> readHashtagAnimalList(final String tag, final int page, final int limit, final String userId){
+    public DefaultRes<AnimalListDto> readHashtagAnimalList(final String tag, final int page, final int limit, final User user){
 
 
         List<ListformDto> listform = new ArrayList<>();
@@ -246,7 +242,7 @@ private String defaultUrl;
             ListformDto listformDto = temp.getAnimal().getListAnimalDto();
             listformDto.setRemainDateState(getDdayState(temp.getAnimal().getNoticeEddt()));
             listformDto.setThumbnailImg(getThumnailImg(temp.getAnimal().getThumbnailImg()));
-            listformDto.setLiked(getUserLikeState(userId,temp.getAnimal().getId()));
+            listformDto.setLiked(getLikedForGuest(user,temp.getAnimal().getId()));
             listform.add(listformDto);
         }
 
@@ -268,14 +264,14 @@ private String defaultUrl;
 
     // 좋아요 취소, 생성 구현
     @Transactional
-    public DefaultRes<UserAnimalLike> createUserAnimalLike(final String userId, final int animalIdx){
+    public DefaultRes<UserAnimalLike> createUserAnimalLike(final User user, final int animalIdx){
 
         //유저 인덱스 바꿔줘야 함(지금은 디폴트로 넣어줌)
 
-        List<UserAnimalLike> countingList = userAnimalLikeRepository.findAllByUser_IdAndAnimal_Id(userId,animalIdx);
+        List<UserAnimalLike> countingList = userAnimalLikeRepository.findAllByUser_IdAndAnimal_Id(user.getId(),animalIdx);
         if(countingList.size()==0){// 좋아요 추가 기능 구현
 
-            Optional<User> user = userRepository.findById(userId);// 유저가 없다면..? 처리
+            Optional<User> usertemp = userRepository.findById(user.getId());// 유저가 없다면..? 처리
             Optional<Animal> animal = animalRepository.findById(animalIdx);//에니멀이 없다면??
 
 
@@ -289,13 +285,13 @@ private String defaultUrl;
 
             UserAnimalLike userAnimalLike = new UserAnimalLike();
             userAnimalLike.setAnimal(animal.get());
-            userAnimalLike.setUser(user.get());
+            userAnimalLike.setUser(usertemp.get());
 
             userAnimalLikeRepository.save(userAnimalLike);
 
         }else{// 좋아요 취소 구현
 
-            userAnimalLikeRepository.deleteByUser_idAndAnimal_Id(userId,animalIdx);
+            userAnimalLikeRepository.deleteByUser_idAndAnimal_Id(user.getId(),animalIdx);
             return DefaultRes.res(StatusCode.OK, ResponseMessage.DELETED_LIKE);
 
 
