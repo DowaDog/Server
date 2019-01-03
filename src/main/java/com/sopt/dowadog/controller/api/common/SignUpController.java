@@ -22,14 +22,14 @@ public class SignUpController {
 
     //Id 중복체크
     @GetMapping("duplicateId")
-    public ResponseEntity duplicateUserId(@RequestParam String id){
+    public ResponseEntity duplicateUserId(@RequestBody String id){
 
         return new ResponseEntity(signUpService.duplicateUserId(id), HttpStatus.OK);
     }
 
     //Email 중복체크
     @GetMapping("duplicateEmail")
-    public ResponseEntity duplicateUserEmail(@RequestParam String email){
+    public ResponseEntity duplicateUserEmail(@RequestBody String email){
 
         return new ResponseEntity(signUpService.duplicateUserEmail(email), HttpStatus.OK);
     }

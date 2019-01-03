@@ -36,7 +36,7 @@ public class PublicAnimalScheduler {
 
 
     @Scheduled(cron = "0 0 4 * * *") // 매일 새벽 4시에 동작
-//    @Scheduled(fixedDelayString = "600")
+//  @Scheduled(fixedDelayString = "600")
     public void readPublicAnimal() throws Throwable {
 
 
