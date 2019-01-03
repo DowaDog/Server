@@ -40,7 +40,7 @@ public class PublicAnimal {
     private String noticeSdt;
 
     private String specialMark;
-    private String processState;
+    private String processState;  // 입양 공고 진행 상태 , notice : 공고중, step : 입양절차 진행중, end : 공고 끝
     private String sexCd;
     private String weight;
     private String officetel;
@@ -74,6 +74,7 @@ public class PublicAnimal {
                 .sexCd(this.sexCd)
                 .specialMark(this.specialMark)
                 .thumbnailImg(this.popfile)
+                .processState("notice") //todo 일단은 notice (무조건 공고상태이므로)
                 .build();
         return publicAnimalDetailDto;
     }

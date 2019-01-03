@@ -37,7 +37,7 @@ public class MyinfoController {
         return new ResponseEntity(myinfoService.updateUserInfo(user, modifiedUser), HttpStatus.OK);
     }
 
-    //내 입양동물 정보 조회
+    //내 입양동물 리스트 정보 조회
     @GetMapping("adoptAnimals")
     public ResponseEntity readMyAdoptAnimal(@RequestHeader(value = "Authorization", required = false) String jwtToken) {
         User user = userService.getUserByJwtToken(jwtToken);
@@ -62,6 +62,9 @@ public class MyinfoController {
     public ResponseEntity updateAnimalInfo(@RequestHeader(value = "Authorization", required = false) String jwtToken,
                                            @RequestBody AnimalUserAdopt animalUserAdopt,
                                            @PathVariable(name = "adoptAnimalId") int adoptAnimalId) {
+
+
+
         try {
 
             User user = userService.getUserByJwtToken(jwtToken);
@@ -77,9 +80,10 @@ public class MyinfoController {
     //좋아요 리스트 조회
     @GetMapping("/likes/animals")
     public ResponseEntity readMypageLikes
-    (@RequestParam(name = "page", defaultValue = "0", required = false) int page,
-     @RequestParam(name = "limit", defaultValue = "10", required = false) int limit, String userId) {
-        return new ResponseEntity(myinfoService.readLikeListByUserId(page, limit, userId), HttpStatus.OK);
+    (@RequestHeader(value = "Authorization", required = false) String jwtToken) {
+        User user = userService.getUserByJwtToken(jwtToken);
+
+        return new ResponseEntity(myinfoService.readMyLikeList(user), HttpStatus.OK);
     }
 
     //스크랩 리스트 조회

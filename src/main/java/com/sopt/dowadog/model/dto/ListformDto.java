@@ -24,6 +24,7 @@ public class ListformDto {
     private boolean liked;
     private boolean remainDateState;
     private String thumbnailImg;
+    private String processState;
 }
 
 

@@ -38,7 +38,7 @@ public class Animal extends DateEntity {
     //@Temporal(TemporalType.DATE)
     private LocalDate noticeEddt;
 
-    private String processState;
+    private String processState; // 입양 공고 진행 상태 , notice : 공고중, step : 입양절차 진행중, end : 공고 끝
     private String sexCd;
     private String neuterYn;
     private String specialMark;
@@ -46,7 +46,6 @@ public class Animal extends DateEntity {
     private String kindCd;
     private String age;
     private String weight;
-    private boolean noticing; // 입양 공고 진행 여부
 
     //@Temporal(TemporalType.DATE)
     private LocalDate noticeStdt;
@@ -105,6 +104,7 @@ public class Animal extends DateEntity {
                 .kindCd(this.kindCd)
                 .region(this.care.getRegion())
                 .noticeEddt(this.noticeEddt)
+                .processState(this.processState)
                 .build();
 
         return listformDto;
