@@ -53,8 +53,8 @@ public class CommunityController {
             e.printStackTrace();
             return new ResponseEntity<>(DefaultRes.FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
+
 
     //커뮤니티 글 조회
     @GetMapping("{communityId}")
@@ -102,6 +102,20 @@ public class CommunityController {
         }
     }
 
+    //커뮤니티 수정시 사진 삭제
+    @DeleteMapping("{communityId}/communityimg/{communityImgId}")
+    public ResponseEntity deleteCommunityImg(@RequestHeader(value = "Authorization") final String jwtToken,
+                                             @PathVariable("communityImgId") int communityImgId){
+
+        return new ResponseEntity(communityService.deleteCommunityImgById(communityImgId), HttpStatus.OK);
+    }
+
+//    @PostMapping("{communityId}/communityimg/")
+//    public ResponseEntity createCommunityImg(@RequestHeader(value = "Authorization") final String jwtToken,
+//                                             @PathVariable("communityId") int communityId) {
+//
+//        return new ResponseEntity(communityService.create)
+//    }
 
     //커뮤니티 글 삭제
     @DeleteMapping("{communityId}")
@@ -175,6 +189,5 @@ public class CommunityController {
             return new ResponseEntity<>(DefaultRes.FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 
 }

@@ -44,7 +44,7 @@ public class SignUpService {
             user.setProfileImg(filePath);
         }
 
-        return DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER, userRepository.save(user));
+        return DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER);
     }
 
     //아이디 중복체크

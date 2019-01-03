@@ -2,6 +2,7 @@ package com.sopt.dowadog.service;
 
 import com.sopt.dowadog.model.common.DefaultRes;
 import com.sopt.dowadog.model.domain.PublicAnimal;
+import com.sopt.dowadog.model.domain.User;
 import com.sopt.dowadog.model.dto.*;
 import com.sopt.dowadog.repository.PublicAnimalRepository;
 import com.sopt.dowadog.specification.PublicAnimalSpecification;
@@ -77,7 +78,7 @@ public class PublicAnimalService {
 
 
     //todo 캐시적용 해야함 ( 스케줄링타이밍동안 문제 없도록 신경써야함 )
-    public DefaultRes<PublicAnimalListDto> readPublicAnimalList(PublicAnimalSearchDto search, int page, int limit, String userId) {
+    public DefaultRes<PublicAnimalListDto> readPublicAnimalList(PublicAnimalSearchDto search, int page, int limit, User user) {
         //todo 이부분에서 enum과 전혀 다른 걸 주면 에러난다...ㅎㅎ
         Map<String, Object> filter = new HashMap<>();
         Pageable pageable = PageRequest.of(page, limit);
@@ -119,13 +120,12 @@ public class PublicAnimalService {
 
     //상세보기 구현
 
-    public DefaultRes<PublicAnimalDetailDto> readPublicAnimal(final String userId, final int animalId){
+    public DefaultRes<PublicAnimalDetailDto> readPublicAnimal(final User user, final int animalId){
 
         Optional<PublicAnimal> publicAnimal  = publicAnimalRepository.findById(animalId);
 
         PublicAnimal publicAnimalObject = publicAnimal.get();
 
-        System.out.print(publicAnimalObject);
 
         if(!publicAnimal.isPresent()){
             return DefaultRes.res(StatusCode.NO_CONTENT, ResponseMessage.NOT_FOUND_ANIMAL);
