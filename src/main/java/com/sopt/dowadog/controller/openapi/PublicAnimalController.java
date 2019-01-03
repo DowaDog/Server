@@ -1,10 +1,12 @@
 package com.sopt.dowadog.controller.openapi;
 
 import com.sopt.dowadog.model.common.DefaultRes;
+import com.sopt.dowadog.model.domain.PublicAnimal;
 import com.sopt.dowadog.model.domain.User;
 import com.sopt.dowadog.model.dto.PublicAnimalSearchDto;
 import com.sopt.dowadog.service.PublicAnimalService;
 import com.sopt.dowadog.service.UserService;
+import com.sopt.dowadog.util.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,10 @@ import org.springframework.web.bind.annotation.*;
 public class PublicAnimalController {
 
 
+
+
+
+
     @Autowired
     private UserService userService;
 
@@ -26,9 +32,28 @@ public class PublicAnimalController {
     private PublicAnimalService publicAnimalService;
 
 
-
     //긴급 동물 리스트
-    //@GetMapping()
+    @GetMapping("/emergency")
+    public ResponseEntity readEmergencyPublicAnimalList(@RequestHeader(name = "Authorization", required = false) final String jwtToken,
+                                                            @RequestParam(name="page", defaultValue="0",required=false)final int page,
+                                                            @RequestParam(name="limit", defaultValue="10", required=false)final int limit
+                                                            ){
+        try{
+
+            User user = null;
+
+            if(jwtToken!=null){
+
+                user = userService.getUserByJwtToken(jwtToken);
+
+            }
+            return new ResponseEntity(publicAnimalService.readEmergencyAnimalList(user,page,limit),HttpStatus.OK);
+
+
+        }catch(Exception e){
+            return new ResponseEntity(DefaultRes.FAIL_DEFAULT_RES,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 
 

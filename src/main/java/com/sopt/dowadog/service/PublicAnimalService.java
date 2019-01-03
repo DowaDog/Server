@@ -125,15 +125,22 @@ public class PublicAnimalService {
 
         Optional<PublicAnimal> publicAnimal  = publicAnimalRepository.findById(animalId);
 
-        PublicAnimal publicAnimalObject = publicAnimal.get();
+
+        /*
+        * 밑에 옵셔널이 존재하는지 체크하기전에 get을 했더니 없는 객체에
+        * 대해서 접근하게 되면서 NoSuchElementException 에러가 나서
+        * 컨트롤러에서 try catch로 빠짐
+        * get의 경우 존재 유무 조사후 던지는 게 올바른 값 처리를 할 수 있음
+        * */
 
 
         if(!publicAnimal.isPresent()){
             return DefaultRes.res(StatusCode.NO_CONTENT, ResponseMessage.NOT_FOUND_ANIMAL);
         }
-        System.out.print(getTypeAndKind(publicAnimalObject.getKindCd()).size());
 
-        //getTypeAndKind(publicAnimalObject.getKindCd()).get(0)
+        PublicAnimal publicAnimalObject = publicAnimal.get();
+
+
         PublicAnimalDetailDto publicAnimalDetailDto = publicAnimalObject.getPublicAnimalDetailDto();
         publicAnimalDetailDto.setType(getTypeAndKind(publicAnimalObject.getKindCd()).get(0));
         publicAnimalDetailDto.setKindCd(getTypeAndKind(publicAnimalObject.getKindCd()).get(1));
@@ -142,17 +149,40 @@ public class PublicAnimalService {
         publicAnimalDetailDto.setRegion(getRegion(publicAnimalObject.getNoticeNo()));
         publicAnimalDetailDto.setAge(getAge(publicAnimalObject.getAge()));
         publicAnimalDetailDto.setWeight(getWeigth(publicAnimalObject.getWeight()));
-
-
-
-
         publicAnimalDetailDto.setRemainDateState(animalService.getDdayState(getDate(publicAnimalObject.getNoticeEdt())));
 
         return DefaultRes.res(StatusCode.OK,ResponseMessage.READ_ANIMAL,publicAnimalDetailDto);
 
 
     }
-    //
+
+    //긴급동물 리스트
+    public DefaultRes<PublicAnimalListDto> readEmergencyAnimalList(final User user, final int page, final int limit){
+        Pageable pageable = PageRequest.of(page,limit);
+        Page<PublicAnimal> animals = publicAnimalRepository.findAllBy(LocalDate.now().toString().replaceAll("-",""),pageable);
+
+
+        List<PublicListformDto> publicListformList = new ArrayList<>();
+
+        List<PublicAnimal> animalList = animals.getContent();
+        for(PublicAnimal temp : animalList){
+            PublicListformDto emergencyPublicAnimalList = temp.getListAnimalDto();
+            emergencyPublicAnimalList.setType(getTypeAndKind(temp.getKindCd()).get(0));
+            emergencyPublicAnimalList.setKindCd(getTypeAndKind(temp.getKindCd()).get(1));
+            emergencyPublicAnimalList.setNoticeEddt(getDate(temp.getNoticeEdt()));
+            emergencyPublicAnimalList.setRegion(getRegion(temp.getNoticeNo()));
+            emergencyPublicAnimalList.setRemainDateState(animalService.getDdayState(getDate(temp.getNoticeEdt())));
+            publicListformList.add(emergencyPublicAnimalList);
+        }
+
+        PublicAnimalListDto publicAnimalListDto = PublicAnimalListDto.builder()
+                .content(publicListformList)
+                .pageable(pageable)
+                .build();
+
+        return DefaultRes.res(StatusCode.OK,ResponseMessage.READ_ANIMAL,publicAnimalListDto);
+
+    }
 
 
 }
