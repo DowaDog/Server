@@ -61,10 +61,10 @@ public class CommunityService {
 
                 communityImgList.add(communityImgRepository.save(communityImg));
             }
-            community.setUser(user);
             community.setCommunityImgList(communityImgList);
-
         }
+        community.setUser(user);
+
 
 
         return DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_COMMUNITY, communityRepository.save(community));
