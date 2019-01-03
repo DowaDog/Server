@@ -37,5 +37,7 @@ public class DefaultRes<T> {
 
     public static final DefaultRes NOT_FOUND = new DefaultRes(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND);
 
+    public static final DefaultRes BAD_REQUEST = new DefaultRes(StatusCode.BAD_REQUEST, ResponseMessage.BAD_REQUEST);
+
     public static final DefaultRes FAIL_DEFAULT_RES = new DefaultRes(StatusCode.INTERNAL_SERVER_ERROR, ResponseMessage.INTERNAL_SERVER_ERROR);
 }

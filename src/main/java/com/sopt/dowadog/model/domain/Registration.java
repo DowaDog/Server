@@ -1,5 +1,6 @@
 package com.sopt.dowadog.model.domain;
 
+import com.fasterxml.jackson.annotation.*;
 import com.sopt.dowadog.model.domain.auditing.DateEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,34 +14,38 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+//@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id", scope=Registration.class)
 public class Registration extends DateEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private boolean status = true; // 신청서가 진행중인지 (true false)
-
-    //todo 신청서 정보들 기획 나오면 추가될 칼럼들
+    private String phone;
+    private String email;
     private String address;
     private String job;
-    private boolean tempProtect; //임시보호 여부
-
-    private String regStatus; // 현재 상태
-
-
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "registration")
-    private RegistrationMeeting registrationMeeting;
+    private boolean havePet;
+    private String petInfo;
+    private boolean tempProtect; // adopt, temp
+    private String tempPeriod;
+    private String regStatus; // deny, step0, step1, step2, complete
+    private String meetPlace;
+    private String meetTime;
+    private String meetMaterial;
+    private boolean validReg = true; // true 진행중, false 종료
+    private boolean userCheck = true; //true 유저가 확인함, false 유저가 확인 안함
 
     @ManyToOne
-    @JoinColumn(nullable=false)
+    @JsonManagedReference
     private User user;
 
     @ManyToOne
+    @JsonManagedReference
     private Animal animal;
 
 
-    private boolean userCheck = false; //유저가 메인 뷰 확인했는지, admin이 요청 할때마다 false된다.
+
 
 
 }
