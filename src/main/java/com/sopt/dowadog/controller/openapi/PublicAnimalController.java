@@ -3,7 +3,6 @@ package com.sopt.dowadog.controller.openapi;
 import com.sopt.dowadog.model.common.DefaultRes;
 import com.sopt.dowadog.model.domain.User;
 import com.sopt.dowadog.model.dto.PublicAnimalSearchDto;
-import com.sopt.dowadog.scheduler.PublicAnimalScheduler;
 import com.sopt.dowadog.service.PublicAnimalService;
 import com.sopt.dowadog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

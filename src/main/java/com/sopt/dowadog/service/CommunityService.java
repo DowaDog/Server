@@ -8,10 +8,10 @@ import com.sopt.dowadog.model.dto.CommunityDto;
 import com.sopt.dowadog.model.dto.CommunityListDto;
 import com.sopt.dowadog.repository.CommunityImgRepository;
 import com.sopt.dowadog.repository.CommunityRepository;
+import com.sopt.dowadog.service.FileService;
 import com.sopt.dowadog.util.ResponseMessage;
 import com.sopt.dowadog.util.S3Util;
 import com.sopt.dowadog.util.StatusCode;
-import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -24,7 +24,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CommunityService {

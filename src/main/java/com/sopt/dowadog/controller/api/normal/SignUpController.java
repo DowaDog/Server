@@ -1,9 +1,8 @@
-package com.sopt.dowadog.controller.api.common;
+package com.sopt.dowadog.controller.api.normal;
 
 import com.sopt.dowadog.model.domain.User;
 import com.sopt.dowadog.repository.UserRepository;
 import com.sopt.dowadog.service.SignUpService;
-import com.sopt.dowadog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
