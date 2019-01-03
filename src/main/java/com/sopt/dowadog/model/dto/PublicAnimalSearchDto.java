@@ -9,4 +9,5 @@ public class PublicAnimalSearchDto {
     private String type;
     private Integer remainNoticeDate;
     private String region;
+    private String searchWord;
 }
