@@ -22,6 +22,7 @@ public class CommunityDto {
     private List<CommunityImg> communityImgList;
     private boolean today;
     private String userId;
+    private String userProfileImg;
     private Date createdAt;
     private Date updatedAt;
     private boolean auth = false;

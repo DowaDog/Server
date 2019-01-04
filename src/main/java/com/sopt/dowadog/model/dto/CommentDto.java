@@ -15,6 +15,7 @@ public class CommentDto {
     private int id;
     private String detail;
     private String userId;
+    private String userProfileImg;
     private boolean today;
     private Date createdAt;
     private Date updatedAt;
