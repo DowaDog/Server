@@ -24,6 +24,10 @@ public class Care extends DateEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    /*private String careUserId;
+    private String password;
+*/
+
     private String region;
     private String address;
     private String name;
