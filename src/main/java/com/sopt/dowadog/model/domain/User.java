@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sopt.dowadog.model.domain.auditing.DateEntity;
 import com.sopt.dowadog.model.dto.MainDto;
 import com.sopt.dowadog.model.dto.MyinfoDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
@@ -15,7 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
