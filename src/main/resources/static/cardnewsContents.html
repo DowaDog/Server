@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>INSPINIA | 카드뉴스 등록 Form</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/plugins/chosen/chosen.css"/>
+
+
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="sidebar-collapse">
+            <ul class="nav metismenu" id="side-menu">
+                <li class="nav-header">
+                    <div class="dropdown profile-element"> <span>
+                            <!-- <img alt="image" class="img-circle" src="img/profile_small.jpg" /> -->
+                             </span>
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">Kohen.kang</strong>
+                             </span> <span class="text-muted text-xs block">Art Director <b class="caret"></b></span> </span> </a>
+                        <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                            <li><a href="profile.html">Profile</a></li>
+                            <li><a href="contacts.html">Contacts</a></li>
+                            <li><a href="mailbox.html">Mailbox</a></li>
+                            <li class="divider"></li>
+                            <li><a href="login.html">Logout</a></li>
+                        </ul>
+                    </div>
+                    <div class="logo-element">
+                        IN+
+                    </div>
+                </li>
+
+                <li class="active">
+                    <a href="#"><i class="fa fa-edit"></i> <span class="nav-label">등록</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li><a href="./cardnews.html">카드뉴스</a></li>
+                        <li class="active"><a href="cardnewsContents.html">카드뉴스 컨텐츠</a></li>
+                        <li><a href="./animalStory.html">동물 스토리</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+        </div>
+    </nav>
+
+    <div id="page-wrapper" class="gray-bg">
+        <div class="row border-bottom">
+
+        </div>
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-lg-10">
+                <h2>카드뉴스 컨텐츠 등록</h2>
+                <ol class="breadcrumb">
+                    <li>
+                        <a>등록</a>
+                    </li>
+                    <li class="active">
+                        <strong>카드뉴스 컨텐츠</strong>
+                    </li>
+                </ol>
+            </div>
+            <div class="col-lg-2">
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>기다릴개
+                            <small>카드뉴스 생성</small>
+                        </h5>
+
+                    </div>
+                    <div class="ibox-content">
+                        <form method="post" id="cardnewsContentForm" class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">카드뉴스 제목</label>
+                                <div class="col-sm-10">
+                                    <select name="cardnewsId" id="cardnewsId" class="form-control required" required=""></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group"><label class="col-sm-2 control-label">카드뉴스 컨텐츠 제목</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="title" class="form-control"></div>
+                            </div>
+
+
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="form-group"><label class="col-sm-2 control-label">카드뉴스 컨텐츠 상세</label>
+                                <div class="col-sm-10">
+                                    <textarea name="detail" rows="8" style="width:100%" ></textarea>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+
+
+                            <!-- 이미지 등록 -->
+                            <div class="form-group"><label class="col-sm-2 control-label">
+                                <small class="text-navy">이미지</small>
+                            </label>
+                                <div class="fileinput fileinput-new" data-provides="fileinput">
+                    <span class="btn btn-default btn-file"><span class="fileinput-new">Select file</span>
+                    <span class="fileinput-exists">Change</span>
+                    <input type="file" name="cardnewsContentsImgFile"/></span>
+                                    <span class="fileinput-filename"></span>
+                                    <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                                </div>
+                            </div>
+
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2">
+                                    <button class="btn btn-primary" type="button" id="cardnewsContentSubmitBtn">Save changes</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<!-- Mainly scripts -->
+<script src="js/jquery-3.1.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+<!-- Custom and plugin javascript -->
+<script src="js/inspinia.js"></script>
+<script src="js/plugins/pace/pace.min.js"></script>
+
+<!-- Jasny -->
+<script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
+
+<!-- CodeMirror -->
+<script src="/js/plugins/sweetalert/sweetalert.min.js"></script>
+
+<!--Choosen-->
+<script src="/js/plugins/chosen/chosen.jquery.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+
+
+        $.ajax({
+            url: "/api/admin/cardnews/list",
+            type: 'GET',
+            success: function (data) {
+                console.log(data);
+                var cardnews = '<option value="default">' + '카드뉴스를 선택해주세요' + '</option>';
+                $.each(data, function (i, list) {
+                    cardnews = cardnews + '<option value="' + list.id + '">' + list.title + '</option>';
+                })
+                $("#cardnewsId").append(cardnews).chosen({width: "100%"});
+            },
+            error: function (e) {
+            }
+        });
+
+
+        $('#cardnewsContentSubmitBtn').click(function (e) {
+
+            var cardnewsId = $('#cardnewsId').val();
+
+
+            e.preventDefault();
+            var cardnewsContentForm = new FormData($("#cardnewsContentForm")[0]);
+
+            $.ajax({
+                type: "POST",
+                url: "/api/admin/cardnews/" + cardnewsId + "/contents",
+                enctype: 'multipart/form-data',
+                processData: false,
+                contentType: false,
+                data: cardnewsContentForm,
+                timeout: 600000,
+                success: function () {
+                    swal({
+                        title: "Success!",
+                        text: "카드뉴스 컨텐츠 등록이 성공하였습니다",
+                        type: "success"
+                    }, function () {
+                        // window.location.reload();
+                    });
+                },
+                error: function () {
+                    swal({
+                        title: "Server error",
+                        text: "에러가 발생했습니다 다시 입력해주세요",
+                        type: "error"
+                    });
+                }
+            });
+        })
+
+
+    });
+</script>
+</body>
+
+</html>
