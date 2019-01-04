@@ -9,6 +9,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class DowadogApplication {
 
     public static void main(String[] args) {
+        System.setProperty("Asia/Seoul", "UTC");
         SpringApplication.run(DowadogApplication.class, args);
     }
 }

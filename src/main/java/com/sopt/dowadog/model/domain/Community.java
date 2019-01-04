@@ -15,6 +15,7 @@ import org.joda.time.LocalDate;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -46,8 +47,8 @@ public class Community extends DateEntity {
     private List<MultipartFile> communityImgFiles;
 
     public boolean isToday() {
-        Date createdAt = this.getCreatedAt();
-        return (new DateTime(createdAt).toLocalDate()).equals(new LocalDate());
+        LocalDateTime createdAt = this.getCreatedAt();
+        return (createdAt.equals(new LocalDate()));
     }
 
     public boolean getAuth(String userId){
