@@ -52,9 +52,7 @@ public class PublicAnimal {
     public PublicListformDto getListAnimalDto(){
         PublicListformDto listformDto = PublicListformDto.builder()
                 .id(this.id)
-                .noticeNo(this.noticeNo)
                 .sexCd(this.sexCd)
-                .kindCd(this.kindCd)
                 .thumbnailImg(this.popfile)
                 .build();
         return listformDto;
@@ -70,7 +68,6 @@ public class PublicAnimal {
                 .careTel(this.careTel)
                 .noticeNo(this.noticeNo)
                 .happenPlace(this.happenPlace)
-                .processState(this.processState)
                 .sexCd(this.sexCd)
                 .specialMark(this.specialMark)
                 .thumbnailImg(this.popfile)
