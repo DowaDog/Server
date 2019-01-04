@@ -20,8 +20,6 @@ public class MainController {
     UserRepository userRepository;
     @Autowired
     UserService userService;
-//    @Autowired
-//    MainS
 
     @GetMapping
     public ResponseEntity main(@RequestHeader(value = "Authorization", required = false) final String jwtToken) {

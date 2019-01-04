@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class MyinfoController {
 
     @Autowired //myinfoService 객체에 대해 component 애너 붙은 클래스 중 해당 타입의 클래스를 찾아 객체 주입
-     MyinfoService myinfoService;
+            MyinfoService myinfoService;
 
     @Autowired
     UserService userService;
@@ -26,22 +26,35 @@ public class MyinfoController {
     //마이페이지 조회
     @GetMapping
     public ResponseEntity readMyinfo(@RequestHeader(value = "Authorization", required = false) String jwtToken) {
-        User user = userService.getUserByJwtToken(jwtToken);
-        return new ResponseEntity(myinfoService.readMypage(user), HttpStatus.OK);
+        try {
+            User user = userService.getUserByJwtToken(jwtToken);
+            return new ResponseEntity(myinfoService.readMypage(user), HttpStatus.OK);
+        } catch(Exception e){
+            return new ResponseEntity<>(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
+        }
     }
 
     //사람 정보 수정
     @PutMapping
     public ResponseEntity updateUserInfo(@RequestHeader(value = "Authorization", required = false) String jwtToken, User modifiedUser) {
-        User user = userService.getUserByJwtToken(jwtToken);
-        return new ResponseEntity(myinfoService.updateUserInfo(user, modifiedUser), HttpStatus.OK);
+        try{
+            User user = userService.getUserByJwtToken(jwtToken);
+            return new ResponseEntity(myinfoService.updateUserInfo(user, modifiedUser), HttpStatus.OK);
+        } catch(Exception e){
+            return new ResponseEntity<>(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
+        }
     }
 
     //내 입양동물 리스트 정보 조회
     @GetMapping("adoptAnimals")
     public ResponseEntity readMyAdoptAnimal(@RequestHeader(value = "Authorization", required = false) String jwtToken) {
-        User user = userService.getUserByJwtToken(jwtToken);
-        return new ResponseEntity(myinfoService.readAnimalUserAdoptList(user), HttpStatus.OK);
+
+        try {
+            User user = userService.getUserByJwtToken(jwtToken);
+            return new ResponseEntity(myinfoService.readAnimalUserAdoptList(user), HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
+        }
     }
 
 
@@ -52,8 +65,13 @@ public class MyinfoController {
                                          @PathVariable(name = "adoptAnimalId") int adoptAnimalId) {
 
 
-        User user = userService.getUserByJwtToken(jwtToken);
-        return new ResponseEntity(myinfoService.readAnimalUserAdoptById(user, adoptAnimalId), HttpStatus.OK);
+        try {
+            User user = userService.getUserByJwtToken(jwtToken);
+            return new ResponseEntity(myinfoService.readAnimalUserAdoptById(user, adoptAnimalId), HttpStatus.OK);
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
+        }
 
     }
 
@@ -64,52 +82,74 @@ public class MyinfoController {
                                            @PathVariable(name = "adoptAnimalId") int adoptAnimalId) {
 
 
-
         try {
 
             User user = userService.getUserByJwtToken(jwtToken);
             return new ResponseEntity(myinfoService.updateAnimalByAnimalId(user, animalUserAdopt, adoptAnimalId), HttpStatus.OK);
 
         } catch (Exception e) {
-            return new ResponseEntity<>(DefaultRes.FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
         }
     }
 
 
-
-    //좋아요 리스트 조회
-    @GetMapping("/likes/animals")
+    //좋아요 리스트 조회 완료
+    @GetMapping("/likes")
     public ResponseEntity readMypageLikes
     (@RequestHeader(value = "Authorization", required = false) String jwtToken) {
-        User user = userService.getUserByJwtToken(jwtToken);
+        try {
 
-        return new ResponseEntity(myinfoService.readMyLikeList(user), HttpStatus.OK);
+            User user = userService.getUserByJwtToken(jwtToken);
+
+            return new ResponseEntity(myinfoService.readMyLikeList(user), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
+        }
     }
 
-    //스크랩 리스트 조회
-    @GetMapping("/clips")
+    //스크랩 리스트 조회 //todo 수한이 작업 완료하면 그때
+    @GetMapping("/scraps")
     public ResponseEntity readMypageClips
-    (@RequestParam(name = "page", defaultValue = "0", required = false) int page,
-     @RequestParam(name = "limit", defaultValue = "10", required = false) int limit, String userId) {
+    (@RequestHeader(value = "Authorization", required = false) String jwtToken) {
+        //todo 나중에 상세 예외처리
 
-        return new ResponseEntity(myinfoService.readClipsListByUserId(page, limit, userId), HttpStatus.OK);
+        try {
+            User user = userService.getUserByJwtToken(jwtToken);
+
+            return new ResponseEntity(myinfoService.readMyClipsList(user), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
+        }
+
+
     }
 
     //내가 쓴글 리스트 조회
     @GetMapping("/community")
     public ResponseEntity readMypageCommunity
-    (@RequestParam(name = "page", defaultValue = "0", required = false) int page,
-     @RequestParam(name = "limit", defaultValue = "10", required = false) int limit, String userId) {
+    (@RequestHeader(value = "Authorization", required = false) String jwtToken) {
 
-        return new ResponseEntity(myinfoService.readCommunityListByUserId(page, limit, userId), HttpStatus.OK);
+        //todo 나중에 상세 예외처리
+        try {
+            User user = userService.getUserByJwtToken(jwtToken);
+            return new ResponseEntity(myinfoService.readMyCommunityList(user), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
+        }
     }
 
 
-//    //우체통 조회
-//    @GetMapping("/mailboxes")
-//    public ResponseEntity readMypageMailboxes(String userId) {
-//        return new ResponseEntity(myinfoService.readMailboxesUserId(userId), HttpStatus.OK);
-//        //return new ResponseEntity(HttpStatus.OK);
-//    }
+    //우체통 조회
+    @GetMapping("/mailboxes")
+    public ResponseEntity readMypageMailboxes(@RequestHeader(value = "Authorization", required = false) String jwtToken) {
+        try{
+            User user = userService.getUserByJwtToken(jwtToken);
+            return new ResponseEntity(myinfoService.readMailboxes(user), HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
+        }
+
+        //return new ResponseEntity(HttpStatus.OK);
+    }
 }
 //컨트롤러는 클라이언트에게 보여줄 뷰
