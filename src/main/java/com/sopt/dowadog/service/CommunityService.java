@@ -47,7 +47,7 @@ public class CommunityService {
     private String s3Endpoint;
 
     @Transactional
-    public DefaultRes<Community> createCommunityService(User user, Community community) {
+    public DefaultRes<Community> createCommunity(User user, Community community) {
 
         System.out.print(111111);
         List<MultipartFile> communityImgFileList = community.getCommunityImgFiles();// 멀티파트로 받기 사진 리스트

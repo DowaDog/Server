@@ -36,8 +36,8 @@ public class PublicAnimalScheduler {
 
 
     @Scheduled(cron = "0 0 4 * * *") // 매일 새벽 4시에 동작
-//  @Scheduled(fixedDelayString = "600")
-    public void readPublicAnimal() throws Throwable {
+//    @Scheduled(fixedDelayString = "600")
+    public void readPublicAnsimal() throws Throwable {
 
 
         //전체 삭제 이후
@@ -73,9 +73,10 @@ public class PublicAnimalScheduler {
 
 
         //json 파싱부분 todo 여기 리팩토링 필요
-        Map map = mapper.readValue(obj, new TypeReference<Map<String, Map<String, Map>>>() {});
+        Map map = mapper.readValue(obj, new TypeReference<Map<String, Map<String, Map>>>() {
+        });
 
-        Map<String ,Object> responseMap = mapper.convertValue(map.get("response"), Map.class);
+        Map<String, Object> responseMap = mapper.convertValue(map.get("response"), Map.class);
         Map<String, Object> bodyMap = mapper.convertValue(responseMap.get("body"), Map.class);
 
         Map itemMap = mapper.convertValue(bodyMap.get("items"), Map.class);
@@ -87,7 +88,7 @@ public class PublicAnimalScheduler {
 
 
         //insert row
-        for(Object item : result){
+        for (Object item : result) {
             PublicAnimal publicAnimal = mapper.convertValue(item, PublicAnimal.class);
             publicAnimalRepository.save(publicAnimal);
         }
