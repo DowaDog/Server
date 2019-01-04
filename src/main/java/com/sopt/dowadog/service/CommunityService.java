@@ -8,10 +8,11 @@ import com.sopt.dowadog.model.dto.CommunityDto;
 import com.sopt.dowadog.model.dto.CommunityListDto;
 import com.sopt.dowadog.repository.CommunityImgRepository;
 import com.sopt.dowadog.repository.CommunityRepository;
+import com.sopt.dowadog.service.FileService;
 import com.sopt.dowadog.util.ResponseMessage;
 import com.sopt.dowadog.util.S3Util;
 import com.sopt.dowadog.util.StatusCode;
-import lombok.Builder;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -24,8 +25,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
+@Slf4j
 @Service
 public class CommunityService {
 
@@ -41,10 +42,15 @@ public class CommunityService {
     @Value("${uploadpath.community}")
     private String baseDir;
 
+    @Value("${cloud.aws.endpoint}")
+    private String s3Endpoint;
+
     @Transactional
     public DefaultRes<Community> createCommunityService(User user, Community community) throws Exception {
 
         List<MultipartFile> communityImgFileList = community.getCommunityImgFiles();
+        log.info(communityImgFileList.toString());
+
         List<CommunityImg> communityImgList = new ArrayList();
 
         if (community.getCommunityImgFiles() != null) {
@@ -53,6 +59,9 @@ public class CommunityService {
                 String filePath = S3Util.getFilePath(baseDir, imgFile);
 
                 fileService.fileUpload(imgFile, filePath); // s3 upload
+
+                log.info(imgFile.toString());
+                log.info(filePath);
 
                 CommunityImg communityImg = CommunityImg.builder()
                         .community(community)
@@ -65,7 +74,6 @@ public class CommunityService {
             community.setCommunityImgList(communityImgList);
         }
         community.setUser(user);
-
 
 
         return DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_COMMUNITY, communityRepository.save(community));
@@ -89,8 +97,7 @@ public class CommunityService {
         for (Community community : communityList) {
             CommunityDto communityDto = community.getCommunityDto();
 
-            //
-            if (user != null) communityDto.setAuth(community.getAuth(user.getId()));
+            communityDto = setCommunityDtoAuthAndProfileImgWithUser(user, community, communityDto);
 
             communityDtoList.add(communityDto);
 
@@ -110,7 +117,24 @@ public class CommunityService {
         if (communityRepository.findById(communityId).isPresent()) {
             Community community = communityRepository.findById(communityId).get();
             CommunityDto communityDto = community.getCommunityDto();
-            if (user != null) communityDto.setAuth(community.getAuth(user.getId()));
+
+            //커뮤니티 이미지들 풀패스로 바꾸는 과정
+            List<CommunityImg> imgList = new ArrayList<>();
+            for(CommunityImg temp : community.getCommunityImgList()){
+                CommunityImg imgTemp = new CommunityImg();
+                imgTemp.setCreatedAt(temp.getCreatedAt());
+                imgTemp.setUpdatedAt(temp.getUpdatedAt());
+                imgTemp.setFilePath(S3Util.getImgPath(s3Endpoint,temp.getFilePath()));
+                imgTemp.setOriginFileName(temp.getOriginFileName());
+                imgTemp.setId(temp.getId());
+                imgList.add(imgTemp);
+            }
+            communityDto.setCommunityImgList(imgList);
+            communityDto = setCommunityDtoAuthAndProfileImgWithUser(user, community, communityDto);
+
+
+
+
 
             return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_COMMUNITY, communityDto);
         } else {
@@ -139,7 +163,7 @@ public class CommunityService {
         return DefaultRes.UNAUTHORIZATION;
     }
 
-    public DefaultRes<CommunityImg> deleteCommunityImgById(int communityImgId){
+    public DefaultRes<CommunityImg> deleteCommunityImgById(int communityImgId) {
         communityImgRepository.deleteById(communityImgId);
         return DefaultRes.res(StatusCode.OK, ResponseMessage.DELETE_COMMUNITYIMG);
     }
@@ -165,5 +189,11 @@ public class CommunityService {
     }
 
 
+    public CommunityDto setCommunityDtoAuthAndProfileImgWithUser(User user, Community community, CommunityDto communityDto) {
+        if (user != null) communityDto.setAuth(community.getAuth(user.getId()));
+        //todo 만약 디폴트 이미지가 있으면 유저 사진이 널일때랑 아닐때 분기해서 처리
+        communityDto.setUserProfileImg(S3Util.getImgPath(s3Endpoint, community.getUser().getProfileImg()));
 
+        return communityDto;
+    }
 }
