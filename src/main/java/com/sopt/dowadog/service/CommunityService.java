@@ -185,6 +185,7 @@ public class CommunityService {
 
     public CommunityDto setCommunityDtoAuthAndProfileImgWithUser(User user, Community community, CommunityDto communityDto) {
         if (user != null) communityDto.setAuth(community.getAuth(user.getId()));
+        //todo 만약 디폴트 이미지가 있으면 유저 사진이 널일때랑 아닐때 분기해서 처리
         communityDto.setUserProfileImg(S3Util.getImgPath(s3Endpoint, community.getUser().getProfileImg()));
 
         return communityDto;

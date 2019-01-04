@@ -28,11 +28,43 @@ public class PublicAnimalService {
 
 
     //타입이랑 종류 파씽 함수
-    private List<String> getTypeAndKind(String kindCd){
+    private String getType(String kindCd){
 
-        return Arrays.asList(kindCd.replaceAll("\\[","").split("\\]\\s"));
+        List<String> temp = Arrays.asList(kindCd.replaceAll("\\[","").split("\\]\\s"));
+        System.out.print(kindCd);
+        if(temp.size()>1){
+
+            System.out.print(1);
+            return temp.get(0);
+
+        }else{
+
+            return null;
+
+        }
 
     }
+
+    // 종류 파씽 함수
+
+    private String getKind(String kindCd){
+
+
+        List<String> temp = Arrays.asList(kindCd.replaceAll("\\[","").split("\\]\\s"));
+        System.out.print(kindCd);
+        if(temp.size()>1){
+
+            return temp.get(1);
+
+        }else{
+            return null;
+
+        }
+
+
+
+    }
+
 
     //스트링을 로컬데이트로 만드는 함수
     private LocalDate getDate(final String date){
@@ -99,8 +131,8 @@ public class PublicAnimalService {
             PublicListformDto publicListformDto = temp.getListAnimalDto();
             publicListformDto.setNoticeEddt(getDate(temp.getNoticeEdt()));
             publicListformDto.setRegion(getRegion(temp.getNoticeNo()));
-            publicListformDto.setType(getTypeAndKind(temp.getKindCd()).get(0));
-            publicListformDto.setKindCd(getTypeAndKind(temp.getKindCd()).get(1));
+            publicListformDto.setType(getType(temp.getKindCd()));
+            publicListformDto.setKindCd(getKind(temp.getKindCd()));
             publicListformDto.setRemainDateState(animalService.getDdayState(getDate(temp.getNoticeEdt())));
 
             listform.add(publicListformDto);
@@ -142,8 +174,8 @@ public class PublicAnimalService {
 
 
         PublicAnimalDetailDto publicAnimalDetailDto = publicAnimalObject.getPublicAnimalDetailDto();
-        publicAnimalDetailDto.setType(getTypeAndKind(publicAnimalObject.getKindCd()).get(0));
-        publicAnimalDetailDto.setKindCd(getTypeAndKind(publicAnimalObject.getKindCd()).get(1));
+        publicAnimalDetailDto.setType(getType(publicAnimalObject.getKindCd()));
+        publicAnimalDetailDto.setKindCd(getKind(publicAnimalObject.getKindCd()));
         publicAnimalDetailDto.setNoticeStdt(getDate(publicAnimalObject.getNoticeSdt()));
         publicAnimalDetailDto.setNoticeEddt(getDate(publicAnimalObject.getNoticeEdt()));
         publicAnimalDetailDto.setRegion(getRegion(publicAnimalObject.getNoticeNo()));
@@ -167,8 +199,8 @@ public class PublicAnimalService {
         List<PublicAnimal> animalList = animals.getContent();
         for(PublicAnimal temp : animalList){
             PublicListformDto emergencyPublicAnimalList = temp.getListAnimalDto();
-            emergencyPublicAnimalList.setType(getTypeAndKind(temp.getKindCd()).get(0));
-            emergencyPublicAnimalList.setKindCd(getTypeAndKind(temp.getKindCd()).get(1));
+            emergencyPublicAnimalList.setType(getType(temp.getKindCd()));
+            emergencyPublicAnimalList.setKindCd(getKind(temp.getKindCd()));
             emergencyPublicAnimalList.setNoticeEddt(getDate(temp.getNoticeEdt()));
             emergencyPublicAnimalList.setRegion(getRegion(temp.getNoticeNo()));
             emergencyPublicAnimalList.setRemainDateState(animalService.getDdayState(getDate(temp.getNoticeEdt())));
