@@ -1,5 +1,6 @@
 package com.sopt.dowadog.model.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sopt.dowadog.model.domain.auditing.DateEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,10 +17,12 @@ import javax.persistence.*;
 @IdClass(UserCardnewsId.class)
 public class UserCardnewsScrap extends DateEntity {
     @Id
+    @JsonIgnore
     @ManyToOne
     private User user;
 
     @Id
+    @JsonIgnore
     @ManyToOne
     private Cardnews cardnews;
 
