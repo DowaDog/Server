@@ -40,9 +40,4 @@ public class SignUpController {
         return new ResponseEntity(signUpService.newUser(user), HttpStatus.OK);
     }
 
-//    @PostMapping("certification")
-//    public ResponseEntity certificationUserPhone(@RequestBody String impUid){
-//        return new ResponseEntity(signUpService.certificateUser(impUid), HttpStatus.OK);
-//    }
-
 }

@@ -39,6 +39,10 @@ public class ResponseMessage {
     public static final String DELETE_CARDNEWS = "카드뉴스 삭제 성공";
     public static final String UPDATE_CARDNEWS = "카드뉴스 수정 성공";
     public static final String NOT_FOUND_CARDNNEWS = "카드뉴스 정보를 찾을 수 없습니다.";
+    public static final String COMPLETE_CARDNEWS = "카드뉴스를 이수했습니다.";
+    public static final String ALREADY_EXIST = "이미 이수한 카드뉴스입니다.";
+    public static final String DELETE_SCRAP = "스크랩 취소 성공";
+    public static final String SCRAP_CARDNEWS = "스크랩 추가 성공";
 
     //카드뉴스 contents
     public static final String READ_CARDNEWSCONTENTS = "카드뉴스 컨텐츠 조회 성공";
