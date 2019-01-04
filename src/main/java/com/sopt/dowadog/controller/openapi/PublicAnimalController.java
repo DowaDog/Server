@@ -4,7 +4,6 @@ import com.sopt.dowadog.model.common.DefaultRes;
 import com.sopt.dowadog.model.domain.PublicAnimal;
 import com.sopt.dowadog.model.domain.User;
 import com.sopt.dowadog.model.dto.PublicAnimalSearchDto;
-import com.sopt.dowadog.scheduler.PublicAnimalScheduler;
 import com.sopt.dowadog.service.PublicAnimalService;
 import com.sopt.dowadog.service.UserService;
 import com.sopt.dowadog.util.StatusCode;

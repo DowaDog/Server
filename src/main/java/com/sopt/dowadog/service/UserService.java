@@ -3,17 +3,12 @@ package com.sopt.dowadog.service;
 import com.sopt.dowadog.model.common.DefaultRes;
 import com.sopt.dowadog.model.domain.User;
 import com.sopt.dowadog.repository.UserRepository;
+import com.sopt.dowadog.service.JwtService;
 import com.sopt.dowadog.util.ResponseMessage;
-import com.sopt.dowadog.util.S3Util;
 import com.sopt.dowadog.util.StatusCode;
-import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.Id;
 import java.util.List;
 
 @Service

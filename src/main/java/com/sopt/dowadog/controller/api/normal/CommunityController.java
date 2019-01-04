@@ -1,6 +1,5 @@
 package com.sopt.dowadog.controller.api.normal;
 
-import com.sopt.dowadog.annotation.Auth;
 import com.sopt.dowadog.model.common.DefaultRes;
 import com.sopt.dowadog.model.domain.Community;
 import com.sopt.dowadog.model.domain.CommunityComment;
@@ -14,8 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
 
 @RequestMapping("api/normal/community")
 @Controller

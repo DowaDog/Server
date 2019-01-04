@@ -1,9 +1,6 @@
 package com.sopt.dowadog.model.domain;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import com.sopt.dowadog.model.domain.auditing.DateEntity;
 import com.sopt.dowadog.model.dto.AnimalDetailDto;
 import com.sopt.dowadog.model.dto.ListformDto;
@@ -18,7 +15,6 @@ import java.util.Date;
 import java.util.List;
 
 
-//@JsonIdentityInfo(generator= ObjectIdGenerators.IntSequenceGenerator.class, property="@id")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope=Animal.class)
 @Entity
 @JsonIgnoreProperties(value={"hibernateLazyInitializer", "handler"})
@@ -38,7 +34,7 @@ public class Animal extends DateEntity {
     //@Temporal(TemporalType.DATE)
     private LocalDate noticeEddt;
 
-    private String processState; // 입양 공고 진행 상태 , notice : 공고중, step : 입양절차 진행중, end : 공고 끝
+    private String processState; // 입양 공고 진행 상태 , notice : 공고중, step : 입양절차 진행중, adopt : 입양됨, temp : 임보됨, end : 안락사
     private String sexCd;
     private String neuterYn;
     private String specialMark;

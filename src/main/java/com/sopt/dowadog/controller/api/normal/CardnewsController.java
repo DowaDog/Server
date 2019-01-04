@@ -1,6 +1,5 @@
 package com.sopt.dowadog.controller.api.normal;
 
-import com.sopt.dowadog.annotation.Auth;
 import com.sopt.dowadog.model.domain.User;
 import com.sopt.dowadog.repository.UserRepository;
 import com.sopt.dowadog.service.CardnewsContentsService;

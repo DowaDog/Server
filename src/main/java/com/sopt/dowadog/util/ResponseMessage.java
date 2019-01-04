@@ -70,6 +70,8 @@ public class ResponseMessage {
 
     public static final String DB_ERROR = "데이터베이스 에러";
 
+    public static final String BAD_REQUEST = "올바르지 않은 요청";
+
 
     //MYPAGE
 
@@ -85,5 +87,12 @@ public class ResponseMessage {
 
     public static final String READ_MAILBOX = "우체통 정보 조회 성공";
 
+
+    //REGISTRATION
+    public static final String CREATE_REGISTRATION = "신청서 정보 작성 성공";
+    public static final String READ_REGISTRATION = "신청서 정보 조회 성공";
+    public static final String UPDATE_REGISTRATION = "신청서 정보 수정 성공";
+    public static final String DELETE_REGISTRATION = "신청서 정보 삭제 성공";
+    public static final String NOT_FOUND_REGISTRATION = "신청서 정보 조회 실패";
 
 }
