@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -29,9 +31,10 @@ public class Animal extends DateEntity {
     private Integer id;
 
 
-    private String type;
+    private String type; // dog, cat
 
-    //@Temporal(TemporalType.DATE)
+//    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate noticeEddt;
 
     private String processState; // 입양 공고 진행 상태 , notice : 공고중, step : 입양절차 진행중, adopt : 입양됨, temp : 임보됨, end : 안락사
@@ -44,6 +47,7 @@ public class Animal extends DateEntity {
     private String weight;
 
     //@Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate noticeStdt;
 
     private String thumbnailImg;
@@ -52,6 +56,7 @@ public class Animal extends DateEntity {
     private boolean liked;
 
     @ManyToOne
+    @JsonManagedReference
     private Care care;
 
 
@@ -65,8 +70,8 @@ public class Animal extends DateEntity {
 
 
     // Dto builder 작업(상세보기 dto)
+    @JsonIgnore
     public AnimalDetailDto getAnimalDetailDto() {
-
 
         // 좋아요랑 썸네일 파일,  스토리 리스트, 날짜 여부
         AnimalDetailDto animalDetailDto = AnimalDetailDto.builder()
@@ -91,7 +96,7 @@ public class Animal extends DateEntity {
 
 
     //리스트폼 dto
-
+    @JsonIgnore
     public ListformDto getListAnimalDto(){
         ListformDto listformDto = ListformDto.builder()
                 .id(this.id)
@@ -105,6 +110,9 @@ public class Animal extends DateEntity {
 
         return listformDto;
     }
+
+    @Transient
+    private MultipartFile thumbnailImgFile;
 
 
     //@OneToMany(mappedBy="animal")

@@ -32,9 +32,6 @@ public class JwtService {
     private String SECRET;
 
     @Autowired
-    UserRepository userRepository;
-
-    @Autowired
     AuthService authService;
 
     private static final DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");

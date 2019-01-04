@@ -1,7 +1,6 @@
 package com.sopt.dowadog.model.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.sopt.dowadog.model.domain.auditing.DateEntity;
 import lombok.AllArgsConstructor;
@@ -9,8 +8,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope=Care.class)
@@ -32,11 +33,10 @@ public class Care extends DateEntity {
     private String address;
     private String name;
     private String tel;
+    private boolean status = true;
 
-    private int status;
 
-
-    @OneToMany(mappedBy = "care", fetch = FetchType.LAZY)
-    private List<Animal> animalList;
+//    @OneToMany(mappedBy = "care", fetch = FetchType.LAZY)
+//    private List<Animal> animalList;
 
 }
