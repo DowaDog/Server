@@ -12,6 +12,7 @@ import com.sopt.dowadog.service.FileService;
 import com.sopt.dowadog.util.ResponseMessage;
 import com.sopt.dowadog.util.S3Util;
 import com.sopt.dowadog.util.StatusCode;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -25,6 +26,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 public class CommunityService {
 
@@ -47,6 +49,8 @@ public class CommunityService {
     public DefaultRes<Community> createCommunityService(User user, Community community) throws Exception {
 
         List<MultipartFile> communityImgFileList = community.getCommunityImgFiles();
+        log.info(communityImgFileList.toString());
+
         List<CommunityImg> communityImgList = new ArrayList();
 
         if (community.getCommunityImgFiles() != null) {
@@ -55,6 +59,9 @@ public class CommunityService {
                 String filePath = S3Util.getFilePath(baseDir, imgFile);
 
                 fileService.fileUpload(imgFile, filePath); // s3 upload
+
+                log.info(imgFile.toString());
+                log.info(filePath);
 
                 CommunityImg communityImg = CommunityImg.builder()
                         .community(community)
