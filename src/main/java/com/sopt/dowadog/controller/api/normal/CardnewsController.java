@@ -1,6 +1,9 @@
 package com.sopt.dowadog.controller.api.normal;
 
+import com.sopt.dowadog.annotation.Auth;
+import com.sopt.dowadog.model.common.DefaultRes;
 import com.sopt.dowadog.model.domain.User;
+import com.sopt.dowadog.model.domain.UserCardnewsEducate;
 import com.sopt.dowadog.repository.UserRepository;
 import com.sopt.dowadog.service.CardnewsContentsService;
 import com.sopt.dowadog.service.CardnewsService;
@@ -64,20 +67,26 @@ public class CardnewsController {
         return new ResponseEntity(cardnewsContentsService.readAllCardnewsContentsList(cardnewsId),HttpStatus.OK);
     }
 
-    @PostMapping("cardnews/{cardnewsId}/complete")
-    public ResponseEntity createComplete(@PathVariable("cardnewsId")int cardnewsId){
-        final String jwt = httpServletRequest.getHeader(AUTHORIZATION);
+    @PostMapping("{cardnewsId}/complete")
+    public ResponseEntity createComplete(@RequestHeader(value="Authorization", required = false) final String jwtToken,
+                                         @PathVariable("cardnewsId")int cardnewsId){
+        try {
+            User user = userService.getUserByJwtToken(jwtToken);
+            return new ResponseEntity(cardnewsService.createCardnewsEducated(user,cardnewsId),HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(DefaultRes.FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
-//        final jwtService.decode(jwt);
-
-        //todo User 정보에서 type 가져와야함
-        User user = new User();
-        user.setId("Rdd");
-
-//        token.getUser_idx();
-        //todo userService에서 type받아서 educatedCardnews List에 채워서 반환하는 메소드 만들어야댐
-        //     지금은 빈메소드인 상태!!
-        return new ResponseEntity(HttpStatus.OK);
+    @PostMapping("{cardnewsId}/scrap")
+    public ResponseEntity createscrap(@RequestHeader(value="Authorization", required = false) final String jwtToken,
+                                      @PathVariable("cardnewsId")int cardnewsId){
+        try {
+            User user = userService.getUserByJwtToken(jwtToken);
+            return new ResponseEntity(cardnewsService.createCardnewsScrap(user,cardnewsId),HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(DefaultRes.FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }

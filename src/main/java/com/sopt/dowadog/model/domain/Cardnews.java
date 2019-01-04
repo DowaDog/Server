@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mysql.cj.protocol.ColumnDefinition;
 import com.sopt.dowadog.model.domain.auditing.DateEntity;
+import com.sopt.dowadog.model.dto.UserCardnewsEducateDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
