@@ -44,7 +44,7 @@ public class CommunityService {
     private String s3Endpoint;
 
     @Transactional
-    public DefaultRes<Community> createCommunityService(User user, Community community) throws Exception {
+    public DefaultRes<Community> createCommunity(User user, Community community) throws Exception {
 
         List<MultipartFile> communityImgFileList = community.getCommunityImgFiles();
         List<CommunityImg> communityImgList = new ArrayList();
@@ -61,6 +61,7 @@ public class CommunityService {
                         .filePath(filePath)
                         .originFileName(imgFile.getOriginalFilename())
                         .build();
+
 
                 communityImgList.add(communityImgRepository.save(communityImg));
             }
