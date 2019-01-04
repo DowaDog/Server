@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.sopt.dowadog.model.domain.auditing.DateEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -15,7 +12,8 @@ import java.util.List;
 
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope=Care.class)
 @Entity
-@Data
+@Setter
+@Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,9 +22,9 @@ public class Care extends DateEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    /*private String careUserId;
+    private String careUserId;
     private String password;
-*/
+
 
     private String region;
     private String address;
