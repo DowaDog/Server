@@ -11,6 +11,7 @@ import com.sopt.dowadog.model.dto.ListformDto;
 import com.sopt.dowadog.repository.*;
 import com.sopt.dowadog.specification.AnimalSpecification;
 import com.sopt.dowadog.util.ResponseMessage;
+import com.sopt.dowadog.util.S3Util;
 import com.sopt.dowadog.util.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -75,7 +76,7 @@ private String defaultUrl;
 
         if(thumbnailImgPath!=null){
 
-            String fileUrl = new StringBuilder(defaultUrl).append("/animal/").append(thumbnailImgPath).toString();
+            String fileUrl = S3Util.getImgPath(defaultUrl,thumbnailImgPath);
             return  fileUrl;
         }else{
 
