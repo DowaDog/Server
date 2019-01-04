@@ -4,7 +4,6 @@ import com.sopt.dowadog.annotation.Verify;
 import com.sopt.dowadog.model.domain.Cardnews;
 import com.sopt.dowadog.model.domain.CardnewsContents;
 import com.sopt.dowadog.service.CardnewsContentsService;
-import com.sopt.dowadog.service.CardnewsService;
 import com.sopt.dowadog.service.UserService;
 import com.sopt.dowadog.service.admin.AdminCardnewsService;
 import org.springframework.beans.factory.annotation.Autowired;
