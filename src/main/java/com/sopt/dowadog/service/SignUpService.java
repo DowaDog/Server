@@ -38,7 +38,6 @@ public class SignUpService {
 
             fileService.fileUpload(profileImgFile, filePath);
 
-            user.setProfileImgFile(profileImgFile);
             user.setProfileImg(filePath);
         }
 

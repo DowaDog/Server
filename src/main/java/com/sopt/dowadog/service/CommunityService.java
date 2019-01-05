@@ -47,12 +47,11 @@ public class CommunityService {
     private String s3Endpoint;
 
     @Transactional
-    public DefaultRes<Community> createCommunityService(User user, Community community) {
+    public DefaultRes<Community> createCommunity(User user, Community community) {
 
         System.out.print(111111);
         List<MultipartFile> communityImgFileList = community.getCommunityImgFiles();// 멀티파트로 받기 사진 리스트
 
-        //System.out.print(communityImgFileList.size());
         List<CommunityImg> communityImgList = new ArrayList();
 
         if (Optional.ofNullable(communityImgFileList).isPresent()) {
@@ -70,6 +69,7 @@ public class CommunityService {
                         .filePath(filePath)
                         .originFileName(imgFile.getOriginalFilename())
                         .build();
+
 
                 communityImgList.add(communityImgRepository.save(communityImg));
             }

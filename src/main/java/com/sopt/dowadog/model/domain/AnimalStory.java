@@ -2,18 +2,18 @@ package com.sopt.dowadog.model.domain;
 
 import com.fasterxml.jackson.annotation.*;
 import com.sopt.dowadog.model.domain.auditing.DateEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
+import java.util.List;
 
 
 //@JsonIdentityInfo(generator= ObjectIdGenerators.IntSequenceGenerator.class, property="@id")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope=AnimalStory.class)
 @Entity
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,4 +30,8 @@ public class AnimalStory extends DateEntity {
 
     private String filePath;
     private String originFileName;
+
+    @Transient
+    @JsonIgnore
+    List<MultipartFile> animalStoryFiles;
 }

@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,10 +31,10 @@ public class AdminCardnewsService {
     FileService fileService;
 
     @Value("${uploadpath.cardnews}")
-    private String baseDir;
+    private String cardnewsBaseDir;
 
     @Value("${uploadpath.cardnewsContents}")
-    private String baseDir1;
+    private String cardnewsContentBaseDir;
 
     //교육 카드뉴스 리스트 조회
     public DefaultRes<List<Cardnews>> readCardnewsEducationList(){
@@ -63,18 +62,30 @@ public class AdminCardnewsService {
 
         if(cardnews.getCardnewsImgFile() != null){
 
-            String filePath = new StringBuilder(baseDir).
-                    append(S3Util.getUuid()).
-                    append(cardnewsImgFile.getOriginalFilename()).toString();
+            String filePath = S3Util.getFilePath(cardnewsBaseDir, cardnewsImgFile);
+//                    new StringBuilder(cardnewsBaseDir).
+//                    append(S3Util.getUuid()).
+//                    append(cardnewsImgFile.getOriginalFilename()).toString();
 
            fileService.fileUpload(cardnewsImgFile, filePath);
 
-           cardnews.setCardnewsImgFile(cardnewsImgFile);
            cardnews.setImgPath(filePath);
         }
 
-        return DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_CARDNEWS, cardnewsRepository.save(cardnews));
+        cardnewsRepository.save(cardnews);
+
+        return DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_CARDNEWS);
     }
+
+//    String filePath = S3Util.getFilePath(baseDir, imgFile);
+//
+//                fileService.fileUpload(imgFile, filePath); // s3 upload
+//
+//    CommunityImg communityImg = CommunityImg.builder()
+//            .community(community)
+//            .filePath(filePath)
+//            .originFileName(imgFile.getOriginalFilename())
+//            .build();
 
     //카드뉴스 삭제
     public DefaultRes<Cardnews> deleteCardnewsById(int cardnewsId){
@@ -97,16 +108,18 @@ public class AdminCardnewsService {
     }
 
     //카드뉴스 컨텐츠 생성
-    public DefaultRes<CardnewsContents> createCardnewsContentsService(CardnewsContents cardnewsContents, int cardnewsId){
+    public DefaultRes createCardnewsContentsService(CardnewsContents cardnewsContents, int cardnewsId){
         //todo 에러처리 해야댐!
 
         MultipartFile cardnewsContentsImgFile = cardnewsContents.getCardnewsContentsImgFile();
 
         if(cardnewsContents.getCardnewsContentsImgFile() != null){
 
-            String filePath = new StringBuilder(baseDir1).
-                    append(S3Util.getUuid()).
-                    append(cardnewsContentsImgFile.getOriginalFilename()).toString();
+            String filePath = S3Util.getFilePath(cardnewsContentBaseDir, cardnewsContentsImgFile);
+//                    new StringBuilder(cardnewsContentBaseDir).
+//                    append(S3Util.getUuid()).
+//                    append(cardnewsContentsI  mgFile.getOriginalFilename()).toString();
+
 
             fileService.fileUpload(cardnewsContentsImgFile, filePath);
 
@@ -115,7 +128,9 @@ public class AdminCardnewsService {
         }
 
         cardnewsContents.setCardnews(cardnewsRepository.findById(cardnewsId).get());
-        return DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_CARDNEWSCONTENTS, cardnewsContentsRepository.save(cardnewsContents));
+        cardnewsContentsRepository.save(cardnewsContents);
+
+        return DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_CARDNEWSCONTENTS);
     }
 
     //카드뉴스 컨텐츠 삭제
@@ -132,5 +147,14 @@ public class AdminCardnewsService {
         cardnewsContents.setThumnailImg(modifiedCardnewsContents.getThumnailImg());
 
         return DefaultRes.res(StatusCode.OK, ResponseMessage.UPDATE_CARDNEWSCONTENTS, cardnewsContents);
+    }
+
+
+
+
+//    admin용
+
+    public List<Cardnews> readCardnews() {
+        return cardnewsRepository.findAll();
     }
 }

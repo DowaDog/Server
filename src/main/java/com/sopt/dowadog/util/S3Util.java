@@ -18,11 +18,8 @@ public class S3Util {
         }
     }
 
-    public static File convert(MultipartFile file) throws IOException {
-        File convFile = new File(file.getOriginalFilename());
-        return convFile;
-    }
 
+    //파일 업로드시 사용
     public static String getFilePath(String baseDir, MultipartFile file){
         return new StringBuilder(baseDir).
                         append(S3Util.getUuid()).
@@ -34,6 +31,8 @@ public class S3Util {
         return UUID.randomUUID().toString().replaceAll("-", "");
     }
 
+
+    //pu
     public static String getImgPath(String endPoint, String imgPath) {
         return new StringBuilder(endPoint).append(imgPath).toString();
     }
