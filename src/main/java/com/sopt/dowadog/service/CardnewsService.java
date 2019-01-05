@@ -18,6 +18,7 @@ import com.sopt.dowadog.util.StatusCode;
 import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -48,7 +49,7 @@ public class CardnewsService {
     private String s3Endpoint;
 
     public DefaultRes<CardnewsListDto> readCardnewsEducationList(User user){
-        //todo enum 객체 활용!
+        //todo edu 정보 여기서 주는거 아니고 컨텐츠 상세 조회에서 보여주는것 Dto에 Auth 정보 추가
         if(userRepository.findById(user.getId()).isPresent()){
 
             List<Cardnews> cardnewsList = cardnewsRepository.findByTypeOrderByCreatedAtDesc("education");
@@ -63,7 +64,9 @@ public class CardnewsService {
 
                 cardnewsDto.setImgPath(temp);
 
-                cardnewsDto = setCardnewsDtoComplete(user, cardnews, cardnewsDto);
+                cardnewsDto = setCardnewsDtoAuth(user, cardnewsDto);
+
+                cardnewsDto.setEducated(cardnews.getEducated(user));
 
                 cardnewsDtoList.add(cardnewsDto);
             }
@@ -72,7 +75,7 @@ public class CardnewsService {
 
             CardnewsListDto cardnewsListDto = CardnewsListDto.builder().
                     content(cardnewsDtoList).
-                    edu(allEducatedDto).build();
+                    build();
 
             return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_CARDNEWS, cardnewsListDto);
         }else{
@@ -82,6 +85,10 @@ public class CardnewsService {
 
             for(Cardnews cardnews : cardnewsList){
                 CardnewsDto cardnewsDto = cardnews.getCardnewsDto();
+
+                String temp = s3Endpoint + cardnews.getImgPath();
+
+                cardnewsDto.setImgPath(temp);
 
                 cardnewsDtoList.add(cardnewsDto);
             }
@@ -94,15 +101,31 @@ public class CardnewsService {
         }
     }
 
-    public DefaultRes<List<Cardnews>> readCardnewsKnowledgeList(int page, int limit){
+    public DefaultRes<CardnewsListDto> readCardnewsKnowledgeList(int page, int limit){
         Pageable pageable = PageRequest.of(page, limit);
-        //todo enum 객체 활용!
-            return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_CARDNEWS, cardnewsRepository.findByTypeOrderByCreatedAtDesc("knowledge", pageable));
+
+        Page<Cardnews> cardnewsPage = cardnewsRepository.findByTypeOrderByCreatedAtDesc("knoewledge", pageable);
+        Pageable paging = cardnewsPage.getPageable();
+
+        List<Cardnews> cardnewsList = cardnewsPage.getContent();
+
+        List<CardnewsDto> cardnewsDtoList = new ArrayList<>();
+
+        for(Cardnews cardnews : cardnewsList){
+            CardnewsDto cardnewsDto = cardnews.getCardnewsDto();
+
+            cardnewsDtoList.add(cardnewsDto);
+        }
+
+        CardnewsListDto cardnewsListDto = CardnewsListDto.builder()
+                .content(cardnewsDtoList)
+                .build();
+            return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_CARDNEWS, cardnewsListDto);
     }
 
     public DefaultRes<List<UserCardnewsEducate>> createCardnewsEducated(User user, final int cardnewsId) {
 
-        List<UserCardnewsEducate> checkEduList = userCardnewsEducateRepository.findByUser_IdAndCardnews_Id(user.getId(), cardnewsId);
+        List<UserCardnewsEducate> checkEduList = userCardnewsEducateRepository.findByUserIdAndCardnewsId(user.getId(), cardnewsId);
 
         if (checkEduList.size() == 0) {
             Optional<User> eduUser = userRepository.findById(user.getId());
@@ -119,7 +142,7 @@ public class CardnewsService {
         } else {
             return DefaultRes.res(StatusCode.OK, ResponseMessage.ALREADY_EXIST);
         }
-        return DefaultRes.res(StatusCode.CREATED, ResponseMessage.COMPLETE_CARDNEWS, userCardnewsEducateRepository.findByUser_IdAndCardnews_Id(user.getId(), cardnewsId));
+        return DefaultRes.res(StatusCode.CREATED, ResponseMessage.COMPLETE_CARDNEWS, userCardnewsEducateRepository.findByUserIdAndCardnewsId(user.getId(), cardnewsId));
     }
 
     @Transactional
@@ -147,18 +170,6 @@ public class CardnewsService {
         return DefaultRes.res(StatusCode.CREATED, ResponseMessage.SCRAP_CARDNEWS);
     }
 
-    public CardnewsDto setCardnewsDtoComplete(User user,Cardnews cardnews, CardnewsDto cardnewsDto){
-        if(user != null){
-            if(userCardnewsEducateRepository.findByUser_IdAndCardnews_Id(user.getId(), cardnews.getId())!=null){
-                cardnewsDto.setEducated(true);
-            };
-            return cardnewsDto;
-        }else{
-            cardnewsDto.setEducated(false);
-            return cardnewsDto;
-        }
-    }
-
     public AllEducatedDto setAllEducatedDtoComplete(User user){
         int allEducate = 0;
         int userEducate = 0;
@@ -178,5 +189,11 @@ public class CardnewsService {
         }else{
             return null;
         }
+    }
+
+    public CardnewsDto setCardnewsDtoAuth(User user ,CardnewsDto cardnewsDto){
+        if (user != null) cardnewsDto.setAuth(user.getAuth(user.getId()));
+
+        return cardnewsDto;
     }
 }

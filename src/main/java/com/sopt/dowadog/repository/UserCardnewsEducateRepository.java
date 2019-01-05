@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface UserCardnewsEducateRepository extends JpaRepository<UserCardnewsEducate, Integer> {
-    List<UserCardnewsEducate> findByUser_IdAndCardnews_Id(final String userId, final int cardnewsId);
+    List<UserCardnewsEducate> findByUserIdAndCardnewsId(final String userId, final int cardnewsId);
 }

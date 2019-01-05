@@ -51,6 +51,10 @@ public class Cardnews extends DateEntity {
     @OneToMany(mappedBy = "cardnews")
     private List<UserCardnewsScrap> userCardnewsScrapList = new ArrayList<>();
 
+    @ManyToOne
+    @JsonIgnore
+    User user;
+
     @JsonIgnore
     public CardnewsDto getCardnewsDto() {
         return CardnewsDto.builder()
@@ -61,6 +65,21 @@ public class Cardnews extends DateEntity {
                 .imgPath(this.imgPath)
                 .build();
     }
+
+    public boolean getAuth(String userId){
+        return userId.equals(this.user.getId());
+    }
+
+    public boolean getEducated(User user){
+
+        for(UserCardnewsEducate cardnewsEducate : user.getUserCardnewsEducatedList()){
+            if(this.id == cardnewsEducate.getCardnews().getId()) return true;
+        }
+        return false;
+    }
+
+
+
 
 }
 

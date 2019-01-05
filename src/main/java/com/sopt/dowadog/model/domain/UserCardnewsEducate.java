@@ -34,4 +34,5 @@ public class UserCardnewsEducate extends DateEntity {
                 .userId(this.user.getId())
                 .build();
     }
+
 }

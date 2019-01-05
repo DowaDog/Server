@@ -3,6 +3,8 @@ package com.sopt.dowadog.service.admin;
 import com.sopt.dowadog.model.common.DefaultRes;
 import com.sopt.dowadog.model.domain.Cardnews;
 import com.sopt.dowadog.model.domain.CardnewsContents;
+import com.sopt.dowadog.model.domain.User;
+import com.sopt.dowadog.model.dto.*;
 import com.sopt.dowadog.repository.CardnewsContentsRepository;
 import com.sopt.dowadog.repository.CardnewsRepository;
 import com.sopt.dowadog.service.FileService;
@@ -11,11 +13,13 @@ import com.sopt.dowadog.util.S3Util;
 import com.sopt.dowadog.util.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -40,22 +44,66 @@ public class AdminCardnewsService {
     private String s3Endpoint;
 
     //교육 카드뉴스 리스트 조회
-    public DefaultRes<List<Cardnews>> readCardnewsEducationList(){
-        //todo enum 객체 활용!
-        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_CARDNEWS, cardnewsRepository.findByTypeOrderByCreatedAtDesc("education"));
+    public DefaultRes<CardnewsListDto> readCardnewsEducationList(){
+        //todo edu 정보 여기서 주는거 아니고 컨텐츠 상세 조회에서 보여주는것 Dto에 Auth 정보 추가
+            List<Cardnews> cardnewsList = cardnewsRepository.findByTypeOrderByCreatedAtDesc("education");
+
+            List<CardnewsDto> cardnewsDtoList =  new ArrayList<>();
+
+
+            for(Cardnews cardnews : cardnewsList){
+                CardnewsDto cardnewsDto = cardnews.getCardnewsDto();
+
+                String temp = s3Endpoint + cardnews.getImgPath();
+
+                cardnewsDto.setImgPath(temp);
+
+                cardnewsDtoList.add(cardnewsDto);
+            }
+
+            CardnewsListDto cardnewsListDto = CardnewsListDto.builder().
+                    content(cardnewsDtoList).
+                    build();
+
+            return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_CARDNEWS, cardnewsListDto);
     }
 
     //상식 카드뉴스 리스트 조회
-    public DefaultRes<List<Cardnews>> readCardnewsKnowledgeList(int page, int limit){
+    public DefaultRes<CardnewsListDto> readCardnewsKnowledgeList(int page, int limit){
         Pageable pageable = PageRequest.of(page, limit);
-        //todo enum 객체 활용!
-        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_CARDNEWS, cardnewsRepository.findByTypeOrderByCreatedAtDesc("knowledge", pageable));
+
+        Page<Cardnews> cardnewsPage = cardnewsRepository.findByTypeOrderByCreatedAtDesc("knoewledge", pageable);
+        Pageable paging = cardnewsPage.getPageable();
+
+        List<Cardnews> cardnewsList = cardnewsPage.getContent();
+
+        List<CardnewsDto> cardnewsDtoList = new ArrayList<>();
+
+        for(Cardnews cardnews : cardnewsList){
+            CardnewsDto cardnewsDto = cardnews.getCardnewsDto();
+
+            cardnewsDtoList.add(cardnewsDto);
+        }
+        CardnewsListDto cardnewsListDto = CardnewsListDto.builder()
+                .content(cardnewsDtoList)
+                .build();
+        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_CARDNEWS, cardnewsListDto);
     }
 
     //카드뉴스 컨텐츠 상세보기
-    public DefaultRes<List<CardnewsContents>> readAllCardnewsContentsList(int cardnewsId){
+    public DefaultRes<CardnewsContentsListDto> readAllCardnewsContentsList(int cardnewsId){
+        List<CardnewsContents> cardnewsContentsList = cardnewsContentsRepository.findByCardnewsId(cardnewsId);
 
-        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_CARDNEWSCONTENTS, cardnewsContentsRepository.findByCardnewsId(cardnewsId));
+        List<CardnewsContentsDto> cardnewsContentsDtoList = new ArrayList<>();
+
+        for(CardnewsContents cardnewsContents : cardnewsContentsList){
+            CardnewsContentsDto cardnewsContentsDto = cardnewsContents.getCardnewsContentsDto();
+
+            cardnewsContentsDtoList.add(cardnewsContentsDto);
+        }
+        CardnewsContentsListDto cardnewsContentsListDto = CardnewsContentsListDto.builder().content(cardnewsContentsDtoList).build();
+
+        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_CARDNEWSCONTENTS, cardnewsContentsListDto);
     }
 
     //카드뉴스 생성
@@ -157,7 +205,21 @@ public class AdminCardnewsService {
 
 //    admin용
 
-    public List<Cardnews> readCardnews() {
-        return cardnewsRepository.findAll();
+    public CardnewsListDto readCardnews() {
+
+        List<Cardnews> cardnewsList = cardnewsRepository.findAll();
+
+        List<CardnewsDto> cardnewsDtoList = new ArrayList<>();
+
+        for(Cardnews cardnews : cardnewsList){
+            CardnewsDto cardnewsDto = cardnews.getCardnewsDto();
+
+            cardnewsDtoList.add(cardnewsDto);
+        }
+        CardnewsListDto cardnewsListDto = CardnewsListDto.
+                builder().content(cardnewsDtoList).
+                build();
+
+        return cardnewsListDto;
     }
 }
