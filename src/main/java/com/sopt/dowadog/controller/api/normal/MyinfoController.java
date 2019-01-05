@@ -155,5 +155,21 @@ public class MyinfoController {
 
         //return new ResponseEntity(HttpStatus.OK);
     }
+    //내 정보 조회
+    @Auth
+    @GetMapping("/myinfo")
+    public ResponseEntity readMypageMyinfo(@RequestHeader(value = "Authorization",required = false)final String jwtToken){
+        try{
+            User user = userService.getUserByJwtToken(jwtToken);
+            return new ResponseEntity(myinfoService.readMyinfo(user),HttpStatus.OK);
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity(DefaultRes.FAIL_DEFAULT_RES,HttpStatus.INTERNAL_SERVER_ERROR);
+
+        }
+
+    }
 }
 //컨트롤러는 클라이언트에게 보여줄 뷰

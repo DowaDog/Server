@@ -236,6 +236,26 @@ public class MyinfoService {
         return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_MAILBOX, user.getMailboxList());
     }
 
+    public DefaultRes<MyinfoChangeDto> readMyinfo(final User user){
+        try {
+            User temp = userRepository.findById(user.getId()).get();
+
+            MyinfoChangeDto myinfoChangeDto = MyinfoChangeDto.builder()
+                    .thumbnailImg(S3Util.getImgPath(s3Endpoint,temp.getProfileImg()))
+                    .birth(temp.getBirth())
+                    .name(temp.getName())
+                    .phone(temp.getPhone())
+                    .build();
+
+            return DefaultRes.res(StatusCode.OK,ResponseMessage.READ_USER,myinfoChangeDto);
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return DefaultRes.res(StatusCode.DB_ERROR,ResponseMessage.DB_ERROR);
+        }
+    }
+
 
 }
 
