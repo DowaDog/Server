@@ -154,6 +154,7 @@ private String defaultUrl;
 //유기동물 상세보기
 
     public DefaultRes<AnimalDetailDto> readAnimal(final int animalId, final User user){
+        AllEducatedDto allEducatedDto = cardnewsService.setAllEducatedDtoComplete(user);
 
 
 
@@ -185,7 +186,7 @@ private String defaultUrl;
         animalDetailDto.setThumbnailImg(getThumnailImg(animal.getThumbnailImg()));
         animalDetailDto.setLiked(getLikedForGuest(user,animalId));
         animalDetailDto.setRemainDateState(getDdayState(animal.getNoticeEddt()));
-
+        animalDetailDto.setEducationState(allEducatedDto.isAllComplete());
 
         return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_ANIMAL, animalDetailDto);
 
@@ -238,7 +239,7 @@ private String defaultUrl;
 
         AllEducatedDto allEducatedDto = cardnewsService.setAllEducatedDtoComplete(user);
 
-       
+
         List<ListformDto> listform = new ArrayList<>();
         Pageable pageable = PageRequest.of(page, limit,Sort.by(Sort.Direction.DESC,"animal.createdAt"));
 
