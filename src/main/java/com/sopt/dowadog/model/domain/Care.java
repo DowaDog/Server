@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.sopt.dowadog.model.domain.auditing.DateEntity;
+import com.sopt.dowadog.model.dto.CareDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -36,5 +37,15 @@ public class Care extends DateEntity {
 
     //@OneToMany(mappedBy = "care", fetch = FetchType.LAZY)
     //private List<Animal> animalList;
+
+    @JsonIgnore
+    public CareDto getCareDto() {
+        return CareDto.builder()
+                .name(this.name)
+                .address(this.address)
+                .region(this.region)
+                .tel(this.tel)
+                .build();
+    }
 
 }
