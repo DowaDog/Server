@@ -94,6 +94,7 @@ public class MyinfoController {
 
 
     //좋아요 리스트 조회 완료
+    @Auth
     @GetMapping("/likes")
     public ResponseEntity readMypageLikes
     (@RequestHeader(value = "Authorization", required = false) String jwtToken) {
@@ -109,12 +110,14 @@ public class MyinfoController {
     }
 
     //스크랩 리스트 조회 //todo 수한이 작업 완료하면 그때
+    @Auth
     @GetMapping("/scraps")
     public ResponseEntity readMypageClips
     (@RequestHeader(value = "Authorization", required = false) String jwtToken) {
         //todo 나중에 상세 예외처리
 
         try {
+            //밑의 함수의 경우 throws를 사용해서 꼭 try catch문을 해야 함!(에러를 최상단에서 처리하기 위해서)
             User user = userService.getUserByJwtToken(jwtToken);
 
             return new ResponseEntity(myinfoService.readMyClipsList(user), HttpStatus.OK);

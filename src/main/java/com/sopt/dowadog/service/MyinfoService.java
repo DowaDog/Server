@@ -3,10 +3,7 @@ package com.sopt.dowadog.service;
 import com.sopt.dowadog.model.common.DefaultRes;
 import com.sopt.dowadog.model.domain.*;
 import com.sopt.dowadog.model.dto.*;
-import com.sopt.dowadog.repository.AnimalCheckupRepository;
-import com.sopt.dowadog.repository.AnimalUserAdoptRepository;
-import com.sopt.dowadog.repository.MailboxRepository;
-import com.sopt.dowadog.repository.UserRepository;
+import com.sopt.dowadog.repository.*;
 import com.sopt.dowadog.util.ResponseMessage;
 import com.sopt.dowadog.util.S3Util;
 import com.sopt.dowadog.util.StatusCode;
@@ -38,6 +35,13 @@ public class MyinfoService {
     CodeService codeService;
     @Autowired
     AnimalCheckupRepository animalCheckupRepository;
+    @Autowired
+    UserCardnewsScrapRepository userCardnewsScrapRepository;
+    @Autowired
+    UserAnimalLikeRepository userAnimalLikeRepository;
+    @Autowired
+    CardnewsService cardnewsService;
+
 
     @Value("${uploadpath.myinfo}")
     private String baseDir;
@@ -151,29 +155,64 @@ public class MyinfoService {
 
 
     //사용자 좋아요 리스트 조회
-    public DefaultRes<List<ListformDto>> readMyLikeList(User user) {
-        List<UserAnimalLike> userAnimalLikeList = user.getUserAnimalLikeList();
 
-        List<ListformDto> animalLikedDtoList = new ArrayList<>();
+    public DefaultRes<List<ListformDto>> readMyLikeList(User user){
 
-        for(UserAnimalLike userAnimalLike : userAnimalLikeList) {
-            ListformDto animalListformDto = userAnimalLike.getListformDto();
-            animalListformDto.setThumbnailImg(new StringBuilder(s3Endpoint).append(userAnimalLike.getAnimal().getThumbnailImg()).toString());
+        try{
+            List<ListformDto> animalLikeDtoList = new ArrayList<>();
 
-            //좋아요 한 녀석들만 가져오므로
-            animalListformDto.setLiked(true);
-            animalListformDto.setRemainDateState(animalService.getDdayState(userAnimalLike.getAnimal().getNoticeEddt()));;
+            for(UserAnimalLike temp : userAnimalLikeRepository.findAllByUser_IdOrderByCreatedAtDesc(user.getId())){
+                ListformDto listformDto = ListformDto.builder()
+                        .noticeEddt(temp.getAnimal().getNoticeEddt())
+                        .thumbnailImg(S3Util.getImgPath(s3Endpoint,temp.getAnimal().getThumbnailImg()))
+                        .liked(animalService.getLikedForGuest(user,temp.getAnimal().getId()))//함수사용
+                        .remainDateState(animalService.getDdayState(temp.getAnimal().getNoticeEddt()))//함수사용
+                        .id(temp.getAnimal().getId())
+                        .kindCd(temp.getAnimal().getKindCd())
+                        .processState(temp.getAnimal().getProcessState())
+                        .education(cardnewsService.getAllEducatedDtoComplete(user).isAllComplete())// 카드뉴스에 있는 거 가져오기
+                        .type(temp.getAnimal().getType())
+                        .sexCd(temp.getAnimal().getSexCd())
+                        .region(temp.getAnimal().getCare().getRegion())
+                        .build();
+                animalLikeDtoList.add(listformDto);
+            }
+            return DefaultRes.res(StatusCode.OK,ResponseMessage.READ_LIKE,animalLikeDtoList);
 
 
-            animalLikedDtoList.add(animalListformDto);
+        }catch (Exception e){
+            e.printStackTrace();
+            return DefaultRes.res(StatusCode.DB_ERROR,ResponseMessage.DB_ERROR);
+        }
         }
 
-        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_USER_LIKE, animalLikedDtoList);
-    }
-
     //사용자 스크랩 리스트 조회
-    public DefaultRes<List<UserCardnewsScrap>> readMyClipsList(User user) {
-        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_USER_SCRAP, user.getUserCardnewsScrapList());
+    public DefaultRes<List<MyinfoScrapListDto>> readMyClipsList(User user) {
+        try{
+            List<MyinfoScrapListDto> tempList = new ArrayList<>();
+
+            for(UserCardnewsScrap temp : userCardnewsScrapRepository.findAllBy(user.getId())){
+
+                MyinfoScrapListDto myinfoScrapListDto = MyinfoScrapListDto
+                        .builder()
+                        .id(temp.getCardnews().getId())
+                        .title(temp.getCardnews().getTitle())
+                        .createAt(temp.getCreatedAt())
+                        .build();
+                tempList.add(myinfoScrapListDto);
+
+            }
+
+            return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_USER_SCRAP,tempList);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_USER_SCRAP);
+
+
+        }
+
+//        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_USER_SCRAP, userCardnewsScrapRepository.findAllBy(user.getId()));
     }
 
     //사용자 작성한 글 리스트 조회
