@@ -69,7 +69,9 @@ public class AnimalSpecification {
 
                 }
                 Predicate temp = cb.greaterThan(root.get("noticeEddt").as(LocalDate.class),LocalDate.now());
-                predicates.add(temp);
+                Predicate temp1 = cb.like(root.get("processState"), new StringBuilder("notice").toString());
+                Predicate total = cb.and(temp,temp1);
+                predicates.add(total);
             });
 
 

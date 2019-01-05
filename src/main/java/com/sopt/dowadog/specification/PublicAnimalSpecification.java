@@ -22,12 +22,12 @@ public class PublicAnimalSpecification {
                     case "type":
                         Predicate typePredicate =
                                 cb.like(root.get("kindCd").as(String.class),
-                                        new StringBuilder("[").append(PublicAnimalTypeEnum.valueOf(value.toString()).getValue()).append("%").toString());
+                                        new StringBuilder("[").append(value.toString()).append("%").toString());
                         predicates.add(typePredicate);
                         break;
                     case "region":
                         Predicate regionPredicate =
-                                cb.like(root.get("noticeNo").as(String.class),
+                                cb.like(root.get("orgNm").as(String.class),
                                         new StringBuilder(value.toString()).append("%").toString());
                         predicates.add(regionPredicate);
                         break;

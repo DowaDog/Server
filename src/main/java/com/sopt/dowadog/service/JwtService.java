@@ -50,7 +50,7 @@ public class JwtService {
         }
     }
 
-    public DefaultRes renewAccessToken(String refreshToken) { //리프레시 토큰이용해서 액세스 토큰 갱신
+    public DefaultRes renewAccessToken(String refreshToken) { //리프레시 토큰이용해서 액세스 토큰 갱신-> 유저용 이거 케어 부분은 다르게 다르게 해줘야 함
         long nowTime = System.currentTimeMillis() / 1000;
 
         try {
@@ -68,6 +68,7 @@ public class JwtService {
 
         }
     }
+
 
     private Token createToken(String userId, JwtExpireTermEnum type, long nowTime) {
 

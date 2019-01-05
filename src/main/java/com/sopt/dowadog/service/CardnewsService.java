@@ -176,7 +176,15 @@ public class CardnewsService {
         boolean allComplete = false;
         if(cardnewsRepository.findByType("education").isPresent()){//전체 교육 개수
             allEducate = cardnewsRepository.findByType("education").get().size();
-            userEducate = user.getCardnewsEducatedCount(); //사용자가교육한 갯수
+
+            if(!Optional.ofNullable(user).isPresent()){
+
+                userEducate = 0;
+            }else{
+
+                userEducate = user.getCardnewsEducatedCount() ; //사용자가교육한 갯수
+            }
+
             if(allEducate == userEducate){
                 allComplete = true;
             }
@@ -184,7 +192,6 @@ public class CardnewsService {
             allEducatedDto.setAllEducate(allEducate);
             allEducatedDto.setUserEducated(userEducate);
             allEducatedDto.setAllComplete(allComplete);
-
             return allEducatedDto;
         }else{
             return null;

@@ -3,6 +3,7 @@ package com.sopt.dowadog.controller.openapi;
 import com.sopt.dowadog.model.common.DefaultRes;
 import com.sopt.dowadog.model.domain.PublicAnimal;
 import com.sopt.dowadog.model.domain.User;
+import com.sopt.dowadog.model.dto.PublicAnimalListDto;
 import com.sopt.dowadog.model.dto.PublicAnimalSearchDto;
 import com.sopt.dowadog.service.PublicAnimalService;
 import com.sopt.dowadog.service.UserService;
@@ -13,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 
 @Cacheable("snapshotData")
@@ -72,12 +75,19 @@ public class PublicAnimalController {
 
         try{
             User user = null;
+            System.out.println("들어왔니"+search.getType());
+            System.out.println("들어왔니"+search.getRegion());
+            System.out.println("들어왔니"+search.getRemainNoticeDate());
+
             if(jwtToken!=null){
+                System.out.print(1);
                 user = userService.getUserByJwtToken(jwtToken);
             }
+            //if(Optional.ofNullable(publicAnimalService.readPublicAnimalList(search, page, limit,user)).isPresent())
             return new ResponseEntity(publicAnimalService.readPublicAnimalList(search, page, limit,user), HttpStatus.OK);
 
         }catch(Exception e){
+            e.printStackTrace();
             return new ResponseEntity(DefaultRes.FAIL_DEFAULT_RES,HttpStatus.INTERNAL_SERVER_ERROR);
 
         }
