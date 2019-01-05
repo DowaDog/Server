@@ -8,21 +8,18 @@ import com.sopt.dowadog.model.domain.UserCardnewsScrap;
 import com.sopt.dowadog.model.dto.AllEducatedDto;
 import com.sopt.dowadog.model.dto.CardnewsDto;
 import com.sopt.dowadog.model.dto.CardnewsListDto;
-import com.sopt.dowadog.model.dto.UserCardnewsEducateDto;
 import com.sopt.dowadog.repository.CardnewsRepository;
 import com.sopt.dowadog.repository.UserCardnewsEducateRepository;
 import com.sopt.dowadog.repository.UserCardnewsScrapRepository;
 import com.sopt.dowadog.repository.UserRepository;
 import com.sopt.dowadog.util.ResponseMessage;
 import com.sopt.dowadog.util.StatusCode;
-import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +65,7 @@ public class CardnewsService {
                 cardnewsDtoList.add(cardnewsDto);
             }
 
-            AllEducatedDto allEducatedDto = setAllEducatedDtoComplete(user);
+            AllEducatedDto allEducatedDto = getAllEducatedDtoComplete(user);
 
             CardnewsListDto cardnewsListDto = CardnewsListDto.builder().
                     content(cardnewsDtoList).
@@ -159,7 +156,7 @@ public class CardnewsService {
         }
     }
 
-    public AllEducatedDto setAllEducatedDtoComplete(User user){
+    public AllEducatedDto getAllEducatedDtoComplete(User user){
         int allEducate = 0;
         int userEducate = 0;
         boolean allComplete = false;

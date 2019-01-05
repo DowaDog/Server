@@ -4,10 +4,7 @@ import ch.qos.logback.core.pattern.parser.OptionTokenizer;
 import com.amazonaws.util.DateUtils;
 import com.sopt.dowadog.model.common.DefaultRes;
 import com.sopt.dowadog.model.domain.*;
-import com.sopt.dowadog.model.dto.AnimalDetailDto;
-import com.sopt.dowadog.model.dto.AnimalListDto;
-import com.sopt.dowadog.model.dto.FilterDto;
-import com.sopt.dowadog.model.dto.ListformDto;
+import com.sopt.dowadog.model.dto.*;
 import com.sopt.dowadog.repository.*;
 import com.sopt.dowadog.specification.AnimalSpecification;
 import com.sopt.dowadog.util.ResponseMessage;
@@ -37,6 +34,7 @@ public class AnimalService {
     private final UserAnimalLikeRepository userAnimalLikeRepository;
     private final UserRepository userRepository;
     private final AnimalStoryRepository animalStoryRepository;
+    private final CareRepository careRepository;
 
 
 
@@ -48,12 +46,14 @@ private String defaultUrl;
                          final HashtagAnimalRepository hashtagAnimalRepository,
                          final UserAnimalLikeRepository userAnimalLikeRepository,
                          final UserRepository userRepository,
-                         final AnimalStoryRepository animalStoryRepository){
+                         final AnimalStoryRepository animalStoryRepository,
+                         final CareRepository careRepository){
         this.animalRepository = animalRepository;
         this.hashtagAnimalRepository = hashtagAnimalRepository;
         this.userAnimalLikeRepository = userAnimalLikeRepository;
         this.userRepository = userRepository;
         this.animalStoryRepository = animalStoryRepository;
+        this.careRepository = careRepository;
     }
 
     //좋아요 여부 구현 메소드
@@ -300,6 +300,16 @@ private String defaultUrl;
 
         return DefaultRes.res(StatusCode.CREATED, ResponseMessage.CREATED_LIKE);
 
+    }
+
+
+    public DefaultRes<CareDto> readCareinfoByAnimalId(int animalId){
+
+        if(!animalRepository.findById(animalId).isPresent()) return DefaultRes.NOT_FOUND;
+        Animal animal = animalRepository.findById(animalId).get();
+        Care care = animal.getCare();
+
+        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_CARE, care.getCareDto());
     }
 
 
