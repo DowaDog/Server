@@ -6,20 +6,19 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.sopt.dowadog.model.domain.auditing.DateEntity;
 import com.sopt.dowadog.model.dto.CommunityDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -46,8 +45,8 @@ public class Community extends DateEntity {
     private List<MultipartFile> communityImgFiles;
 
     public boolean isToday() {
-        Date createdAt = this.getCreatedAt();
-        return (new DateTime(createdAt).toLocalDate()).equals(new LocalDate());
+        LocalDateTime createdAt = this.getCreatedAt();
+        return (createdAt.equals(new LocalDate()));
     }
 
     public boolean getAuth(String userId){

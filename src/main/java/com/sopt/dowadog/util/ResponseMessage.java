@@ -30,6 +30,12 @@ public class ResponseMessage {
     //유기동물 관련 리스폰스 메세지
     public static final String READ_ANIMAL = "동물 조회 성공";
     public static final String NOT_FOUND_ANIMAL= "동물을 찾을 수 없다.";
+    public static final String CREATED_ANIMAL = "동물 추가 성공";
+
+
+    //보호소 관련 메세지
+    public static final String CREATED_CARE = "보호소 가입 성공";
+    public static final String READ_CARE = "보호소 정보 조회 성공";
 
 
 
@@ -98,5 +104,6 @@ public class ResponseMessage {
     public static final String UPDATE_REGISTRATION = "신청서 정보 수정 성공";
     public static final String DELETE_REGISTRATION = "신청서 정보 삭제 성공";
     public static final String NOT_FOUND_REGISTRATION = "신청서 정보 조회 실패";
+
 
 }

@@ -165,7 +165,7 @@ private String defaultUrl;
 
         for(AnimalStory a : animalStories){
 
-            String temp = new StringBuilder(defaultUrl).append("/animal/").append(a.getFilePath()).toString();
+            String temp = S3Util.getImgPath(defaultUrl,a.getFilePath());
             totalStoryList.add(temp);
 
         }
@@ -218,7 +218,6 @@ private String defaultUrl;
         Page<Animal> animals = animalRepository.findAll(AnimalSpecification.searchAnimal(filter),pageable);
         List<Animal> animalList = animals.getContent();
 
-       // animalRepository.
 
         return DefaultRes.res(StatusCode.OK,ResponseMessage.READ_ANIMAL,getAnimalListDto(animalList,pageable,user));
 

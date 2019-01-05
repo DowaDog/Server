@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequestMapping("api/admin/cardnews")
 @Controller
 @Verify
@@ -33,6 +35,7 @@ public class AdminCardnewsController {
     }
 
     //카드뉴스 상식 조회
+
     @GetMapping("knowledge")
     public ResponseEntity  readCardnewsKnowledgeList(@RequestParam(name="page", defaultValue="0",required = false)int page,
                                                      @RequestParam(name="limit", defaultValue = "10", required=false)int limit){
@@ -48,6 +51,14 @@ public class AdminCardnewsController {
 
         return new ResponseEntity(adminCardnewsService.readAllCardnewsContentsList(cardnewsId),HttpStatus.OK);
     }
+
+
+    @GetMapping("list")
+    @ResponseBody
+    public List<Cardnews> readCardnews() {
+        return adminCardnewsService.readCardnews();
+    }
+
 
     //카드뉴스 대분류 작성
     @PostMapping
@@ -83,5 +94,8 @@ public class AdminCardnewsController {
     public ResponseEntity deleteCardnewsContents(@PathVariable("contentsId")int contentsId){
         return new ResponseEntity(adminCardnewsService.deleteCardnewsContentsById(contentsId), HttpStatus.OK);
     }
+
+
+
 
 }

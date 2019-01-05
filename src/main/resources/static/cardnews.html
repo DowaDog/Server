@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>기다릴개 | 카드뉴스 등록</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="sidebar-collapse">
+            <ul class="nav metismenu" id="side-menu">
+                <li class="nav-header">
+                    <div class="dropdown profile-element"> <span>
+                             </span>
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">기다릴개 팀</strong>
+                             </span> <span class="text-muted text-xs block">Made by <b class="caret"></b></span> </span>
+                        </a>
+                        <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                            <li><a href="#">강성찬</a></li>
+                            <li><a href="#">탁형민</a></li>
+                            <li><a href="#">이승언</a></li>
+                            <li><a href="#">류수한</a></li>
+                            <li><a href="#">이영규</a></li>
+                            <li><a href="#">구설원</a></li>
+                            <li><a href="#">강태경</a></li>
+                            <li><a href="#">조윤영</a></li>
+                            <li><a href="#">최형윤</a></li>
+                            <li><a href="#">유가희</a></li>
+                            <li><a href="#">임지은</a></li>
+                            <li><a href="#">황윤선</a></li>
+                            <li><a href="#">강지희</a></li>
+                        </ul>
+                    </div>
+                    <div class="logo-element">
+                        IN+
+                    </div>
+                </li>
+
+                <li class="active">
+                    <a href="#"><i class="fa fa-edit"></i> <span class="nav-label">등록</span><span
+                            class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li class="active"><a href="./cardnews.html">카드뉴스</a></li>
+                        <li><a href="./cardnewsContents.html">카드뉴스 컨텐츠</a></li>
+                        <li><a href="./care.html">보호소</a></li>
+                        <li><a href="./animal.html">입양동물</a></li>
+                        <li><a href="./animalStory.html">입양동물 스토리</a></li>
+                        <li><a href="./community.html">커뮤니티</a></li>
+                        <li><a href="./mailbox.html">우체통</a></li>
+
+                    </ul>
+                </li>
+            </ul>
+
+        </div>
+    </nav>
+
+    <div id="page-wrapper" class="gray-bg">
+        <div class="row border-bottom">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header">
+                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i>
+                    </a>
+
+                </div>
+                <ul class="nav navbar-top-links navbar-right">
+                    <li style="padding: 20px">
+                        <span class="m-r-sm text-muted welcome-message">Welcome to 기다릴개</span>
+                    </li>
+                </ul>
+
+            </nav>
+        </div>
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-lg-10">
+                <h2>카드뉴스 등록</h2>
+                <ol class="breadcrumb">
+                    <li>
+                        <a>등록</a>
+                    </li>
+                    <li class="active">
+                        <strong>카드뉴스</strong>
+                    </li>
+                </ol>
+            </div>
+            <div class="col-lg-2">
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>기다릴개
+                            <small>카드뉴스 생성</small>
+                        </h5>
+
+                    </div>
+                    <div class="ibox-content">
+                        <form method="post" id="cardnewsForm" class="form-horizontal">
+                            <div class="form-group"><label class="col-sm-2 control-label">카드뉴스 제목</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="title" class="form-control"></div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="form-group"><label class="col-sm-2 control-label">카드뉴스 부제목</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="subtitle" class="form-control"></div>
+                            </div>
+
+
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group"><label class="col-sm-2 control-label">카드뉴스 타입</label>
+
+                                <div class="col-sm-10">
+                                    <div class="i-checks"><label> <input type="radio" value="education" name="type">
+                                        <i></i> 교육 </label></div>
+                                    <div class="i-checks"><label> <input type="radio" checked="" value="knowledge"
+                                                                         name="type"> <i></i> 상식 </label></div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+
+                            <!-- 이미지 등록 -->
+                            <div class="form-group"><label class="col-sm-2 control-label">
+                                <small class="text-navy">썸네일</small>
+                            </label>
+                                <div class="fileinput fileinput-new" data-provides="fileinput">
+                    <span class="btn btn-default btn-file"><span class="fileinput-new">Select file</span>
+                    <span class="fileinput-exists">Change</span>
+                    <input type="file" name="cardnewsImgFile"/></span>
+                                    <span class="fileinput-filename"></span>
+                                    <a href="#" class="close fileinput-exists" data-dismiss="fileinput"
+                                       style="float: none">×</a>
+                                </div>
+                            </div>
+
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2">
+                                    <button class="btn btn-primary" type="button" id="cardnewsSubmitBtn">저장
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<!-- Mainly scripts -->
+<script src="js/jquery-3.1.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+<!-- Custom and plugin javascript -->
+<script src="js/inspinia.js"></script>
+<script src="js/plugins/pace/pace.min.js"></script>
+
+<!-- Jasny -->
+<script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
+
+<!-- CodeMirror -->
+<script src="/js/plugins/sweetalert/sweetalert.min.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+
+        $('#cardnewsSubmitBtn').click(function (e) {
+            e.preventDefault();
+            var cardnewsFormData = new FormData($("#cardnewsForm")[0]);
+
+            $.ajax({
+                type: "POST",
+                url: "/api/admin/cardnews",
+                enctype: 'multipart/form-data',
+                processData: false,
+                contentType: false,
+                data: cardnewsFormData,
+                timeout: 600000,
+                success: function () {
+                    swal({
+                        title: "Success!",
+                        text: "카드뉴스 등록이 성공하였습니다",
+                        type: "success"
+                    }, function () {
+                        // window.location.reload();
+                    });
+                },
+                error: function () {
+                    swal({
+                        title: "Server error",
+                        text: "에러가 발생했습니다 다시 입력해주세요",
+                        type: "error"
+                    });
+                }
+            });
+        })
+
+
+    });
+</script>
+</body>
+
+</html>

@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 @Slf4j
@@ -30,7 +32,15 @@ public class S3FileServiceImpl implements FileService {
     @Override
     public void fileUpload(MultipartFile multipartFile, String filePath) {
         try {
-            s3client.putObject(new PutObjectRequest(bucketName, filePath, S3Util.convert(multipartFile)));
+
+            File convFile = new File(multipartFile.getOriginalFilename());
+            convFile.createNewFile();
+            FileOutputStream fos = new FileOutputStream(convFile);
+            fos.write(multipartFile.getBytes());
+            fos.close();
+            s3client.putObject(new PutObjectRequest(bucketName, filePath, convFile));
+            convFile.delete();
+
             log.info("===================== Upload File - Done! =====================");
         } catch (AmazonServiceException ase) {
             printS3Error(ase);

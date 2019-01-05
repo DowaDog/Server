@@ -79,7 +79,7 @@ public class CommunityController {
      Community community) throws Exception {
         try {
             User user = userService.getUserByJwtToken(jwtToken);
-            return new ResponseEntity(communityService.createCommunityService(user, community), HttpStatus.CREATED);
+            return new ResponseEntity(communityService.createCommunity(user, community), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(DefaultRes.FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
         }

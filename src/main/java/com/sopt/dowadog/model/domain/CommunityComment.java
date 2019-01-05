@@ -12,6 +12,7 @@ import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -38,8 +39,8 @@ public class CommunityComment extends DateEntity {
     private User user;
 
     public boolean isToday() {
-        Date createdAt = this.getCreatedAt();
-        return (new DateTime(createdAt).toLocalDate()).equals(new LocalDate());
+        LocalDateTime createdAt = this.getCreatedAt();
+        return createdAt.equals(new LocalDate());
     }
 
     public String getUserId() {

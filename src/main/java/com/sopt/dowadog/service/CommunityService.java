@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -46,22 +47,22 @@ public class CommunityService {
     private String s3Endpoint;
 
     @Transactional
-    public DefaultRes<Community> createCommunityService(User user, Community community) throws Exception {
+    public DefaultRes<Community> createCommunity(User user, Community community) {
 
-        List<MultipartFile> communityImgFileList = community.getCommunityImgFiles();
-        log.info(communityImgFileList.toString());
+        System.out.print(111111);
+        List<MultipartFile> communityImgFileList = community.getCommunityImgFiles();// 멀티파트로 받기 사진 리스트
 
         List<CommunityImg> communityImgList = new ArrayList();
 
-        if (community.getCommunityImgFiles() != null) {
+        if (Optional.ofNullable(communityImgFileList).isPresent()) {
             for (MultipartFile imgFile : communityImgFileList) {
 
                 String filePath = S3Util.getFilePath(baseDir, imgFile);
 
                 fileService.fileUpload(imgFile, filePath); // s3 upload
 
-                log.info(imgFile.toString());
-                log.info(filePath);
+                System.out.print(imgFile.toString());
+                System.out.print(filePath);
 
                 CommunityImg communityImg = CommunityImg.builder()
                         .community(community)
@@ -69,12 +70,16 @@ public class CommunityService {
                         .originFileName(imgFile.getOriginalFilename())
                         .build();
 
+
                 communityImgList.add(communityImgRepository.save(communityImg));
             }
+            community.setCommunityImgList(communityImgList);
+        }else{
             community.setCommunityImgList(communityImgList);
         }
         community.setUser(user);
 
+        System.out.print(community);
 
         return DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_COMMUNITY, communityRepository.save(community));
     }
