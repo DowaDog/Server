@@ -14,6 +14,6 @@ import java.time.LocalDate;
 
 public interface HashtagAnimalRepository extends JpaRepository<HashtagAnimal, Integer>, PagingAndSortingRepository<HashtagAnimal, Integer> {
 
-    @Query("select u from #{#entityName} u where u.hashtag.keyword=?1 AND u.animal.noticeEddt > ?2")
-    Page<HashtagAnimal> findAllByHashtag_Keyword(final String keyword, final LocalDate localDate, Pageable pageable);
+    @Query("select u from #{#entityName} u where u.hashtag.keyword=?1 AND u.animal.noticeEddt > ?2 AND u.animal.processState=?3")
+    Page<HashtagAnimal> findAllByHashtag_Keyword(final String keyword, final LocalDate localDate,final String state, Pageable pageable);
 }
