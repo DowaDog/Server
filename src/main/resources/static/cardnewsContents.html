@@ -6,15 +6,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>INSPINIA | 카드뉴스 등록 Form</title>
+    <title>기다릴개 | 카드뉴스 컨텐츠 등록</title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
     <link href="css/animate.css" rel="stylesheet">
     <link href="css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
-    <link href="/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/plugins/chosen/chosen.css"/>
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/plugins/chosen/chosen.css"/>
 
 
 </head>
@@ -28,17 +28,24 @@
             <ul class="nav metismenu" id="side-menu">
                 <li class="nav-header">
                     <div class="dropdown profile-element"> <span>
-                            <!-- <img alt="image" class="img-circle" src="img/profile_small.jpg" /> -->
                              </span>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">Kohen.kang</strong>
-                             </span> <span class="text-muted text-xs block">Art Director <b class="caret"></b></span> </span> </a>
+                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">기다릴개 팀</strong>
+                             </span> <span class="text-muted text-xs block">Made by <b class="caret"></b></span> </span> </a>
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                            <li><a href="profile.html">Profile</a></li>
-                            <li><a href="contacts.html">Contacts</a></li>
-                            <li><a href="mailbox.html">Mailbox</a></li>
-                            <li class="divider"></li>
-                            <li><a href="login.html">Logout</a></li>
+                            <li><a href="#">강성찬</a></li>
+                            <li><a href="#">탁형민</a></li>
+                            <li><a href="#">이승언</a></li>
+                            <li><a href="#">류수한</a></li>
+                            <li><a href="#">이영규</a></li>
+                            <li><a href="#">구설원</a></li>
+                            <li><a href="#">강태경</a></li>
+                            <li><a href="#">조윤영</a></li>
+                            <li><a href="#">최형윤</a></li>
+                            <li><a href="#">유가희</a></li>
+                            <li><a href="#">임지은</a></li>
+                            <li><a href="#">황윤선</a></li>
+                            <li><a href="#">강지희</a></li>
                         </ul>
                     </div>
                     <div class="logo-element">
@@ -50,8 +57,11 @@
                     <a href="#"><i class="fa fa-edit"></i> <span class="nav-label">등록</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li><a href="./cardnews.html">카드뉴스</a></li>
-                        <li class="active"><a href="cardnewsContents.html">카드뉴스 컨텐츠</a></li>
-                        <!--<li><a href="./animalStory.html">동물 스토리</a></li>-->
+                        <li class="active"><a href="./cardnewsContents.html">카드뉴스 컨텐츠</a></li>
+                        <li><a href="./care.html">보호소</a></li>
+                        <li><a href="./animal.html">입양동물</a></li>
+                        <li><a href="./animalStory.html">입양동물 스토리</a></li>
+
                     </ul>
                 </li>
             </ul>
@@ -61,7 +71,18 @@
 
     <div id="page-wrapper" class="gray-bg">
         <div class="row border-bottom">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header">
+                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
 
+                </div>
+                <ul class="nav navbar-top-links navbar-right">
+                    <li style="padding: 20px">
+                        <span class="m-r-sm text-muted welcome-message">Welcome to 기다릴개</span>
+                    </li>
+                </ul>
+
+            </nav>
         </div>
         <div class="row wrapper border-bottom white-bg page-heading">
             <div class="col-lg-10">
@@ -85,7 +106,7 @@
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
                         <h5>기다릴개
-                            <small>카드뉴스 생성</small>
+                            <small>카드뉴스 컨텐츠 생성</small>
                         </h5>
 
                     </div>
@@ -130,7 +151,7 @@
                             <div class="hr-line-dashed"></div>
                             <div class="form-group">
                                 <div class="col-sm-offset-2">
-                                    <button class="btn btn-primary" type="button" id="cardnewsContentSubmitBtn">Save changes</button>
+                                    <button class="btn btn-primary" type="button" id="cardnewsContentSubmitBtn">저장</button>
                                 </div>
                             </div>
                         </form>

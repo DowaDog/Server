@@ -1,21 +1,23 @@
 package com.sopt.dowadog.controller.admin;
 
 import com.sopt.dowadog.model.domain.Animal;
+import com.sopt.dowadog.model.domain.AnimalStory;
 import com.sopt.dowadog.service.AnimalService;
 import com.sopt.dowadog.service.admin.AdminAnimalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * Created by kohen.kang on 2019-01-04..
  */
 
-@RequestMapping("api/admin/animal"  )
+@RequestMapping("api/admin/animal")
 @Controller
 public class AdminAnimalController {
 
@@ -27,5 +29,20 @@ public class AdminAnimalController {
         adminAnimalService.createAnimal(animal, careId);
 
         return new ResponseEntity(HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    @ResponseBody
+    public List<Animal> animalList() {
+        return adminAnimalService.allAnimal();
+    }
+
+    @PostMapping("stories")
+    public ResponseEntity animalStoryList(AnimalStory animalStory, @RequestParam("animalId") int animalId) {
+
+        System.out.println("come to controller");
+        adminAnimalService.createAnimalStory(animalStory, animalId);
+        return new ResponseEntity(HttpStatus.CREATED);
+
     }
 }

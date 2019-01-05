@@ -27,8 +27,9 @@ public class AdminCareController {
         return adminCareService.readAllCare();
     }
 
+
     @PostMapping
-    public ResponseEntity createCare(@RequestBody Care care){
+    public ResponseEntity createCare(@ModelAttribute Care care){
         adminCareService.createCare(care);
 
         return new ResponseEntity(HttpStatus.CREATED);

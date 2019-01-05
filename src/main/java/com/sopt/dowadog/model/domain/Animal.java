@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.*;
 import com.sopt.dowadog.model.domain.auditing.DateEntity;
 import com.sopt.dowadog.model.dto.AnimalDetailDto;
 import com.sopt.dowadog.model.dto.ListformDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,7 +17,8 @@ import java.util.List;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope=Animal.class)
 @Entity
 @JsonIgnoreProperties(value={"hibernateLazyInitializer", "handler"})
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -37,9 +35,9 @@ public class Animal extends DateEntity {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate noticeEddt;
 
-    private String processState; // 입양 공고 진행 상태 , notice : 공고중, step : 입양절차 진행중, adopt : 입양됨, temp : 임보됨, end : 안락사
+    private String processState = "notice"; // 입양 공고 진행 상태 , notice : 공고중, step : 입양절차 진행중, adopt : 입양됨, temp : 임보됨, end : 안락사
     private String sexCd;
-    private String neuterYn;
+    private Boolean neuterYn;
     private String specialMark;
     private String happenPlace;
     private String kindCd;
@@ -64,8 +62,8 @@ public class Animal extends DateEntity {
     @JsonManagedReference
     private List<AnimalStory> animalStoryList;
 
-    @OneToMany(mappedBy="animal", fetch=FetchType.LAZY)
-    private List<Registration> registrationList;
+//    @OneToMany(mappedBy="animal", fetch=FetchType.LAZY)
+//    private List<Registration> registrationList;
 
 
 
@@ -112,6 +110,7 @@ public class Animal extends DateEntity {
     }
 
     @Transient
+    @JsonIgnore
     private MultipartFile thumbnailImgFile;
 
 

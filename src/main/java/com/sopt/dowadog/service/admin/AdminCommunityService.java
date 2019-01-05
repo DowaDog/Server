@@ -61,8 +61,6 @@ public class AdminCommunityService {
                         .build();
 
                 communityImgRepository.save(communityImg);
-
-
             }
         }
         community.setUser(user);

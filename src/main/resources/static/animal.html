@@ -6,15 +6,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>INSPINIA | 카드뉴스 등록 Form</title>
-
+    <title>기다릴개 | 입양동물 등록</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
     <link href="css/animate.css" rel="stylesheet">
     <link href="css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
-    <link href="/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/plugins/chosen/chosen.css"/>
+    <link href="css/plugins/datapicker/datepicker3.css" rel="stylesheet">
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/plugins/chosen/chosen.css"/>
 
 
 </head>
@@ -28,17 +28,25 @@
             <ul class="nav metismenu" id="side-menu">
                 <li class="nav-header">
                     <div class="dropdown profile-element"> <span>
-                            <!-- <img alt="image" class="img-circle" src="img/profile_small.jpg" /> -->
                              </span>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">Kohen.kang</strong>
-                             </span> <span class="text-muted text-xs block">Art Director <b class="caret"></b></span> </span> </a>
+                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">기다릴개 팀</strong>
+                             </span> <span class="text-muted text-xs block">Made by <b class="caret"></b></span> </span>
+                        </a>
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                            <li><a href="profile.html">Profile</a></li>
-                            <li><a href="contacts.html">Contacts</a></li>
-                            <li><a href="mailbox.html">Mailbox</a></li>
-                            <li class="divider"></li>
-                            <li><a href="login.html">Logout</a></li>
+                            <li><a href="#">강성찬</a></li>
+                            <li><a href="#">탁형민</a></li>
+                            <li><a href="#">이승언</a></li>
+                            <li><a href="#">류수한</a></li>
+                            <li><a href="#">이영규</a></li>
+                            <li><a href="#">구설원</a></li>
+                            <li><a href="#">강태경</a></li>
+                            <li><a href="#">조윤영</a></li>
+                            <li><a href="#">최형윤</a></li>
+                            <li><a href="#">유가희</a></li>
+                            <li><a href="#">임지은</a></li>
+                            <li><a href="#">황윤선</a></li>
+                            <li><a href="#">강지희</a></li>
                         </ul>
                     </div>
                     <div class="logo-element">
@@ -47,11 +55,15 @@
                 </li>
 
                 <li class="active">
-                    <a href="#"><i class="fa fa-edit"></i> <span class="nav-label">등록</span><span class="fa arrow"></span></a>
+                    <a href="#"><i class="fa fa-edit"></i> <span class="nav-label">등록</span><span
+                            class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li><a href="./cardnews.html">카드뉴스</a></li>
-                        <li class="active"><a href="mailbox.html">카드뉴스 컨텐츠</a></li>
-                        <li><a href="./animalStory.html">동물 스토리</a></li>
+                        <li><a href="./cardnewsContents.html">카드뉴스 컨텐츠</a></li>
+                        <li><a href="./care.html">보호소</a></li>
+                        <li class="active"><a href="./animal.html">입양동물</a></li>
+                        <li><a href="./animalStory.html">입양동물 스토리</a></li>
+
                     </ul>
                 </li>
             </ul>
@@ -61,17 +73,29 @@
 
     <div id="page-wrapper" class="gray-bg">
         <div class="row border-bottom">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header">
+                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i>
+                    </a>
 
+                </div>
+                <ul class="nav navbar-top-links navbar-right">
+                    <li style="padding: 20px">
+                        <span class="m-r-sm text-muted welcome-message">Welcome to 기다릴개</span>
+                    </li>
+                </ul>
+
+            </nav>
         </div>
         <div class="row wrapper border-bottom white-bg page-heading">
             <div class="col-lg-10">
-                <h2>카드뉴스 컨텐츠 등록</h2>
+                <h2>입양하기 등록</h2>
                 <ol class="breadcrumb">
                     <li>
                         <a>등록</a>
                     </li>
                     <li class="active">
-                        <strong>카드뉴스 컨텐츠</strong>
+                        <strong>입양하기</strong>
                     </li>
                 </ol>
             </div>
@@ -85,33 +109,136 @@
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
                         <h5>기다릴개
-                            <small>카드뉴스 생성</small>
+                            <small>입양하기 생성</small>
                         </h5>
 
                     </div>
                     <div class="ibox-content">
-                        <form method="post" id="cardnewsContentForm" class="form-horizontal">
+                        <form method="post" id="animalForm" class="form-horizontal">
+
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">카드뉴스 제목</label>
+                                <label class="col-sm-2 control-label">보호소</label>
+
                                 <div class="col-sm-10">
-                                    <select name="cardnewsId" id="cardnewsId" class="form-control required" required=""></select>
-                                </div>
-                            </div>
-
-                            <div class="form-group"><label class="col-sm-2 control-label">카드뉴스 컨텐츠 제목</label>
-                                <div class="col-sm-10">
-                                    <input type="text" name="title" class="form-control"></div>
-                            </div>
-
-
-                            <div class="hr-line-dashed"></div>
-
-                            <div class="form-group"><label class="col-sm-2 control-label">카드뉴스 컨텐츠 상세</label>
-                                <div class="col-sm-10">
-                                    <textarea name="detail" rows="8" style="width:100%" ></textarea>
+                                    <select name="careId" id="careId" class="form-control"></select>
                                 </div>
                             </div>
                             <div class="hr-line-dashed"></div>
+
+
+                            <div class="form-group"><label class="col-sm-2 control-label">종류</label>
+                                <div class="col-sm-1">
+                                    <div class="i-checks"><label>
+                                        <input type="radio" value="dog" name="type" checked="checked"> <i></i> 강아지
+                                    </label>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-1">
+                                    <div class="i-checks">
+                                        <label>
+                                            <input type="radio" checked="" value="cat" name="type"> <i></i> 고양이
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-1">
+                                    <div class="i-checks">
+                                        <label>
+                                            <input type="radio" checked="" value="etc" name="type"> <i></i> 기타
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+
+
+                            <div class="form-group"><label class="col-sm-2 control-label">나이</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="age" class="form-control" placeholder="숫자로 입력하세요"></div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="form-group"><label class="col-sm-2 control-label">몸무게</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="weight" class="form-control" placeholder="숫자로 입력하세요"></div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="form-group"><label class="col-sm-2 control-label">구조 지역</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="happenPlace" class="form-control"></div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="form-group"><label class="col-sm-2 control-label">품종</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="kindCd" class="form-control"></div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="form-group"><label class="col-sm-2 control-label">중성화 여부</label>
+                                <div class="col-sm-1">
+                                    <div class="i-checks"><label>
+                                        <input type="radio" value="true" name="neuterYn">
+                                        <i></i> 함 </label>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-1">
+                                    <div class="i-checks">
+                                        <label>
+                                            <input type="radio" checked="" value="false" name="neuterYn"> <i></i> 안함
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="form-group"><label class="col-sm-2 control-label">공고기간</label>
+                                <div class="col-sm-4">
+                                    <input class="form-control" id="noticeStdt" name="noticeStdt" type="text"
+                                           placeholder="YYYY-MM-DD" required>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <input class="form-control" id="noticeEddt" name="noticeEddt" type="text"
+                                           placeholder="YYYY-MM-DD" required>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="form-group"><label class="col-sm-2 control-label">성별</label>
+                                <div class="col-sm-1">
+                                    <div class="i-checks"><label>
+                                        <input type="radio" value="M" name="sexCd" checked> <i></i> 수컷 </label>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-1">
+                                    <div class="i-checks">
+                                        <label>
+                                            <input type="radio" checked="" value="F" name="sexCd"> <i></i> 암컷
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-1">
+                                    <div class="i-checks">
+                                        <label>
+                                            <input type="radio" checked="" value="U" name="sexCd"> <i></i> 확인 안됨
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+
+                            <div class="form-group"><label class="col-sm-2 control-label">특이사항</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="specialMark" class="form-control"></div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+
 
 
                             <!-- 이미지 등록 -->
@@ -121,16 +248,18 @@
                                 <div class="fileinput fileinput-new" data-provides="fileinput">
                     <span class="btn btn-default btn-file"><span class="fileinput-new">Select file</span>
                     <span class="fileinput-exists">Change</span>
-                    <input type="file" name="cardnewsContentsImgFile"/></span>
+                    <input type="file" name="thumbnailImgFile"/></span>
                                     <span class="fileinput-filename"></span>
-                                    <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">×</a>
+                                    <a href="#" class="close fileinput-exists" data-dismiss="fileinput"
+                                       style="float: none">×</a>
                                 </div>
                             </div>
 
-                            <div class="hr-line-dashed"></div>
                             <div class="form-group">
                                 <div class="col-sm-offset-2">
-                                    <button class="btn btn-primary" type="button" id="cardnewsContentSubmitBtn">Save changes</button>
+
+                                    <button class="btn btn-primary" type="button" id="animalSubmitBtn">저장
+                                    </button>
                                 </div>
                             </div>
                         </form>
@@ -153,12 +282,12 @@
 <script src="js/inspinia.js"></script>
 <script src="js/plugins/pace/pace.min.js"></script>
 
+<script src="js/plugins/datepicker/bootstrap-datepicker.js"></script>
+
 <!-- Jasny -->
 <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
 
-<!-- CodeMirror -->
 <script src="/js/plugins/sweetalert/sweetalert.min.js"></script>
-
 <!--Choosen-->
 <script src="/js/plugins/chosen/chosen.jquery.js"></script>
 
@@ -166,43 +295,58 @@
 <script>
     $(document).ready(function () {
 
-
         $.ajax({
-            url: "/api/admin/cardnews/list",
+            url: "/api/admin/care",
             type: 'GET',
             success: function (data) {
                 console.log(data);
-                var cardnews = '<option value="default">' + '카드뉴스를 선택해주세요' + '</option>';
+                var care = '<option value="default">' + '보호소를 선택해주세요' + '</option>';
                 $.each(data, function (i, list) {
-                    cardnews = cardnews + '<option value="' + list.id + '">' + list.title + '</option>';
+                    care = care + '<option value=' + list.id + '>' + '[' + list.region + ']' + list.name + '</option>';
                 })
-                $("#cardnewsId").append(cardnews).chosen({width: "100%"});
+                $("#careId").append(care).chosen({width: "100%"});
+
             },
             error: function (e) {
             }
         });
 
+        $('#noticeStdt').datepicker({
+            format: 'yyyy-mm-dd',
+            keyboardNavigation: false,
+            autoclose: true,
+            autoApply: true,
+            todayBtn: "linked",
+            todayHighlight: true
+        });
 
-        $('#cardnewsContentSubmitBtn').click(function (e) {
+        $('#noticeEddt').datepicker({
+            format: 'yyyy-mm-dd',
+            keyboardNavigation: false,
+            autoclose: true,
+            autoApply: true,
+            todayBtn: "linked",
+            todayHighlight: true
+        });
 
-            var cardnewsId = $('#cardnewsId').val();
-
-
+        $('#animalSubmitBtn').click(function (e) {
             e.preventDefault();
-            var cardnewsContentForm = new FormData($("#cardnewsContentForm")[0]);
+            var animalFormData = new FormData($("#animalForm")[0]);
+            var careId = $('#careId').val();
 
             $.ajax({
+
                 type: "POST",
-                url: "/api/admin/cardnews/" + cardnewsId + "/contents",
+                url: "/api/admin/animal?careId=" + careId,
                 enctype: 'multipart/form-data',
                 processData: false,
                 contentType: false,
-                data: cardnewsContentForm,
+                data: animalFormData,
                 timeout: 600000,
                 success: function () {
                     swal({
                         title: "Success!",
-                        text: "카드뉴스 컨텐츠 등록이 성공하였습니다",
+                        text: "입양하기 등록이 성공하였습니다",
                         type: "success"
                     }, function () {
                         // window.location.reload();

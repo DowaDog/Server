@@ -34,8 +34,6 @@ public class AdminCommunityController {
     @PostMapping
     public ResponseEntity createCommunity(@RequestParam("userId") String userId, Community community) {
         try {
-            System.out.println(userId);
-            System.out.println(community.toString());
             User user = adminUserService.readUserById(userId);
             adminCommunityService.createCommunity(user, community);
 
