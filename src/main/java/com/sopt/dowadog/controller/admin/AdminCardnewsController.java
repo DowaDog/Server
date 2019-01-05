@@ -55,8 +55,8 @@ public class AdminCardnewsController {
 
     @GetMapping("list")
     @ResponseBody
-    public List<Cardnews> readCardnews() {
-        return adminCardnewsService.readCardnews();
+    public ResponseEntity readCardnews() {
+        return new ResponseEntity(adminCardnewsService.readCardnews(),HttpStatus.OK);
     }
 
 

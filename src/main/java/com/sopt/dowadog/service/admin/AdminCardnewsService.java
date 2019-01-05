@@ -205,7 +205,7 @@ public class AdminCardnewsService {
 
 //    admin용
 
-    public CardnewsListDto readCardnews() {
+    public DefaultRes<CardnewsListDto> readCardnews() {
 
         List<Cardnews> cardnewsList = cardnewsRepository.findAll();
 
@@ -220,6 +220,6 @@ public class AdminCardnewsService {
                 builder().content(cardnewsDtoList).
                 build();
 
-        return cardnewsListDto;
+        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_CARDNEWS, cardnewsListDto);
     }
 }
