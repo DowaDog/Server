@@ -1,3 +1,4 @@
+
 package com.sopt.dowadog.controller.admin;
 
 import com.sopt.dowadog.annotation.Verify;
@@ -53,11 +54,11 @@ public class AdminCardnewsController {
     }
 
 
-//    @GetMapping("list")
-//    @ResponseBody
-//    public List<Cardnews> readCardnews() {
-//        return adminCardnewsService.readCardnews();
-//    }
+    @GetMapping("list")
+    @ResponseBody
+    public List<Cardnews> readCardnews() {
+        return adminCardnewsService.readAllCardnews();
+    }
 
 
     //카드뉴스 대분류 작성

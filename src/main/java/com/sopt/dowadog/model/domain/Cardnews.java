@@ -51,10 +51,6 @@ public class Cardnews extends DateEntity {
     @OneToMany(mappedBy = "cardnews")
     private List<UserCardnewsScrap> userCardnewsScrapList = new ArrayList<>();
 
-    @ManyToOne
-    @JsonIgnore
-    User user;
-
     @JsonIgnore
     public CardnewsDto getCardnewsDto() {
         return CardnewsDto.builder()
@@ -66,8 +62,8 @@ public class Cardnews extends DateEntity {
                 .build();
     }
 
-    public boolean getAuth(String userId){
-        return userId.equals(this.user.getId());
+    public boolean getAuth(User user){
+        return user.getId().equals(this.id);
     }
 
     public boolean getEducated(User user){

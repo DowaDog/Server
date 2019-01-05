@@ -53,9 +53,9 @@ public class CardnewsController {
     public ResponseEntity readCardnewsEducationList(@RequestHeader(value = "Authorization", required = false)final String jwtToken){
         //todo 교육 이수 완료 정보 줘야댐
         try{
-            User user = null;
+            User user = userService.getUserByJwtToken(jwtToken);
 
-            if(userService.getUserByJwtToken(jwtToken) == null){
+            if(user == null){
                 return new ResponseEntity(cardnewsService.readCardnewsEducationList(user), HttpStatus.OK);
             }else{
                 user = userService.getUserByJwtToken(jwtToken);
@@ -81,9 +81,9 @@ public class CardnewsController {
                                                       @RequestParam(name="page", defaultValue="0",required = false)int page,
                                                       @RequestParam(name="limit",defaultValue = "10", required=false)int limit){
         try{
-            User user = null;
+            User user = userService.getUserByJwtToken(jwtToken);
 
-            if(userService.getUserByJwtToken(jwtToken) == null){
+            if(user == null){
                 return new ResponseEntity(cardnewsContentsService.readAllCardnewsContentsList(user, cardnewsId), HttpStatus.OK);
             }else{
                 user = userService.getUserByJwtToken(jwtToken);

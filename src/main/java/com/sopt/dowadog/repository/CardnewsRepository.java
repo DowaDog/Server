@@ -12,8 +12,8 @@ import java.util.Optional;
 
 @Repository
 public interface CardnewsRepository extends JpaRepository<Cardnews, Integer>, PagingAndSortingRepository<Cardnews,Integer> {
-    List<Cardnews> findByTypeOrderByCreatedAtDesc(String type);
     Optional<List<Cardnews>> findByType(String type);
     Page<Cardnews> findByTypeOrderByCreatedAtDesc(String type, Pageable pageable);
+    List<Cardnews> findByTypeOrderByCreatedAtDesc(String type);
 
 }
