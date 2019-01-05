@@ -31,7 +31,7 @@ public class Care extends DateEntity {
     private String name;
     private String tel;
 
-    private int status;
+    private boolean status = false;
 
 
     //@OneToMany(mappedBy = "care", fetch = FetchType.LAZY)
