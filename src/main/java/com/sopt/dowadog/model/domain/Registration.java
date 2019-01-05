@@ -1,16 +1,16 @@
 package com.sopt.dowadog.model.domain;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sopt.dowadog.model.domain.auditing.DateEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.sopt.dowadog.model.dto.RegistrationDto;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -38,15 +38,32 @@ public class Registration extends DateEntity {
     private String type; // 직접방문, 온라인인지 -> 코드테이블 추가해야됨
 
     @ManyToOne
-    @JsonManagedReference
     private User user;
 
     @ManyToOne
-    @JsonManagedReference
     private Animal animal;
 
 
 
+    public static Registration getRegistrationByDto(RegistrationDto registrationDto) {
+        return Registration.builder()
+                .phone(registrationDto.getPhone())
+                .email(registrationDto.getEmail())
+                .address(registrationDto.getAddress())
+                .job(registrationDto.getJob())
+                .havePet(registrationDto.isHavePet())
+                .petInfo(registrationDto.getPetInfo())
+                .tempProtect(registrationDto.getTempProtect())
+                .tempPeriod(registrationDto.getTempPeriod())
+                .regStatus(registrationDto.getRegStatus())
+                .meetPlace(registrationDto.getMeetPlace())
+                .meetTime(registrationDto.getMeetTime())
+                .meetMaterial(registrationDto.getMeetMaterial())
+                .validReg(registrationDto.isValidReg())
+                .userCheck(registrationDto.isUserCheck())
+                .type(registrationDto.getType())
+                .build();
+    }
 
 
 }
