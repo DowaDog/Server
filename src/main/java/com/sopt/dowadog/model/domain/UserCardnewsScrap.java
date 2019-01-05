@@ -17,12 +17,10 @@ import javax.persistence.*;
 @IdClass(UserCardnewsId.class)
 public class UserCardnewsScrap extends DateEntity {
     @Id
-    @JsonIgnore
     @ManyToOne
     private User user;
 
     @Id
-    @JsonIgnore
     @ManyToOne
     private Cardnews cardnews;
 

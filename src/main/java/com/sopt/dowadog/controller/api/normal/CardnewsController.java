@@ -4,6 +4,8 @@ import com.sopt.dowadog.annotation.Auth;
 import com.sopt.dowadog.model.common.DefaultRes;
 import com.sopt.dowadog.model.domain.User;
 import com.sopt.dowadog.model.domain.UserCardnewsEducate;
+import com.sopt.dowadog.model.dto.CardnewsDto;
+import com.sopt.dowadog.repository.UserCardnewsScrapRepository;
 import com.sopt.dowadog.repository.UserRepository;
 import com.sopt.dowadog.service.CardnewsContentsService;
 import com.sopt.dowadog.service.CardnewsService;
@@ -44,11 +46,25 @@ public class CardnewsController {
     @Autowired
     CardnewsContentsService cardnewsContentsService;
 
-    @GetMapping("education")
-    public ResponseEntity readCardnewsEducationList(){
+    @Autowired
+    UserCardnewsScrapRepository userCardnewsScrapRepository;
 
+    @GetMapping("education")
+    public ResponseEntity readCardnewsEducationList(@RequestHeader(value = "Authorization", required = false)final String jwtToken){
         //todo 교육 이수 완료 정보 줘야댐
-        return new ResponseEntity(cardnewsService.readCardnewsEducationList(), HttpStatus.OK);
+        try{
+            User user = null;
+
+            if(userService.getUserByJwtToken(jwtToken) == null){
+                return new ResponseEntity(cardnewsService.readCardnewsEducationList(user), HttpStatus.OK);
+            }else{
+                user = userService.getUserByJwtToken(jwtToken);
+                return new ResponseEntity(cardnewsService.readCardnewsEducationList(user), HttpStatus.OK);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(DefaultRes.FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("knowledge")
@@ -85,6 +101,7 @@ public class CardnewsController {
             User user = userService.getUserByJwtToken(jwtToken);
             return new ResponseEntity(cardnewsService.createCardnewsScrap(user,cardnewsId),HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(DefaultRes.FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

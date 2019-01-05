@@ -37,6 +37,9 @@ public class AdminCardnewsService {
     @Value("${uploadpath.cardnewsContents}")
     private String baseDir1;
 
+    @Value("${cloud.aws.endpoint}")
+    private String s3Endpoint;
+
     //교육 카드뉴스 리스트 조회
     public DefaultRes<List<Cardnews>> readCardnewsEducationList(){
         //todo enum 객체 활용!

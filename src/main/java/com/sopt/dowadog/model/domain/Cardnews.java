@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mysql.cj.protocol.ColumnDefinition;
 import com.sopt.dowadog.model.domain.auditing.DateEntity;
+import com.sopt.dowadog.model.dto.CardnewsDto;
 import com.sopt.dowadog.model.dto.UserCardnewsEducateDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -49,6 +50,17 @@ public class Cardnews extends DateEntity {
 
     @OneToMany(mappedBy = "cardnews")
     private List<UserCardnewsScrap> userCardnewsScrapList = new ArrayList<>();
+
+    @JsonIgnore
+    public CardnewsDto getCardnewsDto() {
+        return CardnewsDto.builder()
+                .id(this.id)
+                .title(this.title)
+                .subtitle(this.subtitle)
+                .type(this.type)
+                .imgPath(this.imgPath)
+                .build();
+    }
 
 }
 
