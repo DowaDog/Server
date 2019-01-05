@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * Created by kohen.kang on 2019-01-04..
@@ -26,21 +26,28 @@ public class AdminCommunityController {
     @Autowired
     AdminCommunityService adminCommunityService;
 
-
     @Autowired
     AdminUserService adminUserService;
 
 
+
     @PostMapping
-    public ResponseEntity createCommunity(@RequestParam("userId") String userId, Community community) {
+    public ResponseEntity createCommunity(Community community, @RequestParam("userId") String userId) {
         try {
-            User user = adminUserService.readUserById(userId);
-            adminCommunityService.createCommunity(user, community);
+            adminCommunityService.createCommunity(userId, community);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
+
+    @GetMapping("userList")
+    @ResponseBody
+    public List<User> userList() {
+        return adminUserService.allUser();
+    }
+
+
 
 }

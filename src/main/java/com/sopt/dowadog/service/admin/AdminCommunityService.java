@@ -6,6 +6,7 @@ import com.sopt.dowadog.model.domain.CommunityImg;
 import com.sopt.dowadog.model.domain.User;
 import com.sopt.dowadog.repository.CommunityImgRepository;
 import com.sopt.dowadog.repository.CommunityRepository;
+import com.sopt.dowadog.repository.UserRepository;
 import com.sopt.dowadog.service.FileService;
 import com.sopt.dowadog.util.ResponseMessage;
 import com.sopt.dowadog.util.S3Util;
@@ -40,15 +41,24 @@ public class AdminCommunityService {
     CommunityImgRepository communityImgRepository;
 
     @Autowired
+    UserRepository userRepository;
+
+    @Autowired
     CommunityRepository communityRepository;
 
 
     @Transactional
-    public void createCommunity(User user, Community community) {
+    public void createCommunity(String userId, Community community) {
         List<MultipartFile> communityImgFileList = community.getCommunityImgFiles();
 
+        User user = userRepository.findById(userId).get();
+
         if (community.getCommunityImgFiles() != null) {
+
+
             for (MultipartFile imgFile : communityImgFileList) {
+
+                if(imgFile.getSize() == 0) break; //이미지 파일 비어있으면 탈출
 
                 String filePath = S3Util.getFilePath(baseDir, imgFile);
 
