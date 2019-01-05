@@ -30,7 +30,7 @@ public class PublicAnimal {
     private String colorCd;
     private String desertionNo;
     private String filename;
-    private String profile;
+    //private String profile;
     private String happenDt;
     private String happenPlace;
     private String kindCd;
