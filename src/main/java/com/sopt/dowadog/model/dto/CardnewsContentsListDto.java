@@ -1,5 +1,7 @@
 package com.sopt.dowadog.model.dto;
 
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,7 +13,8 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CardnewsListDto {
-
-    private List<CardnewsDto> content;
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class CardnewsContentsListDto {
+    List<CardnewsContentsDto> content;
+    AllEducatedDto edu;
 }

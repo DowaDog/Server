@@ -76,11 +76,23 @@ public class CardnewsController {
 
 
     @GetMapping("{cardnewsId}/contents")
-    public ResponseEntity readAllCardnewsContentsList(@PathVariable("cardnewsId")int cardnewsId,
+    public ResponseEntity readAllCardnewsContentsList(@RequestHeader(value="Authorization", required = false) final String jwtToken,
+                                                      @PathVariable("cardnewsId")int cardnewsId,
                                                       @RequestParam(name="page", defaultValue="0",required = false)int page,
                                                       @RequestParam(name="limit",defaultValue = "10", required=false)int limit){
+        try{
+            User user = null;
 
-        return new ResponseEntity(cardnewsContentsService.readAllCardnewsContentsList(cardnewsId),HttpStatus.OK);
+            if(userService.getUserByJwtToken(jwtToken) == null){
+                return new ResponseEntity(cardnewsContentsService.readAllCardnewsContentsList(user, cardnewsId), HttpStatus.OK);
+            }else{
+                user = userService.getUserByJwtToken(jwtToken);
+                return new ResponseEntity(cardnewsContentsService.readAllCardnewsContentsList(user, cardnewsId), HttpStatus.OK);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(DefaultRes.FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PostMapping("{cardnewsId}/complete")

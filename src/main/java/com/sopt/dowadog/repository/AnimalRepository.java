@@ -16,12 +16,17 @@ import java.util.List;
 @Repository
 public interface AnimalRepository extends JpaRepository<Animal,Integer>, PagingAndSortingRepository<Animal,Integer>,JpaSpecificationExecutor<Animal> {
 
-    @Query("select u from #{#entityName} u where u.noticeEddt > ?1 order by u.noticeEddt ASC")
-    Page<Animal> findAllBy(LocalDate localDate, Pageable pageable);
+    @Query("select u from #{#entityName} u where u.noticeEddt > ?1 AND u.processState = ?2 order by u.noticeEddt ASC")
+    Page<Animal> findAllBy(LocalDate localDate, String processState ,Pageable pageable);
+
+
+
 
 
 
 
     //Page<Animal>
+//AND u.process_state NOT IN (?2)
+    //,String processState
 
 }

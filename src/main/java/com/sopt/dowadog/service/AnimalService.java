@@ -35,6 +35,7 @@ public class AnimalService {
     private final UserRepository userRepository;
     private final AnimalStoryRepository animalStoryRepository;
     private final CareRepository careRepository;
+    private final CardnewsService cardnewsService;
 
 
 
@@ -47,13 +48,15 @@ private String defaultUrl;
                          final UserAnimalLikeRepository userAnimalLikeRepository,
                          final UserRepository userRepository,
                          final AnimalStoryRepository animalStoryRepository,
-                         final CareRepository careRepository){
+                         final CareRepository careRepository,
+                         final CardnewsService cardnewsService){
         this.animalRepository = animalRepository;
         this.hashtagAnimalRepository = hashtagAnimalRepository;
         this.userAnimalLikeRepository = userAnimalLikeRepository;
         this.userRepository = userRepository;
         this.animalStoryRepository = animalStoryRepository;
         this.careRepository = careRepository;
+        this.cardnewsService = cardnewsService;
     }
 
     //좋아요 여부 구현 메소드
@@ -103,12 +106,18 @@ private String defaultUrl;
     private AnimalListDto getAnimalListDto(final List<Animal> animalList ,final Pageable pageable,final User user  ){
         List<ListformDto> listform = new ArrayList<>();
 
+
+        AllEducatedDto allEducatedDto = cardnewsService.getAllEducatedDtoComplete(user);
+
+  //      if(cardnewsService.getAllEducatedDtoComplete(user))
+
         for(Animal temp : animalList){
 
             ListformDto listformDto = temp.getListAnimalDto();
             listformDto.setRemainDateState(getDdayState(temp.getNoticeEddt()));
             listformDto.setThumbnailImg(getThumnailImg(temp.getThumbnailImg()));
             listformDto.setLiked(getLikedForGuest(user,temp.getId()));
+            listformDto.setEducation(allEducatedDto.isAllComplete());
             listform.add(listformDto);
         }
 
@@ -148,6 +157,7 @@ private String defaultUrl;
 //유기동물 상세보기
 
     public DefaultRes<AnimalDetailDto> readAnimal(final int animalId, final User user){
+        AllEducatedDto allEducatedDto = cardnewsService.getAllEducatedDtoComplete(user);
 
 
 
@@ -179,7 +189,7 @@ private String defaultUrl;
         animalDetailDto.setThumbnailImg(getThumnailImg(animal.getThumbnailImg()));
         animalDetailDto.setLiked(getLikedForGuest(user,animalId));
         animalDetailDto.setRemainDateState(getDdayState(animal.getNoticeEddt()));
-
+        animalDetailDto.setEducationState(allEducatedDto.isAllComplete());
 
         return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_ANIMAL, animalDetailDto);
 
@@ -189,7 +199,7 @@ private String defaultUrl;
     public DefaultRes<AnimalListDto> readEmergencyAnimal(final int page, final int limit, final User user){
 
         Pageable pageable = PageRequest.of(page,limit);
-        Page<Animal> animals = animalRepository.findAllBy(LocalDate.now(),pageable);
+        Page<Animal> animals = animalRepository.findAllBy(LocalDate.now(),"notice",pageable);
 
 
         List<Animal> animalList = animals.getContent();
@@ -205,6 +215,7 @@ private String defaultUrl;
     public DefaultRes<AnimalListDto> readAnimal(final FilterDto filterDto, final int page, final int limit, final User user){
         Map<String, Object> filter = new HashMap<>();
         Pageable pageable = PageRequest.of(page, limit,Sort.by(Sort.Direction.DESC,"createdAt"));
+
 
         //todo 최신순 정렬
         if (filterDto.getType() != null) filter.put("type", filterDto.getType());
@@ -229,10 +240,13 @@ private String defaultUrl;
     public DefaultRes<AnimalListDto> readHashtagAnimalList(final String tag, final int page, final int limit, final User user){
 
 
+        AllEducatedDto allEducatedDto = cardnewsService.getAllEducatedDtoComplete(user);
+
+
         List<ListformDto> listform = new ArrayList<>();
         Pageable pageable = PageRequest.of(page, limit,Sort.by(Sort.Direction.DESC,"animal.createdAt"));
 
-        Page<HashtagAnimal> animalContents = hashtagAnimalRepository.findAllByHashtag_Keyword(tag,LocalDate.now(),pageable);
+        Page<HashtagAnimal> animalContents = hashtagAnimalRepository.findAllByHashtag_Keyword(tag,LocalDate.now(),"notice",pageable);
         List<HashtagAnimal> animalList = animalContents.getContent();
 
 
@@ -243,6 +257,7 @@ private String defaultUrl;
             listformDto.setRemainDateState(getDdayState(temp.getAnimal().getNoticeEddt()));
             listformDto.setThumbnailImg(getThumnailImg(temp.getAnimal().getThumbnailImg()));
             listformDto.setLiked(getLikedForGuest(user,temp.getAnimal().getId()));
+            listformDto.setEducation(allEducatedDto.isAllComplete());
             listform.add(listformDto);
         }
 

@@ -53,11 +53,11 @@ public class AdminCardnewsController {
     }
 
 
-    @GetMapping("list")
-    @ResponseBody
-    public List<Cardnews> readCardnews() {
-        return adminCardnewsService.readCardnews();
-    }
+//    @GetMapping("list")
+//    @ResponseBody
+//    public List<Cardnews> readCardnews() {
+//        return adminCardnewsService.readCardnews();
+//    }
 
 
     //카드뉴스 대분류 작성

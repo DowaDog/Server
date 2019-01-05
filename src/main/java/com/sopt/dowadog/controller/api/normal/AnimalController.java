@@ -69,6 +69,7 @@ public class AnimalController {
 
         } catch (Exception e) {
 
+            e.printStackTrace();
             return new ResponseEntity<>(DefaultRes.FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
 
         }

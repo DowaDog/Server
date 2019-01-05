@@ -103,6 +103,7 @@ public class MyinfoController {
 
             return new ResponseEntity(myinfoService.readMyLikeList(user), HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
         }
     }

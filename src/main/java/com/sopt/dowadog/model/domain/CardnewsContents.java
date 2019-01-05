@@ -3,6 +3,7 @@ package com.sopt.dowadog.model.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sopt.dowadog.model.domain.auditing.DateEntity;
+import com.sopt.dowadog.model.dto.CardnewsContentsDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -38,4 +39,13 @@ public class CardnewsContents extends DateEntity {
     //@JoinColumn(name = "cardnews_id")
     private Cardnews cardnews;
 
+    @JsonIgnore
+    public CardnewsContentsDto getCardnewsContentsDto() {
+        return CardnewsContentsDto.builder()
+                .id(this.id)
+                .title(this.title)
+                .thumnailImg(this.thumnailImg)
+                .detail(this.detail)
+                .build();
+    }
 }

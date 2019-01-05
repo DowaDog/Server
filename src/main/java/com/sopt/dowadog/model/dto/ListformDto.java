@@ -23,6 +23,7 @@ public class ListformDto {
     private LocalDate noticeEddt;
     private boolean liked;
     private boolean remainDateState;
+    private boolean education;
     private String thumbnailImg;
     private String processState;
 }
