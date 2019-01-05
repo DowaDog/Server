@@ -133,9 +133,6 @@ public class CommunityService {
             communityDto = setCommunityDtoAuthAndProfileImgWithUser(user, community, communityDto);
 
 
-
-
-
             return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_COMMUNITY, communityDto);
         } else {
             return DefaultRes.res(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_COMMUNITY);
