@@ -47,14 +47,12 @@ public class CardnewsService {
 
     public DefaultRes<CardnewsListDto> readCardnewsEducationList(User user){
         //todo edu 정보 여기서 주는거 아니고 컨텐츠 상세 조회에서 보여주는것 Dto에 Auth 정보 추가
-        if(userRepository.findById(user.getId()).isPresent()){
-
+        if(user != null) {
             List<Cardnews> cardnewsList = cardnewsRepository.findByTypeOrderByCreatedAtDesc("education");
 
-            List<CardnewsDto> cardnewsDtoList =  new ArrayList<>();
+            List<CardnewsDto> cardnewsDtoList = new ArrayList<>();
 
-
-            for(Cardnews cardnews : cardnewsList){
+            for (Cardnews cardnews : cardnewsList) {
                 CardnewsDto cardnewsDto = cardnews.getCardnewsDto();
 
                 String temp = s3Endpoint + cardnews.getImgPath();
@@ -68,8 +66,6 @@ public class CardnewsService {
                 cardnewsDtoList.add(cardnewsDto);
             }
 
-            AllEducatedDto allEducatedDto = getAllEducatedDtoComplete(user);
-
             CardnewsListDto cardnewsListDto = CardnewsListDto.builder().
                     content(cardnewsDtoList).
                     build();
@@ -78,21 +74,23 @@ public class CardnewsService {
         }else{
             List<Cardnews> cardnewsList = cardnewsRepository.findByTypeOrderByCreatedAtDesc("education");
 
-            List<CardnewsDto> cardnewsDtoList =  new ArrayList<>();
+            List<CardnewsDto> cardnewsDtoList = new ArrayList<>();
 
-            for(Cardnews cardnews : cardnewsList){
+            for (Cardnews cardnews : cardnewsList) {
                 CardnewsDto cardnewsDto = cardnews.getCardnewsDto();
 
                 String temp = s3Endpoint + cardnews.getImgPath();
 
                 cardnewsDto.setImgPath(temp);
 
+                cardnewsDto = setCardnewsDtoAuth(user, cardnewsDto);
+
                 cardnewsDtoList.add(cardnewsDto);
             }
 
-            CardnewsListDto cardnewsListDto = CardnewsListDto.builder()
-                    .content(cardnewsDtoList)
-                    .build();
+            CardnewsListDto cardnewsListDto = CardnewsListDto.builder().
+                    content(cardnewsDtoList).
+                    build();
 
             return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_CARDNEWS, cardnewsListDto);
         }
@@ -101,7 +99,7 @@ public class CardnewsService {
     public DefaultRes<CardnewsListDto> readCardnewsKnowledgeList(int page, int limit){
         Pageable pageable = PageRequest.of(page, limit);
 
-        Page<Cardnews> cardnewsPage = cardnewsRepository.findByTypeOrderByCreatedAtDesc("knoewledge", pageable);
+        Page<Cardnews> cardnewsPage = cardnewsRepository.findByTypeOrderByCreatedAtDesc("knowledge", pageable);
         Pageable paging = cardnewsPage.getPageable();
 
         List<Cardnews> cardnewsList = cardnewsPage.getContent();
@@ -111,11 +109,16 @@ public class CardnewsService {
         for(Cardnews cardnews : cardnewsList){
             CardnewsDto cardnewsDto = cardnews.getCardnewsDto();
 
+            String temp = s3Endpoint + cardnews.getImgPath();
+
+            cardnewsDto.setImgPath(temp);
+
             cardnewsDtoList.add(cardnewsDto);
         }
 
         CardnewsListDto cardnewsListDto = CardnewsListDto.builder()
                 .content(cardnewsDtoList)
+                .pageable(paging)
                 .build();
             return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_CARDNEWS, cardnewsListDto);
     }

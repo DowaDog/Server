@@ -55,12 +55,8 @@ public class CardnewsController {
         try{
             User user = userService.getUserByJwtToken(jwtToken);
 
-            if(user == null){
-                return new ResponseEntity(cardnewsService.readCardnewsEducationList(user), HttpStatus.OK);
-            }else{
-                user = userService.getUserByJwtToken(jwtToken);
-                return new ResponseEntity(cardnewsService.readCardnewsEducationList(user), HttpStatus.OK);
-            }
+
+            return new ResponseEntity(cardnewsService.readCardnewsEducationList(user), HttpStatus.OK);
         } catch (Exception e){
             e.printStackTrace();
             return new ResponseEntity<>(DefaultRes.FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
