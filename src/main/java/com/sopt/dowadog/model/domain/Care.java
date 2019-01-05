@@ -34,7 +34,7 @@ public class Care extends DateEntity {
     private int status;
 
 
-    @OneToMany(mappedBy = "care", fetch = FetchType.LAZY)
-    private List<Animal> animalList;
+    //@OneToMany(mappedBy = "care", fetch = FetchType.LAZY)
+    //private List<Animal> animalList;
 
 }
