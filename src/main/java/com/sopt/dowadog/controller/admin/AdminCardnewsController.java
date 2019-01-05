@@ -53,11 +53,13 @@ public class AdminCardnewsController {
     }
 
 
+
     @GetMapping("list")
     @ResponseBody
     public ResponseEntity readCardnews() {
         return new ResponseEntity(adminCardnewsService.readCardnews(),HttpStatus.OK);
     }
+
 
 
     //카드뉴스 대분류 작성

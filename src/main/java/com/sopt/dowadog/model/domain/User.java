@@ -38,25 +38,32 @@ public class User extends DateEntity {
     private MultipartFile profileImgFile;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Community> communityList;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Registration> registrationList;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Mailbox> mailboxList;
 
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<UserAnimalLike> userAnimalLikeList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<UserCardnewsScrap> userCardnewsScrapList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<UserCardnewsEducate> userCardnewsEducatedList = new ArrayList();
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<AnimalUserAdopt> animalUserAdoptList = new ArrayList<>();
 
 

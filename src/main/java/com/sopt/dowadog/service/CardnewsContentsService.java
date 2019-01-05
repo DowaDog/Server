@@ -48,7 +48,7 @@ public class CardnewsContentsService {
             cardnewsContentsDtoList.add(cardnewsContentsDto);
         }
 
-        AllEducatedDto allEducatedDto = setAllEducatedDtoComplete(user);
+        AllEducatedDto allEducatedDto = getAllEducatedDtoComplete(user);
 
         CardnewsContentsListDto cardnewsContentsListDto = CardnewsContentsListDto.builder().
                 content(cardnewsContentsDtoList).
@@ -66,7 +66,7 @@ public class CardnewsContentsService {
         return cardnewsContentsDto;
     }
 
-    public AllEducatedDto setAllEducatedDtoComplete(User user){
+    public AllEducatedDto getAllEducatedDtoComplete(User user){
         int allEducate = 0;
         int userEducate = 0;
         boolean allComplete = false;

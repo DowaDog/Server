@@ -34,6 +34,7 @@ public class AnimalService {
     private final UserAnimalLikeRepository userAnimalLikeRepository;
     private final UserRepository userRepository;
     private final AnimalStoryRepository animalStoryRepository;
+    private final CareRepository careRepository;
     private final CardnewsService cardnewsService;
 
 
@@ -47,12 +48,14 @@ private String defaultUrl;
                          final UserAnimalLikeRepository userAnimalLikeRepository,
                          final UserRepository userRepository,
                          final AnimalStoryRepository animalStoryRepository,
+                         final CareRepository careRepository,
                          final CardnewsService cardnewsService){
         this.animalRepository = animalRepository;
         this.hashtagAnimalRepository = hashtagAnimalRepository;
         this.userAnimalLikeRepository = userAnimalLikeRepository;
         this.userRepository = userRepository;
         this.animalStoryRepository = animalStoryRepository;
+        this.careRepository = careRepository;
         this.cardnewsService = cardnewsService;
     }
 
@@ -106,7 +109,7 @@ private String defaultUrl;
 
         AllEducatedDto allEducatedDto = cardnewsService.getAllEducatedDtoComplete(user);
 
-  //      if(cardnewsService.setAllEducatedDtoComplete(user))
+  //      if(cardnewsService.getAllEducatedDtoComplete(user))
 
         for(Animal temp : animalList){
 
@@ -312,6 +315,16 @@ private String defaultUrl;
 
         return DefaultRes.res(StatusCode.CREATED, ResponseMessage.CREATED_LIKE);
 
+    }
+
+
+    public DefaultRes<CareDto> readCareinfoByAnimalId(int animalId){
+
+        if(!animalRepository.findById(animalId).isPresent()) return DefaultRes.NOT_FOUND;
+        Animal animal = animalRepository.findById(animalId).get();
+        Care care = animal.getCare();
+
+        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_CARE, care.getCareDto());
     }
 
 
