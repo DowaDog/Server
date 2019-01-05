@@ -9,10 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserCardnewsEducateDto {
-    private int cardnewsId;
-    private String userId;
-    private int allCardnews;
-    private int allEducated;
+public class AllEducatedDto {
+    private int allEducate;
+    private int userEducated;
     private boolean allComplete;
 }

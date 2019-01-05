@@ -7,9 +7,11 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface CardnewsRepository extends JpaRepository<Cardnews, Integer>, PagingAndSortingRepository<Cardnews,Integer> {
     List<Cardnews> findByTypeOrderByCreatedAtDesc(String type);
     List<Cardnews> findByTypeOrderByCreatedAtDesc(String type, Pageable pagable);
+    Optional<List<Cardnews>> findByType(String type);
 }

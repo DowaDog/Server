@@ -9,10 +9,14 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserCardnewsEducateDto {
-    private int cardnewsId;
-    private String userId;
-    private int allCardnews;
-    private int allEducated;
-    private boolean allComplete;
+public class CardnewsDto {
+
+    private int id;
+    private String title;
+    private String subtitle;
+    private String type;
+    private String imgPath;
+    private boolean educated = false;
+
+
 }

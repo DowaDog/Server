@@ -5,14 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserCardnewsEducateDto {
-    private int cardnewsId;
-    private String userId;
-    private int allCardnews;
-    private int allEducated;
-    private boolean allComplete;
+public class CardnewsListDto {
+
+    private List<CardnewsDto> content;
+    private AllEducatedDto edu;
 }
