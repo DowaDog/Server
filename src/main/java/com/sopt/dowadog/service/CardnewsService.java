@@ -167,7 +167,6 @@ public class CardnewsService {
         return DefaultRes.res(StatusCode.CREATED, ResponseMessage.SCRAP_CARDNEWS);
     }
 
-
     public AllEducatedDto getAllEducatedDtoComplete(User user){
         int allEducate = 0;
         int userEducate = 0;

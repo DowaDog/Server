@@ -151,5 +151,6 @@ public class AdminCardnewsService {
 
     public List<Cardnews> readAllCardnews(){
         return cardnewsRepository.findAll();
+
     }
 }
