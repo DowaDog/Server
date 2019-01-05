@@ -50,6 +50,7 @@ public class MyinfoService {
     public DefaultRes<MyinfoDto> readMypage(User user) {
 
         MyinfoDto myinfoDto = user.getMyinfoDto();
+        myinfoDto.setProfileImg(S3Util.getImgPath(s3Endpoint, user.getProfileImg()));
 
         return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_MYINFO, myinfoDto);
     }

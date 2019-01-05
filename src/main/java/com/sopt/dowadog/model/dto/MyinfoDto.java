@@ -11,6 +11,7 @@ import org.apache.catalina.User;
 @ToString
 public class MyinfoDto {
     private String userName;
+    private String profileImg;
     private int userLike;
     private int userScrap;
     private int userCommunity;
