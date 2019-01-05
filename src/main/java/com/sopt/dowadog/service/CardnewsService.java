@@ -71,7 +71,7 @@ public class CardnewsService {
                 cardnewsDtoList.add(cardnewsDto);
             }
 
-            AllEducatedDto allEducatedDto = setAllEducatedDtoComplete(user);
+            AllEducatedDto allEducatedDto = getAllEducatedDtoComplete(user);
 
             CardnewsListDto cardnewsListDto = CardnewsListDto.builder().
                     content(cardnewsDtoList).
@@ -125,7 +125,7 @@ public class CardnewsService {
 
     public DefaultRes<List<UserCardnewsEducate>> createCardnewsEducated(User user, final int cardnewsId) {
 
-        List<UserCardnewsEducate> checkEduList = userCardnewsEducateRepository.findByUserIdAndCardnewsId(user.getId(), cardnewsId);
+        List<UserCardnewsEducate> checkEduList = userCardnewsEducateRepository.findByUser_IdAndCardnews_Id(user.getId(), cardnewsId);
 
         if (checkEduList.size() == 0) {
             Optional<User> eduUser = userRepository.findById(user.getId());
@@ -142,7 +142,7 @@ public class CardnewsService {
         } else {
             return DefaultRes.res(StatusCode.OK, ResponseMessage.ALREADY_EXIST);
         }
-        return DefaultRes.res(StatusCode.CREATED, ResponseMessage.COMPLETE_CARDNEWS, userCardnewsEducateRepository.findByUserIdAndCardnewsId(user.getId(), cardnewsId));
+        return DefaultRes.res(StatusCode.CREATED, ResponseMessage.COMPLETE_CARDNEWS, userCardnewsEducateRepository.findByUser_IdAndCardnews_Id(user.getId(), cardnewsId));
     }
 
     @Transactional
@@ -170,7 +170,7 @@ public class CardnewsService {
         return DefaultRes.res(StatusCode.CREATED, ResponseMessage.SCRAP_CARDNEWS);
     }
 
-    public AllEducatedDto setAllEducatedDtoComplete(User user){
+    public AllEducatedDto getAllEducatedDtoComplete(User user){
         int allEducate = 0;
         int userEducate = 0;
         boolean allComplete = false;

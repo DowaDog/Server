@@ -104,7 +104,7 @@ private String defaultUrl;
         List<ListformDto> listform = new ArrayList<>();
 
 
-        AllEducatedDto allEducatedDto = cardnewsService.setAllEducatedDtoComplete(user);
+        AllEducatedDto allEducatedDto = cardnewsService.getAllEducatedDtoComplete(user);
 
   //      if(cardnewsService.setAllEducatedDtoComplete(user))
 
@@ -154,7 +154,7 @@ private String defaultUrl;
 //유기동물 상세보기
 
     public DefaultRes<AnimalDetailDto> readAnimal(final int animalId, final User user){
-        AllEducatedDto allEducatedDto = cardnewsService.setAllEducatedDtoComplete(user);
+        AllEducatedDto allEducatedDto = cardnewsService.getAllEducatedDtoComplete(user);
 
 
 
@@ -237,7 +237,7 @@ private String defaultUrl;
     public DefaultRes<AnimalListDto> readHashtagAnimalList(final String tag, final int page, final int limit, final User user){
 
 
-        AllEducatedDto allEducatedDto = cardnewsService.setAllEducatedDtoComplete(user);
+        AllEducatedDto allEducatedDto = cardnewsService.getAllEducatedDtoComplete(user);
 
 
         List<ListformDto> listform = new ArrayList<>();
