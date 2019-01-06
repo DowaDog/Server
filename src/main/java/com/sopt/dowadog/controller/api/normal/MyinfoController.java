@@ -4,8 +4,9 @@ import com.sopt.dowadog.annotation.Auth;
 import com.sopt.dowadog.model.common.DefaultRes;
 import com.sopt.dowadog.model.domain.AnimalUserAdopt;
 import com.sopt.dowadog.model.domain.User;
-import com.sopt.dowadog.service.MyinfoService;
-import com.sopt.dowadog.service.UserService;
+import com.sopt.dowadog.model.dto.MyinfoChangeDto;
+import com.sopt.dowadog.service.normal.MyinfoService;
+import com.sopt.dowadog.service.normal.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -160,7 +161,7 @@ public class MyinfoController {
     //내 정보 조회
     @Auth
     @GetMapping("/myinfo")
-    public ResponseEntity readMypageMyinfo(@RequestHeader(value = "Authorization",required = false)final String jwtToken){
+    public ResponseEntity<MyinfoChangeDto> readMypageMyinfo(@RequestHeader(value = "Authorization",required = false)final String jwtToken){
         try{
             User user = userService.getUserByJwtToken(jwtToken);
             return new ResponseEntity(myinfoService.readMyinfo(user),HttpStatus.OK);

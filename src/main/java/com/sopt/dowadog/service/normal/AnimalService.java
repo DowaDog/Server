@@ -1,7 +1,5 @@
-package com.sopt.dowadog.service;
+package com.sopt.dowadog.service.normal;
 
-import ch.qos.logback.core.pattern.parser.OptionTokenizer;
-import com.amazonaws.util.DateUtils;
 import com.sopt.dowadog.model.common.DefaultRes;
 import com.sopt.dowadog.model.domain.*;
 import com.sopt.dowadog.model.dto.*;
@@ -10,13 +8,11 @@ import com.sopt.dowadog.specification.AnimalSpecification;
 import com.sopt.dowadog.util.ResponseMessage;
 import com.sopt.dowadog.util.S3Util;
 import com.sopt.dowadog.util.StatusCode;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.expression.spel.ast.OpInc;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;

@@ -1,4 +1,4 @@
-package com.sopt.dowadog.service;
+package com.sopt.dowadog.service.normal;
 
 import com.sopt.dowadog.model.common.DefaultRes;
 import com.sopt.dowadog.model.domain.Community;
@@ -8,7 +8,7 @@ import com.sopt.dowadog.model.dto.CommunityDto;
 import com.sopt.dowadog.model.dto.CommunityListDto;
 import com.sopt.dowadog.repository.CommunityImgRepository;
 import com.sopt.dowadog.repository.CommunityRepository;
-import com.sopt.dowadog.service.FileService;
+import com.sopt.dowadog.service.common.FileService;
 import com.sopt.dowadog.util.ResponseMessage;
 import com.sopt.dowadog.util.S3Util;
 import com.sopt.dowadog.util.StatusCode;

@@ -35,8 +35,9 @@ public class Care extends DateEntity {
     private boolean status = false;
 
 
-    //@OneToMany(mappedBy = "care", fetch = FetchType.LAZY)
-    //private List<Animal> animalList;
+    @JsonIgnore
+    @OneToMany(mappedBy = "care", fetch = FetchType.LAZY)
+    private List<Animal> animalList;
 
     @JsonIgnore
     public CareDto getCareDto() {

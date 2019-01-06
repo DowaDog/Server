@@ -45,9 +45,11 @@ public class Cardnews extends DateEntity {
     @JsonIgnore
     private MultipartFile cardnewsImgFile;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "cardnews")
     private List<UserCardnewsEducate> userCardnewsEducateList = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "cardnews")
     private List<UserCardnewsScrap> userCardnewsScrapList = new ArrayList<>();
 
@@ -65,6 +67,7 @@ public class Cardnews extends DateEntity {
     public boolean getAuth(User user){
         return user.getId().equals(this.id);
     }
+
 
     public boolean getEducated(User user){
 

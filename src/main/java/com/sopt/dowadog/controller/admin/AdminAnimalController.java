@@ -2,14 +2,12 @@ package com.sopt.dowadog.controller.admin;
 
 import com.sopt.dowadog.model.domain.Animal;
 import com.sopt.dowadog.model.domain.AnimalStory;
-import com.sopt.dowadog.service.AnimalService;
 import com.sopt.dowadog.service.admin.AdminAnimalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -27,7 +25,6 @@ public class AdminAnimalController {
     @PostMapping
     public ResponseEntity animal(Animal animal, @RequestParam("careId") int careId) {
         adminAnimalService.createAnimal(animal, careId);
-
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
@@ -39,10 +36,7 @@ public class AdminAnimalController {
 
     @PostMapping("stories")
     public ResponseEntity animalStoryList(AnimalStory animalStory, @RequestParam("animalId") int animalId) {
-
-        System.out.println("come to controller");
         adminAnimalService.createAnimalStory(animalStory, animalId);
         return new ResponseEntity(HttpStatus.CREATED);
-
     }
 }
