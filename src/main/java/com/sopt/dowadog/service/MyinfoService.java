@@ -1,11 +1,9 @@
 package com.sopt.dowadog.service;
 
-import ch.qos.logback.core.pattern.util.RegularEscapeUtil;
 import com.sopt.dowadog.model.common.DefaultRes;
 import com.sopt.dowadog.model.domain.*;
 import com.sopt.dowadog.model.dto.*;
 import com.sopt.dowadog.repository.*;
-import com.sopt.dowadog.util.CompareDate;
 import com.sopt.dowadog.util.ResponseMessage;
 import com.sopt.dowadog.util.S3Util;
 import com.sopt.dowadog.util.StatusCode;
@@ -14,7 +12,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Service

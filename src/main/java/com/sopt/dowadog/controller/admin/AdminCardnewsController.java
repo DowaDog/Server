@@ -61,9 +61,13 @@ public class AdminCardnewsController {
     }
 
 
+    // 푸시 알람 넣어야 한다.
     //카드뉴스 대분류 작성
     @PostMapping
     public ResponseEntity createCardnews(Cardnews cardnews){
+        System.out.println(1);
+        System.out.println(cardnews.getTitle());
+        System.out.println(cardnews.getId());
         return new ResponseEntity(adminCardnewsService.createCardnewsService(cardnews), HttpStatus.CREATED);
     }
 

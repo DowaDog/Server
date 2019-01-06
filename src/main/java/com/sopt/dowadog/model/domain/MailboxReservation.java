@@ -4,10 +4,8 @@ package com.sopt.dowadog.model.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+
+import javax.persistence.*;
 import java.time.LocalDate;
 
 
@@ -28,5 +26,9 @@ public class MailboxReservation {
     private String detail;
     private String type;
     private String state;
+
+    @ManyToOne
+    private User user;
+
 
 }

@@ -26,6 +26,7 @@ public class UserService {
     }
 
 
+
     public User getUserByJwtToken(String jwtToken) throws Exception {
 
         String userId = jwtService.decode(jwtToken);

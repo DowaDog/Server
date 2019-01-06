@@ -35,7 +35,7 @@ public class CommunityCommentService {
     //todo 여기 검증 제대로-----
 
     //완
-    public DefaultRes<CommunityComment> createCommunityComment(User user, CommunityComment communityComment, int communityId){
+    public DefaultRes createCommunityComment(User user, CommunityComment communityComment, int communityId){
 //         todo 여기 예외처리들 null이라던가
 
         if(communityRepository.findById(communityId).isPresent()) {
@@ -45,7 +45,9 @@ public class CommunityCommentService {
             return DefaultRes.NOT_FOUND;
         }
 
-        return DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_COMMENT, communityCommentRepository.save(communityComment));
+        communityCommentRepository.save(communityComment);
+
+        return DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_COMMENT);
     }
 
     //완료

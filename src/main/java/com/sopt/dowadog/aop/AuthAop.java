@@ -41,13 +41,13 @@ public class AuthAop {
 
 
 
-    @Pointcut("execution(* com..service..*Service.create*(..))")
+    @Pointcut("execution(* com..service.normal.*Service.create*(..))")
     public void create() {}
 
-    @Pointcut("execution(* com..service..*Service.update*(..))")
+    @Pointcut("execution(* com..service.normal.*Service.update*(..))")
     public void update() {}
 
-    @Pointcut("execution(* com..service..*Service.delete*(..))")
+    @Pointcut("execution(* com..service.normal.*Service.delete*(..))")
     public void delete() {}
 
 

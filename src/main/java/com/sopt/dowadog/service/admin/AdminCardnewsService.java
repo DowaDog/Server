@@ -3,20 +3,32 @@ package com.sopt.dowadog.service.admin;
 import com.sopt.dowadog.model.common.DefaultRes;
 import com.sopt.dowadog.model.domain.Cardnews;
 import com.sopt.dowadog.model.domain.CardnewsContents;
+import com.sopt.dowadog.model.domain.Mailbox;
+import com.sopt.dowadog.model.domain.User;
 import com.sopt.dowadog.repository.CardnewsContentsRepository;
 import com.sopt.dowadog.repository.CardnewsRepository;
+import com.sopt.dowadog.repository.MailboxRepository;
+import com.sopt.dowadog.repository.UserRepository;
 import com.sopt.dowadog.service.FileService;
+import com.sopt.dowadog.util.AsyncUtil;
 import com.sopt.dowadog.util.ResponseMessage;
 import com.sopt.dowadog.util.S3Util;
 import com.sopt.dowadog.util.StatusCode;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.*;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class AdminCardnewsService {
@@ -30,11 +42,26 @@ public class AdminCardnewsService {
     @Autowired
     FileService fileService;
 
+    @Autowired
+    MailboxRepository mailboxRepository;
+
+
+
+
+    @Autowired
+    UserRepository userRepository;
+
+
+
+
     @Value("${uploadpath.cardnews}")
     private String cardnewsBaseDir;
 
     @Value("${uploadpath.cardnewsContents}")
     private String cardnewsContentBaseDir;
+
+
+
 
     //교육 카드뉴스 리스트 조회
     public DefaultRes<List<Cardnews>> readCardnewsEducationList() {
@@ -57,24 +84,56 @@ public class AdminCardnewsService {
 
     //카드뉴스 생성
     public DefaultRes<Cardnews> createCardnewsService(Cardnews cardnews) {
+        try{
+            List<User> userList = userRepository.findAll();
+            System.out.println(userList.size());
+            List<String> tokenArr = new ArrayList<>();
+            AsyncUtil asyncUtil = new AsyncUtil();
 
-        MultipartFile cardnewsImgFile = cardnews.getCardnewsImgFile();
 
-        if (cardnews.getCardnewsImgFile() != null) {
+            MultipartFile cardnewsImgFile = cardnews.getCardnewsImgFile();
 
-            String filePath = S3Util.getFilePath(cardnewsBaseDir, cardnewsImgFile);
-//                    new StringBuilder(cardnewsBaseDir).
-//                    append(S3Util.getUuid()).
-//                    append(cardnewsImgFile.getOriginalFilename()).toString();
+            if (cardnews.getCardnewsImgFile() != null) {
 
-            fileService.fileUpload(cardnewsImgFile, filePath);
 
-            cardnews.setImgPath(filePath);
+                String filePath = S3Util.getFilePath(cardnewsBaseDir, cardnewsImgFile);
+                fileService.fileUpload(cardnewsImgFile, filePath);
+                cardnews.setImgPath(filePath);
+            }
+
+            cardnewsRepository.save(cardnews);
+
+            for(User u : userList){
+                //토큰 생성
+                tokenArr.add(u.getDeviceToken());
+
+                //메일박스 넣기
+
+                Mailbox mailbox = Mailbox.builder()
+                        .user(u)
+                        .title(cardnews.getTitle())
+                        .detail(cardnews.getSubtitle())
+                        .complete(false)
+                        .type("content")
+                        .build();
+
+                mailboxRepository.save(mailbox);
+            }
+
+            System.out.println(tokenArr.size());
+            System.out.println();
+
+            String a = asyncUtil.send(tokenArr,cardnews.getTitle(),cardnews.getSubtitle()).get();
+
+            System.out.println(a);
+
+
+            return DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_CARDNEWS);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return DefaultRes.res(StatusCode.DB_ERROR,ResponseMessage.DB_ERROR);
         }
-
-        cardnewsRepository.save(cardnews);
-
-        return DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_CARDNEWS);
     }
 
 //    String filePath = S3Util.getFilePath(baseDir, imgFile);

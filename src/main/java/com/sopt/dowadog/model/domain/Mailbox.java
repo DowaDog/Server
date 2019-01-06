@@ -26,7 +26,7 @@ public class Mailbox extends DateEntity {
     private String type;
     private boolean complete;
 
-    @JsonIgnore
+    //@JsonIgnore
     @ManyToOne
     private User user;
 
