@@ -17,7 +17,6 @@ import java.util.List;
 
 @RequestMapping("api/admin/cardnews")
 @Controller
-@Verify
 public class AdminCardnewsController {
 
     @Autowired

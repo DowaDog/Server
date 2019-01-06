@@ -7,6 +7,7 @@ import com.sopt.dowadog.repository.AnimalCheckupRepository;
 import com.sopt.dowadog.repository.AnimalUserAdoptRepository;
 import com.sopt.dowadog.repository.MailboxRepository;
 import com.sopt.dowadog.repository.UserRepository;
+import com.sopt.dowadog.service.common.FileService;
 import com.sopt.dowadog.util.ResponseMessage;
 import com.sopt.dowadog.util.S3Util;
 import com.sopt.dowadog.util.StatusCode;

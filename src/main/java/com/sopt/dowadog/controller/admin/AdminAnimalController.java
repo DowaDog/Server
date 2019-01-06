@@ -27,7 +27,6 @@ public class AdminAnimalController {
     @PostMapping
     public ResponseEntity animal(Animal animal, @RequestParam("careId") int careId) {
         adminAnimalService.createAnimal(animal, careId);
-
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
@@ -39,10 +38,7 @@ public class AdminAnimalController {
 
     @PostMapping("stories")
     public ResponseEntity animalStoryList(AnimalStory animalStory, @RequestParam("animalId") int animalId) {
-
-        System.out.println("come to controller");
         adminAnimalService.createAnimalStory(animalStory, animalId);
         return new ResponseEntity(HttpStatus.CREATED);
-
     }
 }

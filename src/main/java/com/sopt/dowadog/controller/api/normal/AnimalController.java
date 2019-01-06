@@ -6,7 +6,7 @@ import com.sopt.dowadog.model.common.DefaultRes;
 import com.sopt.dowadog.model.domain.User;
 import com.sopt.dowadog.model.dto.FilterDto;
 import com.sopt.dowadog.service.AnimalService;
-import com.sopt.dowadog.service.JwtService;
+import com.sopt.dowadog.service.common.JwtService;
 import com.sopt.dowadog.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -6,7 +6,7 @@ import com.sopt.dowadog.model.domain.CommunityComment;
 import com.sopt.dowadog.model.domain.User;
 import com.sopt.dowadog.service.CommunityCommentService;
 import com.sopt.dowadog.service.CommunityService;
-import com.sopt.dowadog.service.JwtService;
+import com.sopt.dowadog.service.common.JwtService;
 import com.sopt.dowadog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

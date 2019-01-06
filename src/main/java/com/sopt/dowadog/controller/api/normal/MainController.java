@@ -25,10 +25,9 @@ public class MainController {
     public ResponseEntity main(@RequestHeader(value = "Authorization", required = false) final String jwtToken) {
 
         try {
-            User user = null;
-
             if (userService.getUserByJwtToken(jwtToken) != null) {
-                user = userService.getUserByJwtToken(jwtToken);
+                User user = userService.getUserByJwtToken(jwtToken);
+
             }
             return null;
 //            return new ResponseEntity(communityService.readCommunityById(user, communityId), HttpStatus.OK);

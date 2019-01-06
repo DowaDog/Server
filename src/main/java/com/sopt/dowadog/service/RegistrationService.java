@@ -54,6 +54,8 @@ public class RegistrationService {
         registration.setRegType(regType);
         registration.setRegStatus("step0");
 
+        //todo 보호소측으로 PUSh
+
         registrationRepository.save(registration);
         return DefaultRes.res(StatusCode.CREATED, ResponseMessage.CREATE_REGISTRATION);
     }
@@ -66,9 +68,12 @@ public class RegistrationService {
         System.out.println("유저 신청서 상태 검증 완료");
 
 
-        //모든 교육 마치지 않았다면 //Todo 올바른 코드로 변경되면 그때 적용
-//        AllEducatedDto allEducatedDto = cardnewsService.getAllEducatedDtoComplete(user);
-//        if(!allEducatedDto.isAllComplete()) return DefaultRes.BAD_REQUEST;
+        //모든 교육 마치지 않았다면
+        AllEducatedDto allEducatedDto = cardnewsService.getAllEducatedDtoComplete(user);
+        if(!allEducatedDto.isAllComplete()) {
+            System.out.println("유저 교육 이수 완료 안함");
+            return false;
+        }
 
         //없는 동물에 대해 신청하면
         if(!animalRepository.findById(registrationDto.getAnimalId()).isPresent()) return false;

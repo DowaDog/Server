@@ -1,4 +1,4 @@
-package com.sopt.dowadog.service;
+package com.sopt.dowadog.service.common;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
