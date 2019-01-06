@@ -102,6 +102,7 @@ public class CommunityService {
         //레파지토리 객체값들 복사
         for (Community community : communityList) {
             CommunityDto communityDto = community.getCommunityDto();
+//            communityDto.setUserProfileImg(new StringBuilder()s3Endpoint);
 
             communityDto = setCommunityDtoAuthAndProfileImgWithUser(user, community, communityDto);
 
