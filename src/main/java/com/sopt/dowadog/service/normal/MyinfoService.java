@@ -1,8 +1,14 @@
-package com.sopt.dowadog.service;
+package com.sopt.dowadog.service.normal;
 
 import com.sopt.dowadog.model.common.DefaultRes;
 import com.sopt.dowadog.model.domain.*;
 import com.sopt.dowadog.model.dto.*;
+import com.sopt.dowadog.repository.AnimalCheckupRepository;
+import com.sopt.dowadog.repository.AnimalUserAdoptRepository;
+import com.sopt.dowadog.repository.MailboxRepository;
+import com.sopt.dowadog.repository.UserRepository;
+import com.sopt.dowadog.service.common.CodeService;
+import com.sopt.dowadog.service.common.FileService;
 import com.sopt.dowadog.repository.*;
 import com.sopt.dowadog.util.ResponseMessage;
 import com.sopt.dowadog.util.S3Util;
@@ -86,8 +92,11 @@ public class MyinfoService {
     //입양한 동물 정보 조회
     public DefaultRes<AdoptAnimalDto> readAnimalUserAdoptById(User user, int adoptAnimalId) {
 
+        AnimalUserAdopt animalUserAdopt = animalUserAdoptRepository.findById(adoptAnimalId);
+        animalUserAdopt.setProfileImg(new StringBuilder(s3Endpoint).append(animalUserAdopt.getProfileImg()).toString());
         //adopAnimalId를 가진 동물 조회
-        AdoptAnimalDto animalDto = AdoptAnimalDto.builder().animalUserAdopt(animalUserAdoptRepository.findById(adoptAnimalId)).build();
+        AdoptAnimalDto animalDto = AdoptAnimalDto.builder()
+                        .animalUserAdopt(animalUserAdopt).build();
 
         //리턴하기위한 코드리스트 생성
         List<InoculationCode> codeDtoList = new ArrayList<>();
@@ -121,6 +130,10 @@ public class MyinfoService {
 
         AnimalUserAdopt animalUserAdopt = animalUserAdoptRepository.findById(animalAdoptId);
         boolean auth = animalUserAdopt.getAuth(user.getId());
+        System.out.println(user.getId());
+        System.out.println("######## Auth");
+        System.out.println(auth);
+        System.out.println(modifiedAnimalUserAdopt.getInoculationArray()[0]);
 
         if (auth) {
             animalUserAdopt.setName(modifiedAnimalUserAdopt.getName());
@@ -146,6 +159,7 @@ public class MyinfoService {
                                             .animalUserAdopt(animalUserAdopt)
                                             .build());
             }
+            System.out.println("예방접종 리스트 업데이트");
 
             return DefaultRes.res(StatusCode.OK, ResponseMessage.UPDATE_USER_ANIMAL, animalUserAdoptRepository.save(animalUserAdopt));
         } else {
@@ -243,8 +257,17 @@ public class MyinfoService {
     }
 
     //우체통 리스트 조회
-    public DefaultRes<List<Mailbox>> readMailboxes(User user) {
-        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_MAILBOX, user.getMailboxList());
+    public DefaultRes<List<MailboxDto>> readMailboxes(User user) {
+
+        List<MailboxDto> mailboxDtoList = new ArrayList<>();
+
+        System.out.println("mailbox list select come");
+        for(Mailbox mailbox : user.getMailboxList()) {
+            mailboxDtoList.add(mailbox.getMailboxDto());
+        }
+        System.out.println("mailboxDTO setted");
+
+        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_MAILBOX, mailboxDtoList);
     }
 
     public DefaultRes<MyinfoChangeDto> readMyinfo(final User user){

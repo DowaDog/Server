@@ -2,7 +2,9 @@ package com.sopt.dowadog.model.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.sopt.dowadog.enumeration.MailboxTypeEnum;
 import com.sopt.dowadog.model.domain.auditing.DateEntity;
+import com.sopt.dowadog.model.dto.MailboxDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -29,5 +31,18 @@ public class Mailbox extends DateEntity {
     //@JsonIgnore
     @ManyToOne
     private User user;
+
+    public MailboxDto getMailboxDto() {
+        System.out.println("#########");
+        System.out.println(type);
+        System.out.println(MailboxTypeEnum.valueOf(type).getValue());
+        return MailboxDto.builder()
+                    .type(this.type)
+                    .imgPath(MailboxTypeEnum.valueOf(type).getValue())
+                    .detail(this.detail)
+                    .title(this.title)
+                    .complete(this.complete)
+                    .build();
+    }
 
 }

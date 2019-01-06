@@ -60,7 +60,6 @@ public class Community extends DateEntity {
                 .id(this.id)
                 .title(this.title)
                 .detail(this.detail)
-                .communityImgList(this.communityImgList)
                 .userId(this.user.getId())
                 .today(this.isToday())
                 .createdAt(this.getCreatedAt())

@@ -1,7 +1,5 @@
 package com.sopt.dowadog.model.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sopt.dowadog.model.domain.auditing.DateEntity;
 import com.sopt.dowadog.model.dto.RegistrationDto;
 import lombok.*;
@@ -62,6 +60,26 @@ public class Registration extends DateEntity {
                 .validReg(registrationDto.isValidReg())
                 .userCheck(registrationDto.isUserCheck())
                 .regType(registrationDto.getRegType())
+                .build();
+    }
+
+    public RegistrationDto getRegistrationDto() {
+        return RegistrationDto.builder()
+                .phone(this.phone)
+                .email(this.email)
+                .address(this.address)
+                .job(this.job)
+                .havePet(this.havePet)
+                .petInfo(this.petInfo)
+                .adoptType(this.adoptType)
+                .tempPeriod(this.tempPeriod)
+                .regStatus(this.regStatus)
+                .meetPlace(this.meetPlace)
+                .meetTime(this.meetTime)
+                .meetMaterial(this.meetMaterial)
+                .validReg(this.isValidReg())
+                .userCheck(this.isUserCheck())
+                .regType(this.regType)
                 .build();
     }
 

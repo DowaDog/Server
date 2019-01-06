@@ -1,4 +1,4 @@
-package com.sopt.dowadog.service;
+package com.sopt.dowadog.service.normal;
 
 import com.sopt.dowadog.model.common.DefaultRes;
 import com.sopt.dowadog.model.domain.Cardnews;
@@ -90,6 +90,7 @@ public class CardnewsContentsService {
         int allEducate = 0;
         int userEducate = 0;
         boolean allComplete = false;
+
         if(cardnewsRepository.findByType("education").isPresent()){//전체 교육 개수
             allEducate = cardnewsRepository.findByType("education").get().size();
             userEducate = user.getCardnewsEducatedCount(); //사용자가교육한 갯수

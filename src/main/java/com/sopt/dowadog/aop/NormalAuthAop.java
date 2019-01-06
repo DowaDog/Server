@@ -1,9 +1,9 @@
 package com.sopt.dowadog.aop;
 
 import com.sopt.dowadog.model.common.DefaultRes;
-import com.sopt.dowadog.model.domain.User;
+import com.sopt.dowadog.repository.CareRepository;
 import com.sopt.dowadog.repository.UserRepository;
-import com.sopt.dowadog.service.JwtService;
+import com.sopt.dowadog.service.common.JwtService;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -17,11 +17,13 @@ import java.util.Optional;
 
 @Aspect
 @Component
-public class AuthAop {
+public class NormalAuthAop {
 
     private final static String AUTHORIZATION = "Authorization";
 
     private final UserRepository userRepository;
+
+    private final CareRepository careRepository;
 
     private final JwtService jwtService;
 
@@ -32,8 +34,9 @@ public class AuthAop {
     private final HttpServletRequest httpServletRequest;
 
 
-    public AuthAop(UserRepository userRepository, JwtService jwtService, final HttpServletRequest httpServletRequest) {
+    public NormalAuthAop(UserRepository userRepository, CareRepository careRepository, JwtService jwtService, final HttpServletRequest httpServletRequest) {
         this.userRepository = userRepository;
+        this.careRepository = careRepository;
         this.jwtService = jwtService;
         this.httpServletRequest = httpServletRequest;
 
@@ -61,7 +64,7 @@ public class AuthAop {
     @Around("auth()")
     public Object around(final ProceedingJoinPoint pjp) throws Throwable {
         if(validToken() == false) {
-            return RES_RESPONSE_ENTITY;
+            return DEFAULT_RES;
         }
         return pjp.proceed(pjp.getArgs());
     }
@@ -76,23 +79,35 @@ public class AuthAop {
     }
 
 
-    private boolean validToken() throws Exception{ // User의 권한 체크 - false:인증(로그인)되지 않은 사용자, true:인증된 사용자
+    private boolean validToken() throws Exception
+    { // User의 권한 체크 - false:인증(로그인)되지 않은 사용자, true:인증된 사용자
+        System.out.println("========= AOP ==========");
+
+        System.out.println("일반 사용자 검증");
         final String jwt = httpServletRequest.getHeader("Authorization");
 
         if(!Optional.ofNullable(jwt).isPresent()){
+            System.out.println("jwt토큰 미존재");
             return false;
         }
 
         final String userId = jwtService.decode(jwt);
 
         if(!Optional.ofNullable(userId).isPresent()){
+            System.out.println("jwt토큰 유효하지 않음");
             return false;
         }
 
-        if(!userRepository.findById(userId).isPresent()) return false;
+        if(!userRepository.findById(userId).isPresent()) {
+            System.out.println("해당 유저 존재하지 않음");
+            return false;
+        }
+
+        System.out.println("검증완료");
 
         return true;
     }
+
 
 
 }

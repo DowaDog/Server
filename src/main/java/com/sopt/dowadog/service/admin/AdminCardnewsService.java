@@ -9,7 +9,7 @@ import com.sopt.dowadog.repository.CardnewsContentsRepository;
 import com.sopt.dowadog.repository.CardnewsRepository;
 import com.sopt.dowadog.repository.MailboxRepository;
 import com.sopt.dowadog.repository.UserRepository;
-import com.sopt.dowadog.service.FileService;
+import com.sopt.dowadog.service.common.FileService;
 import com.sopt.dowadog.util.AsyncUtil;
 import com.sopt.dowadog.util.ResponseMessage;
 import com.sopt.dowadog.util.S3Util;
