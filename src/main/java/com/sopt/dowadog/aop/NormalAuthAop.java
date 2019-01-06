@@ -99,7 +99,6 @@ public class NormalAuthAop {
         }
 
         if(!userRepository.findById(userId).isPresent()) {
-            System.out.println(userRepository.findById(userId).get().getId());
             System.out.println("해당 유저 존재하지 않음");
             return false;
         }

@@ -1,11 +1,10 @@
 
 package com.sopt.dowadog.controller.admin;
 
-import com.sopt.dowadog.annotation.Verify;
 import com.sopt.dowadog.model.domain.Cardnews;
 import com.sopt.dowadog.model.domain.CardnewsContents;
-import com.sopt.dowadog.service.CardnewsContentsService;
-import com.sopt.dowadog.service.UserService;
+import com.sopt.dowadog.service.normal.CardnewsContentsService;
+import com.sopt.dowadog.service.normal.UserService;
 import com.sopt.dowadog.service.admin.AdminCardnewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

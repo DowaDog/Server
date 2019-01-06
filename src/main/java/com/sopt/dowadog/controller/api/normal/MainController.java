@@ -3,7 +3,7 @@ package com.sopt.dowadog.controller.api.normal;
 import com.sopt.dowadog.model.common.DefaultRes;
 import com.sopt.dowadog.model.domain.User;
 import com.sopt.dowadog.repository.UserRepository;
-import com.sopt.dowadog.service.UserService;
+import com.sopt.dowadog.service.normal.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
