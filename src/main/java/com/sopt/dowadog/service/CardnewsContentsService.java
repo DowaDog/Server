@@ -31,33 +31,53 @@ public class CardnewsContentsService {
     private String s3Endpoint;
 
     public DefaultRes<CardnewsContentsListDto> readAllCardnewsContentsList(User user, int cardnewsId){
+        if(user != null) {
+            List<CardnewsContents> cardnewsContentsList = cardnewsContentsRepository.findByCardnewsId(cardnewsId);
 
-        List<CardnewsContents> cardnewsContentsList = cardnewsContentsRepository.findByCardnewsId(cardnewsId);
+            List<CardnewsContentsDto> cardnewsContentsDtoList = new ArrayList<>();
 
-        List<CardnewsContentsDto> cardnewsContentsDtoList = new ArrayList<>();
+            for (CardnewsContents cardnewsContents : cardnewsContentsList) {
+                CardnewsContentsDto cardnewsContentsDto = cardnewsContents.getCardnewsContentsDto();
 
-        for(CardnewsContents cardnewsContents : cardnewsContentsList){
-            CardnewsContentsDto cardnewsContentsDto = cardnewsContents.getCardnewsContentsDto();
+                String temp = s3Endpoint + cardnewsContents.getThumnailImg();
 
-            String temp =  s3Endpoint + cardnewsContents.getThumnailImg();
+                cardnewsContentsDto.setThumnailImg(temp);
 
-            cardnewsContentsDto.setThumnailImg(temp);
+                cardnewsContentsDto = setCardnewsContentsDtoAuth(user, cardnewsContentsDto);
 
-            cardnewsContentsDto = setCardnewsContentsDtoAuth(user, cardnewsContentsDto);
+                cardnewsContentsDtoList.add(cardnewsContentsDto);
+            }
 
-            cardnewsContentsDtoList.add(cardnewsContentsDto);
+            AllEducatedDto allEducatedDto = getAllEducatedDtoComplete(user);
+
+            CardnewsContentsListDto cardnewsContentsListDto = CardnewsContentsListDto.builder().
+                    content(cardnewsContentsDtoList).
+                    edu(allEducatedDto).
+                    build();
+
+            return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_CARDNEWSCONTENTS, cardnewsContentsListDto);
+        }else{
+            List<CardnewsContents> cardnewsContentsList = cardnewsContentsRepository.findByCardnewsId(cardnewsId);
+
+            List<CardnewsContentsDto> cardnewsContentsDtoList = new ArrayList<>();
+
+            for (CardnewsContents cardnewsContents : cardnewsContentsList) {
+                CardnewsContentsDto cardnewsContentsDto = cardnewsContents.getCardnewsContentsDto();
+
+                String temp = s3Endpoint + cardnewsContents.getThumnailImg();
+
+                cardnewsContentsDto.setThumnailImg(temp);
+
+                cardnewsContentsDto = setCardnewsContentsDtoAuth(user, cardnewsContentsDto);
+
+                cardnewsContentsDtoList.add(cardnewsContentsDto);
+            }
+
+            CardnewsContentsListDto cardnewsContentsListDto = CardnewsContentsListDto.builder().
+                    content(cardnewsContentsDtoList).
+                    build();
+            return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_CARDNEWSCONTENTS, cardnewsContentsListDto);
         }
-
-        AllEducatedDto allEducatedDto = getAllEducatedDtoComplete(user);
-
-        CardnewsContentsListDto cardnewsContentsListDto = CardnewsContentsListDto.builder().
-                content(cardnewsContentsDtoList).
-                edu(allEducatedDto).
-                build();
-
-        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_CARDNEWSCONTENTS, cardnewsContentsListDto);
-
-
     }
 
     public CardnewsContentsDto setCardnewsContentsDtoAuth(User user ,CardnewsContentsDto cardnewsContentsDto){

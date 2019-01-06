@@ -10,4 +10,6 @@ public interface UserAnimalLikeRepository extends JpaRepository<UserAnimalLike,I
     List<UserAnimalLike> findAllByUser_IdAndAnimal_Id(final String userIdx,final int animalIdx);
 
     void deleteByUser_idAndAnimal_Id(final String userIdx,final int animalIdx);
+
+    List<UserAnimalLike> findAllByUser_IdOrderByCreatedAtDesc(final String userId);
 }

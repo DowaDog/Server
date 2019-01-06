@@ -14,4 +14,5 @@ public interface RegistrationRepository extends JpaRepository<Registration, Inte
     boolean existsByUserAndRegStatusNotInAndValidReg(User user, String regStatus, boolean validReg);
     Optional<List<Registration>> findByUserAndUserCheck(User user, boolean userCheck);
 
+
 }

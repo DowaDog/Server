@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.sopt.dowadog.model.domain.auditing.DateEntity;
 import com.sopt.dowadog.model.dto.CommunityDto;
+import com.sopt.dowadog.util.S3Util;
 import lombok.*;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -36,7 +37,7 @@ public class Community extends DateEntity {
     @OneToMany(mappedBy="community", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<CommunityImg> communityImgList;
 
-    @JsonIgnore
+
     @ManyToOne
     private User user;
 
@@ -46,7 +47,7 @@ public class Community extends DateEntity {
 
     public boolean isToday() {
         LocalDateTime createdAt = this.getCreatedAt();
-        return (createdAt.equals(new LocalDate()));
+        return (createdAt.toLocalDate().getDayOfYear()==(new LocalDate().now().getDayOfYear()));
     }
 
     public boolean getAuth(String userId){

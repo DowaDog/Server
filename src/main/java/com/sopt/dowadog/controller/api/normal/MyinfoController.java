@@ -94,6 +94,7 @@ public class MyinfoController {
 
 
     //좋아요 리스트 조회 완료
+    @Auth
     @GetMapping("/likes")
     public ResponseEntity readMypageLikes
     (@RequestHeader(value = "Authorization", required = false) String jwtToken) {
@@ -109,12 +110,14 @@ public class MyinfoController {
     }
 
     //스크랩 리스트 조회 //todo 수한이 작업 완료하면 그때
+    @Auth
     @GetMapping("/scraps")
     public ResponseEntity readMypageClips
     (@RequestHeader(value = "Authorization", required = false) String jwtToken) {
         //todo 나중에 상세 예외처리
 
         try {
+            //밑의 함수의 경우 throws를 사용해서 꼭 try catch문을 해야 함!(에러를 최상단에서 처리하기 위해서)
             User user = userService.getUserByJwtToken(jwtToken);
 
             return new ResponseEntity(myinfoService.readMyClipsList(user), HttpStatus.OK);
@@ -126,6 +129,7 @@ public class MyinfoController {
     }
 
     //내가 쓴글 리스트 조회
+    @Auth
     @GetMapping("/community")
     public ResponseEntity readMypageCommunity
     (@RequestHeader(value = "Authorization", required = false) String jwtToken) {
@@ -135,6 +139,7 @@ public class MyinfoController {
             User user = userService.getUserByJwtToken(jwtToken);
             return new ResponseEntity(myinfoService.readMyCommunityList(user), HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
         }
     }
@@ -151,6 +156,22 @@ public class MyinfoController {
         }
 
         //return new ResponseEntity(HttpStatus.OK);
+    }
+    //내 정보 조회
+    @Auth
+    @GetMapping("/myinfo")
+    public ResponseEntity readMypageMyinfo(@RequestHeader(value = "Authorization",required = false)final String jwtToken){
+        try{
+            User user = userService.getUserByJwtToken(jwtToken);
+            return new ResponseEntity(myinfoService.readMyinfo(user),HttpStatus.OK);
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity(DefaultRes.FAIL_DEFAULT_RES,HttpStatus.INTERNAL_SERVER_ERROR);
+
+        }
+
     }
 }
 //컨트롤러는 클라이언트에게 보여줄 뷰
