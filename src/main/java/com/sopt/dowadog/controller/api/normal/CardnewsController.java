@@ -107,7 +107,11 @@ public class CardnewsController {
                                       @PathVariable("cardnewsId")int cardnewsId){
         try {
             User user = userService.getUserByJwtToken(jwtToken);
-            return new ResponseEntity(cardnewsService.createCardnewsScrap(user,cardnewsId),HttpStatus.OK);
+            if(user != null) {
+                return new ResponseEntity(cardnewsService.createCardnewsScrap(user, cardnewsId), HttpStatus.OK);
+            }else{
+                return new ResponseEntity(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(DefaultRes.FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
