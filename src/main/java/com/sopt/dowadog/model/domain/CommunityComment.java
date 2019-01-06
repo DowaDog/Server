@@ -40,9 +40,8 @@ public class CommunityComment extends DateEntity {
 
     public boolean isToday() {
         LocalDateTime createdAt = this.getCreatedAt();
-        return createdAt.equals(new LocalDate());
+        return (createdAt.toLocalDate().getDayOfYear()==(new LocalDate().now().getDayOfYear()));
     }
-
     public String getUserId() {
         return this.user.getId();
     }
@@ -55,6 +54,7 @@ public class CommunityComment extends DateEntity {
     @JsonIgnore
     public CommentDto getCommentDto() {
         return CommentDto.builder()
+                .today(this.isToday())
                 .id(this.id)
                 .detail(this.detail)
                 .createdAt(this.getCreatedAt())

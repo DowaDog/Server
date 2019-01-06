@@ -27,5 +27,6 @@ public class CommunityDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private boolean auth = false;
+    private String presentUserImg;
 
 }

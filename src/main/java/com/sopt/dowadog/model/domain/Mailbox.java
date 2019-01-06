@@ -22,9 +22,6 @@ public class Mailbox extends DateEntity {
 
 
     private String title;
-    private String detail;
-
-    private String imgPath;
     private String type;
     private boolean complete;
 
