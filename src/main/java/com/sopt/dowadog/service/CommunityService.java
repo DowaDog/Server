@@ -22,6 +22,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -119,10 +120,17 @@ public class CommunityService {
 
     public DefaultRes<CommunityDto> readCommunityById(User user, int communityId) {
 
+        String tempImg ="유저가 아님";
+        if(user != null){
+            tempImg =  user.getProfileImg();
+
+        }
+
         if (communityRepository.findById(communityId).isPresent()) {
             Community community = communityRepository.findById(communityId).get();
             CommunityDto communityDto = community.getCommunityDto();
-
+            communityDto.setUserProfileImg(S3Util.getImgPath(s3Endpoint,community.getUser().getProfileImg()));
+            communityDto.setPresentUserImg(S3Util.getImgPath(s3Endpoint,tempImg));
             //커뮤니티 이미지들 풀패스로 바꾸는 과정
             List<CommunityImg> imgList = new ArrayList<>();
             for(CommunityImg temp : community.getCommunityImgList()){
@@ -197,5 +205,12 @@ public class CommunityService {
         communityDto.setUserProfileImg(S3Util.getImgPath(s3Endpoint, community.getUser().getProfileImg()));
 
         return communityDto;
+    }
+
+    public Optional<List<Community>> readMyCommunity(User user) {
+
+
+
+        return communityRepository.findByUserOrderByCreatedAtDesc(user);
     }
 }

@@ -1,10 +1,7 @@
 package com.sopt.dowadog.controller.api.normal;
 
-import com.sopt.dowadog.annotation.Auth;
 import com.sopt.dowadog.model.common.DefaultRes;
 import com.sopt.dowadog.model.domain.User;
-import com.sopt.dowadog.model.domain.UserCardnewsEducate;
-import com.sopt.dowadog.model.dto.CardnewsDto;
 import com.sopt.dowadog.repository.UserCardnewsScrapRepository;
 import com.sopt.dowadog.repository.UserRepository;
 import com.sopt.dowadog.service.CardnewsContentsService;

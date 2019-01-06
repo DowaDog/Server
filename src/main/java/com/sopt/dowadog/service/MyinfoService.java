@@ -1,9 +1,11 @@
 package com.sopt.dowadog.service;
 
+import ch.qos.logback.core.pattern.util.RegularEscapeUtil;
 import com.sopt.dowadog.model.common.DefaultRes;
 import com.sopt.dowadog.model.domain.*;
 import com.sopt.dowadog.model.dto.*;
 import com.sopt.dowadog.repository.*;
+import com.sopt.dowadog.util.CompareDate;
 import com.sopt.dowadog.util.ResponseMessage;
 import com.sopt.dowadog.util.S3Util;
 import com.sopt.dowadog.util.StatusCode;
@@ -12,9 +14,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Service
 public class MyinfoService {
@@ -49,6 +50,8 @@ public class MyinfoService {
     private String s3Endpoint;
 
     //todo 우체통 API작성 controller 작성하기 테이블도 구성되야함
+
+
 
     //UserID로 정보가져오기
     public DefaultRes<MyinfoDto> readMypage(User user) {
@@ -216,19 +219,30 @@ public class MyinfoService {
     }
 
     //사용자 작성한 글 리스트 조회
-    public DefaultRes<List<CommunityDto>> readMyCommunityList(User user) {
-
-        List<Community> communityList = user.getCommunityList();
-        List<CommunityDto> communityDtoList = new ArrayList<>();
-
-        for(Community community : communityList) {
-            CommunityDto communityDto = community.getCommunityDto();
-            communityDto = communityService.setCommunityDtoAuthAndProfileImgWithUser(user, community, communityDto);
-            communityDtoList.add(communityDto);
-        }
+    public DefaultRes<List<MyinfoCommunityDto>> readMyCommunityList(User user) {
 
 
-        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_USER_COMMUNITY, communityDtoList);
+
+
+        Optional<List<Community>> communityList = communityService.readMyCommunity(user);
+        List<MyinfoCommunityDto> communityDtoList = new ArrayList<>();
+
+
+            for(Community community : communityList.get()) {
+                MyinfoCommunityDto communityDto = MyinfoCommunityDto.builder()
+                        .id(community.getId())
+                        .title(community.getTitle())
+                        .createAt(community.getCreatedAt())
+                        .updateAt(community.getUpdatedAt())
+                        .build();
+
+                communityDtoList.add(communityDto);
+            }
+
+
+            return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_USER_COMMUNITY, communityDtoList);
+
+
     }
 
     //우체통 리스트 조회

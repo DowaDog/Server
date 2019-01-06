@@ -129,6 +129,7 @@ public class MyinfoController {
     }
 
     //내가 쓴글 리스트 조회
+    @Auth
     @GetMapping("/community")
     public ResponseEntity readMypageCommunity
     (@RequestHeader(value = "Authorization", required = false) String jwtToken) {
@@ -138,6 +139,7 @@ public class MyinfoController {
             User user = userService.getUserByJwtToken(jwtToken);
             return new ResponseEntity(myinfoService.readMyCommunityList(user), HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
         }
     }
