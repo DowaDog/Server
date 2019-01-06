@@ -18,6 +18,7 @@ public class CardnewsDto {
     private String imgPath;
     private boolean educated = false;
     private boolean auth = false;
+    private boolean scrap = false;
 
 
 }

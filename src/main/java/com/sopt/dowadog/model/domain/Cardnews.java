@@ -74,6 +74,14 @@ public class Cardnews extends DateEntity {
         return false;
     }
 
+    public boolean getScrap(User user){
+
+        for(UserCardnewsScrap cardnewsScrap : user.getUserCardnewsScrapList()){
+            if(this.id == cardnewsScrap.getCardnews().getId()) return true;
+        }
+        return false;
+    }
+
 
 
 

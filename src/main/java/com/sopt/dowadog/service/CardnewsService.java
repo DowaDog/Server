@@ -63,6 +63,8 @@ public class CardnewsService {
 
                 cardnewsDto.setEducated(cardnews.getEducated(user));
 
+                cardnewsDto.setScrap(cardnews.getScrap(user));
+
                 cardnewsDtoList.add(cardnewsDto);
             }
 
@@ -96,31 +98,62 @@ public class CardnewsService {
         }
     }
 
-    public DefaultRes<CardnewsListDto> readCardnewsKnowledgeList(int page, int limit){
-        Pageable pageable = PageRequest.of(page, limit);
+    public DefaultRes<CardnewsListDto> readCardnewsKnowledgeList(User user, int page, int limit){
+        if(user != null) {
 
-        Page<Cardnews> cardnewsPage = cardnewsRepository.findByTypeOrderByCreatedAtDesc("knowledge", pageable);
-        Pageable paging = cardnewsPage.getPageable();
+            Pageable pageable = PageRequest.of(page, limit);
 
-        List<Cardnews> cardnewsList = cardnewsPage.getContent();
+            Page<Cardnews> cardnewsPage = cardnewsRepository.findByTypeOrderByCreatedAtDesc("knowledge", pageable);
+            Pageable paging = cardnewsPage.getPageable();
 
-        List<CardnewsDto> cardnewsDtoList = new ArrayList<>();
+            List<Cardnews> cardnewsList = cardnewsPage.getContent();
 
-        for(Cardnews cardnews : cardnewsList){
-            CardnewsDto cardnewsDto = cardnews.getCardnewsDto();
+            List<CardnewsDto> cardnewsDtoList = new ArrayList<>();
 
-            String temp = s3Endpoint + cardnews.getImgPath();
+            for (Cardnews cardnews : cardnewsList) {
+                CardnewsDto cardnewsDto = cardnews.getCardnewsDto();
 
-            cardnewsDto.setImgPath(temp);
+                String temp = s3Endpoint + cardnews.getImgPath();
 
-            cardnewsDtoList.add(cardnewsDto);
+                cardnewsDto.setScrap(cardnews.getScrap(user));
+
+                cardnewsDto.setImgPath(temp);
+
+                cardnewsDtoList.add(cardnewsDto);
+            }
+
+            CardnewsListDto cardnewsListDto = CardnewsListDto.builder()
+                    .content(cardnewsDtoList)
+                    .pageable(paging)
+                    .build();
+            return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_CARDNEWS, cardnewsListDto);
+        }else{
+            Pageable pageable = PageRequest.of(page, limit);
+
+            Page<Cardnews> cardnewsPage = cardnewsRepository.findByTypeOrderByCreatedAtDesc("knowledge", pageable);
+            Pageable paging = cardnewsPage.getPageable();
+
+            List<Cardnews> cardnewsList = cardnewsPage.getContent();
+
+            List<CardnewsDto> cardnewsDtoList = new ArrayList<>();
+
+            for(Cardnews cardnews : cardnewsList){
+                CardnewsDto cardnewsDto = cardnews.getCardnewsDto();
+
+                String temp = s3Endpoint + cardnews.getImgPath();
+
+                cardnewsDto.setImgPath(temp);
+
+                cardnewsDtoList.add(cardnewsDto);
+            }
+
+            CardnewsListDto cardnewsListDto = CardnewsListDto.builder()
+                    .content(cardnewsDtoList)
+                    .pageable(paging)
+                    .build();
+            return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_CARDNEWS, cardnewsListDto);
         }
 
-        CardnewsListDto cardnewsListDto = CardnewsListDto.builder()
-                .content(cardnewsDtoList)
-                .pageable(paging)
-                .build();
-            return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_CARDNEWS, cardnewsListDto);
     }
 
     public DefaultRes<List<UserCardnewsEducate>> createCardnewsEducated(User user, final int cardnewsId) {
