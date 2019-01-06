@@ -4,10 +4,10 @@ import com.sopt.dowadog.model.common.DefaultRes;
 import com.sopt.dowadog.model.domain.User;
 import com.sopt.dowadog.repository.UserCardnewsScrapRepository;
 import com.sopt.dowadog.repository.UserRepository;
-import com.sopt.dowadog.service.CardnewsContentsService;
-import com.sopt.dowadog.service.CardnewsService;
-import com.sopt.dowadog.service.JwtService;
-import com.sopt.dowadog.service.UserService;
+import com.sopt.dowadog.service.normal.CardnewsContentsService;
+import com.sopt.dowadog.service.normal.CardnewsService;
+import com.sopt.dowadog.service.normal.UserService;
+import com.sopt.dowadog.service.common.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,10 +61,20 @@ public class CardnewsController {
     }
 
     @GetMapping("knowledge")
-    public ResponseEntity  readCardnewsKnowledgeList(@RequestParam(name="page", defaultValue="0",required = false)int page,
+    public ResponseEntity  readCardnewsKnowledgeList(@RequestHeader(value="Authorization", required = false) final String jwtToken,
+                                                     @RequestParam(name="page", defaultValue="0",required = false)int page,
                                                      @RequestParam(name="limit", defaultValue = "10", required=false)int limit){
 
-        return new ResponseEntity(cardnewsService.readCardnewsKnowledgeList(page,limit), HttpStatus.OK);
+        try{
+            User user = userService.getUserByJwtToken(jwtToken);
+
+
+            return new ResponseEntity(cardnewsService.readCardnewsKnowledgeList(user,page,limit), HttpStatus.OK);
+        }catch(Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(DefaultRes.FAIL_DEFAULT_RES,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
 
@@ -104,7 +114,11 @@ public class CardnewsController {
                                       @PathVariable("cardnewsId")int cardnewsId){
         try {
             User user = userService.getUserByJwtToken(jwtToken);
-            return new ResponseEntity(cardnewsService.createCardnewsScrap(user,cardnewsId),HttpStatus.OK);
+            if(user != null) {
+                return new ResponseEntity(cardnewsService.createCardnewsScrap(user, cardnewsId), HttpStatus.OK);
+            }else{
+                return new ResponseEntity(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(DefaultRes.FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);

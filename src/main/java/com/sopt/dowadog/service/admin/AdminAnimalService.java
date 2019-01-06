@@ -6,7 +6,7 @@ import com.sopt.dowadog.model.domain.Care;
 import com.sopt.dowadog.repository.AnimalRepository;
 import com.sopt.dowadog.repository.AnimalStoryRepository;
 import com.sopt.dowadog.repository.CareRepository;
-import com.sopt.dowadog.service.FileService;
+import com.sopt.dowadog.service.common.FileService;
 import com.sopt.dowadog.util.S3Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

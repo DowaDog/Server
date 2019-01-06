@@ -4,13 +4,11 @@ import lombok.Getter;
 
 @Getter
 public enum MailboxTypeEnum {
-    CONTENT("content", "content.jpg"), REGISTRATION("registration", "registration.jpg"), PHOTO("photo", "photo.jpg"), MEDICAL("medical", "medical.jpg");
+    content("https://ryudd.s3.amazonaws.com/dowadog/mailbox/post_app.png"), registration( "https://ryudd.s3.amazonaws.com/dowadog/mailbox/post_document.png"), photo("https://ryudd.s3.amazonaws.com/dowadog/mailbox/post_photo.png"), medical("https://ryudd.s3.amazonaws.com/dowadog/mailbox/post_medical.png");
 
     private final String value;
-    private final String key;
 
-    MailboxTypeEnum(String key, String value) {
-        this.key = key;
+    MailboxTypeEnum(String value) {
         this.value = value;
     }
 

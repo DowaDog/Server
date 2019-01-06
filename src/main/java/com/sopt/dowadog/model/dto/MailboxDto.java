@@ -9,16 +9,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CardnewsDto {
+public class MailboxDto {
 
-    private int id;
     private String title;
-    private String subtitle;
+    private String detail;
     private String type;
     private String imgPath;
-    private boolean educated = false;
-    private boolean auth = false;
-    private boolean scrap = false;
-
-
+    private boolean complete;
 }

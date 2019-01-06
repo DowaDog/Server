@@ -2,9 +2,6 @@ package com.sopt.dowadog.controller.admin;
 
 import com.sopt.dowadog.model.domain.Community;
 import com.sopt.dowadog.model.domain.User;
-import com.sopt.dowadog.repository.UserRepository;
-import com.sopt.dowadog.service.CommunityService;
-import com.sopt.dowadog.service.UserService;
 import com.sopt.dowadog.service.admin.AdminCommunityService;
 import com.sopt.dowadog.service.admin.AdminUserService;
 import org.springframework.beans.factory.annotation.Autowired;

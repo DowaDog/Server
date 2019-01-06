@@ -1,4 +1,4 @@
-package com.sopt.dowadog.service;
+package com.sopt.dowadog.service.common;
 
 import com.sopt.dowadog.model.domain.Code;
 import com.sopt.dowadog.repository.CodeRepository;

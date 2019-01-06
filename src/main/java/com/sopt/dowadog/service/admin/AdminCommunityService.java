@@ -1,23 +1,19 @@
 package com.sopt.dowadog.service.admin;
 
-import com.sopt.dowadog.model.common.DefaultRes;
 import com.sopt.dowadog.model.domain.Community;
 import com.sopt.dowadog.model.domain.CommunityImg;
 import com.sopt.dowadog.model.domain.User;
 import com.sopt.dowadog.repository.CommunityImgRepository;
 import com.sopt.dowadog.repository.CommunityRepository;
 import com.sopt.dowadog.repository.UserRepository;
-import com.sopt.dowadog.service.FileService;
-import com.sopt.dowadog.util.ResponseMessage;
+import com.sopt.dowadog.service.common.FileService;
 import com.sopt.dowadog.util.S3Util;
-import com.sopt.dowadog.util.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 

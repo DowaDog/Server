@@ -5,7 +5,7 @@ import com.sopt.dowadog.model.domain.Cardnews;
 import com.sopt.dowadog.model.domain.CardnewsContents;
 import com.sopt.dowadog.repository.CardnewsContentsRepository;
 import com.sopt.dowadog.repository.CardnewsRepository;
-import com.sopt.dowadog.service.FileService;
+import com.sopt.dowadog.service.common.FileService;
 import com.sopt.dowadog.util.ResponseMessage;
 import com.sopt.dowadog.util.S3Util;
 import com.sopt.dowadog.util.StatusCode;

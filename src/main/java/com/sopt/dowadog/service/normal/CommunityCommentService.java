@@ -1,4 +1,4 @@
-package com.sopt.dowadog.service;
+package com.sopt.dowadog.service.normal;
 
 import com.sopt.dowadog.model.common.DefaultRes;
 import com.sopt.dowadog.model.domain.Community;
