@@ -60,7 +60,7 @@ private String defaultUrl;
     }
 
     //좋아요 여부 구현 메소드
-    private boolean getUserLikeState(final String userId, final int animalId){
+    public boolean getUserLikeState(final String userId, final int animalId){
 
 
         List<UserAnimalLike> countingList = userAnimalLikeRepository.findAllByUser_IdAndAnimal_Id(userId,animalId);
@@ -75,7 +75,7 @@ private String defaultUrl;
     }
 
     //썸네일 파일패스 s3 디폴트유알엘 붙인 거로 구현한 메소드
-    private String getThumnailImg(final String thumbnailImgPath ){
+    public String getThumnailImg(final String thumbnailImgPath ){
 
         if(thumbnailImgPath!=null){
 
@@ -133,7 +133,7 @@ private String defaultUrl;
     }
 
     // 토큰 null 일 때 좋아요(게스트) 처리
-    private boolean getLikedForGuest (final User user,final int animalId){
+    public boolean getLikedForGuest (final User user,final int animalId){
         boolean stateLike;
 
         if(user==null){
