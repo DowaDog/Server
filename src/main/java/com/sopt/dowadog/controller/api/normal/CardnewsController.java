@@ -61,10 +61,20 @@ public class CardnewsController {
     }
 
     @GetMapping("knowledge")
-    public ResponseEntity  readCardnewsKnowledgeList(@RequestParam(name="page", defaultValue="0",required = false)int page,
+    public ResponseEntity  readCardnewsKnowledgeList(@RequestHeader(value="Authorization", required = false) final String jwtToken,
+                                                     @RequestParam(name="page", defaultValue="0",required = false)int page,
                                                      @RequestParam(name="limit", defaultValue = "10", required=false)int limit){
 
-        return new ResponseEntity(cardnewsService.readCardnewsKnowledgeList(page,limit), HttpStatus.OK);
+        try{
+            User user = userService.getUserByJwtToken(jwtToken);
+
+
+            return new ResponseEntity(cardnewsService.readCardnewsKnowledgeList(user,page,limit), HttpStatus.OK);
+        }catch(Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(DefaultRes.FAIL_DEFAULT_RES,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
 
