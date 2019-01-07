@@ -90,7 +90,13 @@ public class MyinfoService {
 
     //입양한 동물 리스트 //todo 리스폰스메세지 변경
     public DefaultRes<List<AnimalUserAdopt>> readAnimalUserAdoptList(User user) {
-        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_ANIMAL, user.getAnimalUserAdoptList());
+        List<AnimalUserAdopt> animalUserAdoptList = user.getAnimalUserAdoptList();
+
+        for(AnimalUserAdopt animalUserAdopt : animalUserAdoptList) {
+            animalUserAdopt.setProfileImg(S3Util.getImgPath(s3Endpoint, animalUserAdopt.getProfileImg()));
+        }
+
+        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_ANIMAL, animalUserAdoptList);
     }
 
     //입양한 동물 정보 조회

@@ -35,6 +35,7 @@ public class S3FileServiceImpl implements FileService {
     public void fileUpload(MultipartFile multipartFile, String filePath) {
         try {
 
+            System.out.println("FILE UPLOAD COME");
             File convFile = new File(multipartFile.getOriginalFilename());
             convFile.createNewFile();
             FileOutputStream fos = new FileOutputStream(convFile);
@@ -43,13 +44,18 @@ public class S3FileServiceImpl implements FileService {
             s3client.putObject(new PutObjectRequest(bucketName, filePath, convFile));
             convFile.delete();
 
+            System.out.println("FILE UPLOAD END");
+
             log.info("===================== Upload File - Done! =====================");
         } catch (AmazonServiceException ase) {
+            ase.printStackTrace();
             printS3Error(ase);
         } catch (AmazonClientException ace) {
+            ace.printStackTrace();
             log.info("Caught an AmazonClientException: ");
             log.info("Error Message: " + ace.getMessage());
         } catch (IOException ioe) {
+            ioe.printStackTrace();
             log.info("IOE Error Message: " + ioe.getMessage());
         }
     }
