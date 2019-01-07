@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="https://ryudd.s3.amazonaws.com/dowadog/common/dowadog.png" type="image/x-icon"/>
+    <link rel="icon" href="https://ryudd.s3.amazonaws.com/dowadog/common/dowadog.png" type="image/x-icon"/>
+
+    <title>기다릴개 보호소 | 로그인</title>
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/font-awesome/css/font-awesome.css" rel="stylesheet">
+
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="/css/animate.css" rel="stylesheet">
+    <link href="/css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+
+<div class="middle-box text-center loginscreen animated fadeInDown">
+    <div>
+        <div>
+
+            <h1 class="logo-name">IN+</h1>
+
+        </div>
+        <h3>Welcome to IN+</h3>
+        <p>Perfectly designed and precisely prepared admin theme with over 50 pages with extra new web app views.
+            <!--Continually expanded and constantly improved Inspinia Admin Them (IN+)-->
+        </p>
+        <p>Login in. To see it in action.</p>
+        <form class="m-t" role="form" id="loginForm">
+            <div class="form-group">
+                <input type="text" class="form-control" name="id" placeholder="Username" required="">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" name="password" placeholder="Password" required="">
+            </div>
+            <button type="button" id="submitBtn" class="btn btn-warning block full-width m-b">Login</button>
+
+            <a href="#">
+                <small>Forgot password?</small>
+            </a>
+            <p class="text-muted text-center">
+                <small>Do not have an account?</small>
+            </p>
+            <a class="btn btn-sm btn-white btn-block" href="register.html">Create an account</a>
+        </form>
+        <p class="m-t">
+            <small>Inspinia we app framework base on Bootstrap 3 &copy; 2014</small>
+        </p>
+    </div>
+</div>
+
+<!-- Mainly scripts -->
+<script src="/js/jquery-3.1.1.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+<!-- Custom and plugin javascript -->
+<script src="/js/inspinia.js"></script>
+<script src="/js/plugins/pace/pace.min.js"></script>
+
+<!-- Jasny -->
+<script src="/js/plugins/jasny/jasny-bootstrap.min.js"></script>
+
+<!-- CodeMirror -->
+<script src="/js/plugins/sweetalert/sweetalert.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+
+        if (!Date.now) {
+            Date.now = function() { return new Date().getTime(); }
+        }
+        
+        var now = Math.floor(Date.now() / 1000);
+        
+        var accessToken = $.cookie("accessToken");
+        var accessTokenExpiredAt = $.cookie("accessTokenExpiredAt");
+        var refreshToken = $.cookie("refreshToken");
+        var refreshTokenExpiredAt = $.cookie("refreshTokenExpiredAt");
+        var serverNow = $.cookie("serverNow");
+
+
+        var doRefreshRequest = function() {
+            var headers = {};
+            headers["Authorization"] = refreshToken;
+            
+            $.ajax({
+                type: "POST",
+                headers : headers,
+                url: "/api/care/auth/refresh",
+                timeout: 600000,
+                success: function (res) {
+                    console.log(res);
+
+                    if (res.status == 201) {
+//                        console.log(res);
+//                        console.log("액세스토큰 갱신 완료");
+                        //갱신코드
+                        $.cookie("accessToken", res.data.data);
+                        $.cookie("accessTokenExpiredAt, res.data.expiredAt");
+
+                    } else {
+//                        console.log("액세스토큰 갱신 실패");
+                        swal({
+                            title: "Server error",
+                            text: "에러가 발생했습니다 다시 입력해주세요",
+                            type: "error"
+                        });
+                    }
+                }
+            });
+        }
+        
+
+        if (!Date.now) {
+            Date.now = function() { return new Date().getTime(); }
+        }
+        
+        if(refreshToken !== undefined) { // 리프레시 토큰이 있다
+            if(now < refreshTokenExpiredAt) { // 리프레시토큰이 만료되지 않았다
+//                console.log("리프레시토큰은 만료되지 않았음");
+//                console.log(accessTokenExpiredAt);
+//                console.log("local Now ");
+//
+//                console.log(now);
+//
+//                console.log("server Now");
+//                console.log(serverNow);
+//                console.log("accessToken expiredAt");
+//                console.log(accessTokenExpiredAt);
+                
+                if(accessTokenExpiredAt < now) { // 엑세스토큰이 만료되었다
+//                    console.log("액세스토큰 만료됨");
+                    doRefreshRequest();
+                } else{
+//                    console.log("로그인유지");
+                    location.href="/care/main.html";
+                }
+            } 
+        }
+        
+        //리프레시 토큰이 없다
+        
+        
+        
+        
+
+
+        $('#submitBtn').click(function (e) {
+            e.preventDefault();
+
+            var loginForm = {
+                id: $('input[name=id]').val(),
+                password: $('input[name=password]').val()
+            }
+
+            $.ajax({
+
+                type: "POST",
+                url: "/api/care/auth/login",
+                contentType: "application/json",
+                data: JSON.stringify(loginForm),
+                timeout: 600000,
+                success: function (res) {
+                    console.log(res);
+
+                    if (res.status == 201) {
+                        $.cookie("accessToken", res.data.accessToken.data);
+                        $.cookie("accessTokenExpiredAt", res.data.accessToken.expiredAt);
+                        $.cookie("refreshToken", res.data.refreshToken.data);
+                        $.cookie("refreshTokenExpiredAt", res.data.refreshToken.expiredAt);
+                        $.cookie("serverNow", res.data.accessToken.now);
+
+
+                        swal({
+                            title: "Success!",
+                            text: "로그인에 성공하였습니다",
+                            type: "success"
+                        }, function () {
+//                        console.log(res.data[]);
+                        });
+                    } else {
+                        swal({
+                            title: "Server error",
+                            text: "에러가 발생했습니다 다시 입력해주세요",
+                            type: "error"
+                        });
+                    }
+                }
+            });
+
+
+        });
+    });
+
+
+</script>
+</body>
+
+</html>
