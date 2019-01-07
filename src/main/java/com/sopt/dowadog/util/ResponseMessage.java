@@ -101,6 +101,7 @@ public class ResponseMessage {
     //MAILBOX
 
     public static final String READ_MAILBOX = "우체통 정보 조회 성공";
+    public static final String UPDATE_MAILBOX = "우체통 읽음 정보 업데이트 성공";
 
 
     //REGISTRATION

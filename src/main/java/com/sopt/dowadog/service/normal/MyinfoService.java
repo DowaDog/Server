@@ -318,6 +318,34 @@ public class MyinfoService {
         }
     }
 
+    public DefaultRes updateMailboxesState(final User user){
+
+        try{
+            List<Mailbox> mailboxList = mailboxRepository.findAllByUser(user);
+            System.out.println("111111"+mailboxList.size());
+            for(Mailbox u : mailboxRepository.findAllByUser(user)){
+                Mailbox mailbox = Mailbox.builder()
+                        .id(u.getId())
+                        .complete(true)
+                        .title(u.getTitle())
+                        .type(u.getType())
+                        .user(user)
+                        .detail(u.getDetail())
+                        .build();
+
+
+                mailboxRepository.save(mailbox);
+            }
+
+            return DefaultRes.res(StatusCode.OK,ResponseMessage.UPDATE_MAILBOX,"");
+
+
+        }catch (Exception e){
+
+            return DefaultRes.res(StatusCode.DB_ERROR,ResponseMessage.DB_ERROR);
+        }
+    }
+
 
 }
 

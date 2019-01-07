@@ -10,6 +10,7 @@ import java.util.List;
 public interface MailboxRepository extends JpaRepository<Mailbox, Integer>, PagingAndSortingRepository<Mailbox, Integer> {
 
     List<Mailbox> findByUserOrderByCreatedAtDesc(User user);
+    List<Mailbox> findAllByUser(User user);
 
 
 }

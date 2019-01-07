@@ -200,5 +200,18 @@ public class MyinfoController {
         }
 
     }
+
+    //우체통 읽음처리 컨트롤러
+    @GetMapping("/mailboxes/readings")
+    public ResponseEntity updateMailboxState(@RequestHeader(value = "Authorization",required = false) final String jwtToken){
+        System.out.println("#######     api/normal/mypage/mailboxes/readings  GET #######");
+        try{
+            User user = userService.getUserByJwtToken(jwtToken);
+            return new ResponseEntity(myinfoService.updateMailboxesState(user),HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity(DefaultRes.FAIL_DEFAULT_RES,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
 //컨트롤러는 클라이언트에게 보여줄 뷰
