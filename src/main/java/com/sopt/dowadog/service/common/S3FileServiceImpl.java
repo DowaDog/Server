@@ -36,6 +36,14 @@ public class S3FileServiceImpl implements FileService {
         try {
 
             System.out.println("FILE UPLOAD COME");
+            String dirName = filePath.substring(0, filePath.lastIndexOf("/"));
+
+            System.out.println(dirName);
+
+            //dir 생성
+            new File(dirName);
+            System.out.println("dir 생성");
+
             File convFile = new File(multipartFile.getOriginalFilename());
             convFile.createNewFile();
             FileOutputStream fos = new FileOutputStream(convFile);
