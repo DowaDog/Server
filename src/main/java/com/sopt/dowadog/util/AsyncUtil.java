@@ -7,11 +7,13 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.concurrent.Future;
 
@@ -47,6 +49,9 @@ public class AsyncUtil {
 
         RestTemplate restTemplate = new RestTemplate();
 
+        restTemplate.getMessageConverters()
+                .add(0, new StringHttpMessageConverter(Charset.forName("UTF-8")));
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.add("Authorization",new StringBuilder("key=").append(serverKey).toString());
@@ -64,6 +69,8 @@ public class AsyncUtil {
         HttpEntity request = new HttpEntity(temp.toString(),headers);
         ResponseEntity<String> result = restTemplate.postForEntity("https://fcm.googleapis.com/fcm/send",request,String.class);
 
+        System.out.println("푸시알람입니다.");
+        System.out.println(result);
         return new AsyncResult<String>(result.getBody());
 
     }
@@ -76,9 +83,12 @@ public class AsyncUtil {
         System.out.println(body);
 
         RestTemplate restTemplate = new RestTemplate();
+        restTemplate.getMessageConverters()
+                .add(0, new StringHttpMessageConverter(Charset.forName("UTF-8")));
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+
         headers.add("Authorization",new StringBuilder("key=").append(serverKey).toString());
 
         //HttpEntity 만들기 위한!
@@ -93,6 +103,10 @@ public class AsyncUtil {
         //요구
         HttpEntity request = new HttpEntity(temp.toString(),headers);
         ResponseEntity<String> result = restTemplate.postForEntity("https://fcm.googleapis.com/fcm/send",request,String.class);
+
+        System.out.println("푸시알람입니다.");
+
+        System.out.println(result);
 
         return new AsyncResult<String>(result.getBody());
 
