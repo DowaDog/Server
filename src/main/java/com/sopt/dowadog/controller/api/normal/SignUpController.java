@@ -45,10 +45,20 @@ public class SignUpController {
 
         System.out.println("#######     api/signup   POST #######");
 
-        System.out.println("##### HERE MULTIPART COME!");
+
+        System.out.println(signupFormDto.toString());
 
         if(profileImgFile!= null){
             System.out.println(profileImgFile.getOriginalFilename());
+
+            System.out.println("MULTIPART FILE 들어왔습니다");
+            System.out.println("사이즈는");
+            System.out.println(profileImgFile.getSize());
+            System.out.println("파일이름은");
+            System.out.println(profileImgFile.getOriginalFilename());
+            System.out.println("컨텐트타입은");
+            System.out.println(profileImgFile.getContentType());
+
         }
 
         return new ResponseEntity(signUpService.newUser(signupFormDto, profileImgFile), HttpStatus.OK);
