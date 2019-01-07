@@ -141,7 +141,7 @@ public class MyinfoService {
             animalUserAdopt.setName(modifiedAnimalUserAdopt.getName());
             animalUserAdopt.setGender(modifiedAnimalUserAdopt.getGender());
             animalUserAdopt.setKind(modifiedAnimalUserAdopt.getKind());
-            animalUserAdopt.setBirth(modifiedAnimalUserAdopt.getBirth());
+            animalUserAdopt.setAge(modifiedAnimalUserAdopt.getAge());
             animalUserAdopt.setWeight(modifiedAnimalUserAdopt.getWeight());
             animalUserAdopt.setNeuterYn(modifiedAnimalUserAdopt.isNeuterYn());
 

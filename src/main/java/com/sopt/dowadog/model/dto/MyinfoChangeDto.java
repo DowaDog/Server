@@ -16,6 +16,5 @@ public class MyinfoChangeDto {
     private String birth;
     private String phone;
     private String thumbnailImg;
-    private MultipartFile profileImgFile;
 
 }

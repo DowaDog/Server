@@ -41,7 +41,10 @@ public class SignUpController {
 
 
         System.out.println("##### HERE MULTIPART COME!");
-        System.out.println(profileImgFile.getOriginalFilename());
+
+        if(profileImgFile!= null){
+            System.out.println(profileImgFile.getOriginalFilename());
+        }
 
         return new ResponseEntity(signUpService.newUser(signupFormDto, profileImgFile), HttpStatus.OK);
     }

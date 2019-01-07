@@ -302,6 +302,7 @@ public class CareRegistrationService {
                                             .name(new StringBuilder(user.getName()).append("펫").toString())
                                             .gender(animal.getSexCd())
                                             .kind(animal.getKindCd())
+                                            .age(animal.getAge())
                                             .weight(animal.getWeight())
                                             .neuterYn(animal.getNeuterYn())
                                             .registration(registration)

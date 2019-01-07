@@ -40,7 +40,8 @@ public class MyinfoController {
 
     //사람 정보 수정
     @PutMapping
-    public ResponseEntity updateUserInfo(@RequestHeader(value = "Authorization", required = false) String jwtToken, MyinfoChangeDto myinfoChangeDto,
+    public ResponseEntity updateUserInfo(@RequestHeader(value = "Authorization", required = false) String jwtToken,
+                                         MyinfoChangeDto myinfoChangeDto,
                                          @RequestPart(value="profileImgFile", required=false) final MultipartFile profileImgFile) {
         try{
             User user = userService.getUserByJwtToken(jwtToken);

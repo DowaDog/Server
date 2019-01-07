@@ -26,6 +26,7 @@ public class AnimalUserAdopt {
     private String kind;
     @Temporal(TemporalType.DATE)
     private Date birth;
+    private String age;
     private String weight;
     private boolean neuterYn;
     private String profileImg;
