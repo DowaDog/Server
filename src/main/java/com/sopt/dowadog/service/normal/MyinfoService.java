@@ -60,6 +60,8 @@ public class MyinfoService {
     //UserID로 정보가져오기
     public DefaultRes<MyinfoDto> readMypage(User user) {
 
+        System.out.println("readMyPage COME!");
+
         MyinfoDto myinfoDto = user.getMyinfoDto();
         myinfoDto.setProfileImg(S3Util.getImgPath(s3Endpoint, user.getProfileImg()));
 
