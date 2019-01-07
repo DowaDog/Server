@@ -136,7 +136,6 @@ public class AnimalController {
 
 
     // 좋아요 기능
-    @Auth
     @PostMapping("{animalId}/likes")
     public ResponseEntity createUserLike(@RequestHeader(name = "Authorization", required = false) String jwtToken,
                                          @PathVariable("animalId") final int animalId) {
@@ -152,7 +151,6 @@ public class AnimalController {
         }
     }
 
-    @Auth
     @GetMapping("{animalId}/careinfo")
     public ResponseEntity readCareinfoByAnimalId(@PathVariable(name = "animalId") int animalId) {
         System.out.println("#######     api/normal/animals/:animalId/careinfo   GET #######");

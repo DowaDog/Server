@@ -37,6 +37,7 @@ public class MyinfoController {
             User user = userService.getUserByJwtToken(jwtToken);
             return new ResponseEntity(myinfoService.readMypage(user), HttpStatus.OK);
         } catch(Exception e){
+            e.printStackTrace();
             return new ResponseEntity<>(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
         }
     }
@@ -52,6 +53,8 @@ public class MyinfoController {
             User user = userService.getUserByJwtToken(jwtToken);
             return new ResponseEntity(myinfoService.updateUserInfo(user, myinfoChangeDto, profileImgFile), HttpStatus.OK);
         } catch(Exception e){
+            e.printStackTrace();
+
             return new ResponseEntity<>(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
         }
     }
@@ -72,7 +75,6 @@ public class MyinfoController {
 
 
     //todo 인증 예외처리, 예방접종 코드테이블도 같이해서 보내줘야함 ( DTO 필요 )
-    @Auth
     @GetMapping("adoptAnimals/{adoptAnimalId}")
     public ResponseEntity readAnimalInfo(@RequestHeader(value = "Authorization", required = false) String jwtToken,
                                          @PathVariable(name = "adoptAnimalId") int adoptAnimalId) {
@@ -110,7 +112,6 @@ public class MyinfoController {
 
 
     //좋아요 리스트 조회 완료
-    @Auth
     @GetMapping("/likes")
     public ResponseEntity readMypageLikes
     (@RequestHeader(value = "Authorization", required = false) String jwtToken) {
@@ -129,7 +130,6 @@ public class MyinfoController {
     }
 
     //스크랩 리스트 조회 //todo 수한이 작업 완료하면 그때
-    @Auth
     @GetMapping("/scraps")
     public ResponseEntity readMypageClips
     (@RequestHeader(value = "Authorization", required = false) String jwtToken) {
@@ -150,7 +150,6 @@ public class MyinfoController {
     }
 
     //내가 쓴글 리스트 조회
-    @Auth
     @GetMapping("/community")
     public ResponseEntity readMypageCommunity
     (@RequestHeader(value = "Authorization", required = false) String jwtToken) {
@@ -184,7 +183,6 @@ public class MyinfoController {
         //return new ResponseEntity(HttpStatus.OK);
     }
     //내 정보 조회
-    @Auth
     @GetMapping("/myinfo")
     public ResponseEntity<MyinfoChangeDto> readMypageMyinfo(@RequestHeader(value = "Authorization",required = false)final String jwtToken){
 
