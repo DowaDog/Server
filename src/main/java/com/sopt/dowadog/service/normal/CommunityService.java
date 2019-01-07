@@ -103,6 +103,21 @@ public class CommunityService {
         for (Community community : communityList) {
             CommunityDto communityDto = community.getCommunityDto();
 //            communityDto.setUserProfileImg(new StringBuilder()s3Endpoint);
+            List<CommunityImg> communityImgs = new ArrayList<>();
+
+            for(CommunityImg communityImg : community.getCommunityImgList()){
+                CommunityImg imgTemp = new CommunityImg();
+
+                imgTemp.setCreatedAt(communityImg.getCreatedAt());
+                imgTemp.setUpdatedAt(communityImg.getUpdatedAt());
+                imgTemp.setFilePath(S3Util.getImgPath(s3Endpoint,communityImg.getFilePath()));
+                imgTemp.setOriginFileName(communityImg.getOriginFileName());
+                imgTemp.setId(communityImg.getId());
+
+                communityImgs.add(imgTemp);
+            }
+
+            communityDto.setCommunityImgList(communityImgs);
 
             communityDto = setCommunityDtoAuthAndProfileImgWithUser(user, community, communityDto);
 

@@ -34,6 +34,8 @@ public class AnimalController {
     @GetMapping("{animalId}")
     public ResponseEntity readAnimal(@RequestHeader(value = "Authorization", required = false) final String jwtToken,
                                      @PathVariable("animalId") final int animalId) {
+        System.out.println("#######     api/normal/animals/:animalId   POST #######");
+
         try {
             User user = null;
             if (jwtToken != null) {
@@ -58,6 +60,9 @@ public class AnimalController {
     public ResponseEntity readEmergencyAnimal(@RequestHeader(value = "Authorization", required = false) final String jwtToken,
                                               @RequestParam(name = "page", defaultValue = "0", required = false) int page,
                                               @RequestParam(name = "limit", defaultValue = "10", required = false) int limit) {
+        System.out.println("#######     api/normal/animals/:emergency   POST #######");
+
+
         try {
             User user = null;
             if (jwtToken != null) {
@@ -81,6 +86,9 @@ public class AnimalController {
     public ResponseEntity readLatestAnimal(@RequestHeader(value = "Authorization", required = false) final String jwtToken,
                                            @ModelAttribute FilterDto filterDto, @RequestParam(name = "page", defaultValue = "0", required = false) int page,
                                            @RequestParam(name = "limit", defaultValue = "10", required = false) int limit) {
+
+        System.out.println("#######     api/normal/animals   GET #######");
+
         try {
             User user = null;
             if (jwtToken != null) {
@@ -106,6 +114,8 @@ public class AnimalController {
                                             @RequestParam(name = "tag", required = false) String tag, @RequestParam(name = "page", defaultValue = "0", required = false) int page,
                                             @RequestParam(name = "limit", defaultValue = "10", required = false) int limit) {
 
+        System.out.println("#######     api/normal/animals/hashtags   GET #######");
+
         try {
             User user = null;
             if (jwtToken != null) {
@@ -126,10 +136,12 @@ public class AnimalController {
 
 
     // 좋아요 기능
-    @Auth
     @PostMapping("{animalId}/likes")
     public ResponseEntity createUserLike(@RequestHeader(name = "Authorization", required = false) String jwtToken,
                                          @PathVariable("animalId") final int animalId) {
+
+        System.out.println("#######     api/normal/animals/:animalId/likes   POST #######");
+
         try {
             User user = userService.getUserByJwtToken(jwtToken);
             return new ResponseEntity(animalService.createUserAnimalLike(user, animalId), HttpStatus.OK);
@@ -139,9 +151,10 @@ public class AnimalController {
         }
     }
 
-    @Auth
     @GetMapping("{animalId}/careinfo")
     public ResponseEntity readCareinfoByAnimalId(@PathVariable(name = "animalId") int animalId) {
+        System.out.println("#######     api/normal/animals/:animalId/careinfo   GET #######");
+
         return new ResponseEntity(animalService.readCareinfoByAnimalId(animalId), HttpStatus.OK);
     }
 

@@ -1,13 +1,9 @@
 package com.sopt.dowadog.specification;
 
-import com.sopt.dowadog.enumeration.PublicAnimalTypeEnum;
 import com.sopt.dowadog.model.domain.Animal;
-import com.sopt.dowadog.model.domain.AnimalStory;
-import com.sopt.dowadog.model.domain.PublicAnimal;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import java.time.LocalDate;
 import java.util.ArrayList;

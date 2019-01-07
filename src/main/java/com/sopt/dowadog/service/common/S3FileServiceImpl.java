@@ -10,6 +10,7 @@ import com.sopt.dowadog.util.S3Util;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,9 +30,21 @@ public class S3FileServiceImpl implements FileService {
 
 
     //todo 파일 삭제 관련 생각
+    @Async
     @Override
     public void fileUpload(MultipartFile multipartFile, String filePath) {
         try {
+
+            System.out.println("FILE UPLOAD COME");
+            String dirName = filePath.substring(0, filePath.lastIndexOf("/"));
+
+            System.out.println(dirName);
+
+            File f = new File(filePath);
+            if (!f.getParentFile().exists())
+                f.getParentFile().mkdirs();
+            if (!f.exists())
+                f.createNewFile();
 
             File convFile = new File(multipartFile.getOriginalFilename());
             convFile.createNewFile();
@@ -41,13 +54,18 @@ public class S3FileServiceImpl implements FileService {
             s3client.putObject(new PutObjectRequest(bucketName, filePath, convFile));
             convFile.delete();
 
+            System.out.println("FILE UPLOAD END");
+
             log.info("===================== Upload File - Done! =====================");
         } catch (AmazonServiceException ase) {
+            ase.printStackTrace();
             printS3Error(ase);
         } catch (AmazonClientException ace) {
+            ace.printStackTrace();
             log.info("Caught an AmazonClientException: ");
             log.info("Error Message: " + ace.getMessage());
         } catch (IOException ioe) {
+            ioe.printStackTrace();
             log.info("IOE Error Message: " + ioe.getMessage());
         }
     }

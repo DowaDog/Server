@@ -3,11 +3,15 @@ package com.sopt.dowadog.model.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sopt.dowadog.model.domain.auditing.DateEntity;
 import com.sopt.dowadog.model.dto.MainDto;
+import com.sopt.dowadog.model.dto.MyinfoChangeDto;
 import com.sopt.dowadog.model.dto.MyinfoDto;
+import com.sopt.dowadog.model.dto.SignupFormDto;
 import lombok.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,10 +36,6 @@ public class User extends DateEntity {
     private String profileImg;
     private boolean pushAllow;
 
-
-    @Transient
-    @JsonIgnore
-    private MultipartFile profileImgFile;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @JsonIgnore
@@ -130,6 +130,22 @@ public class User extends DateEntity {
         return myinfoDto;
 
     }
+
+    public static User setUserBySignupDto(SignupFormDto signupFormDto) {
+        return User.builder()
+                .id(signupFormDto.getId())
+                .password(signupFormDto.getPassword())
+                .name(signupFormDto.getName())
+                .birth(signupFormDto.getBirth())
+                .phone(signupFormDto.getPhone())
+                .email(signupFormDto.getEmail())
+                .gender(signupFormDto.getGender())
+                .deviceToken(signupFormDto.getDeviceToken())
+                .type(signupFormDto.getType())
+                .pushAllow(signupFormDto.isPushAllow())
+                .build();
+    }
+
 
 
     public boolean getAuth(String userId){

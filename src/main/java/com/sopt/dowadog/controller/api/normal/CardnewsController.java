@@ -48,6 +48,9 @@ public class CardnewsController {
 
     @GetMapping("education")
     public ResponseEntity readCardnewsEducationList(@RequestHeader(value = "Authorization", required = false)final String jwtToken){
+
+        System.out.println("#######     api/normal/cardnews/education   GET #######");
+
         //todo 교육 이수 완료 정보 줘야댐
         try{
             User user = userService.getUserByJwtToken(jwtToken);
@@ -64,6 +67,7 @@ public class CardnewsController {
     public ResponseEntity  readCardnewsKnowledgeList(@RequestHeader(value="Authorization", required = false) final String jwtToken,
                                                      @RequestParam(name="page", defaultValue="0",required = false)int page,
                                                      @RequestParam(name="limit", defaultValue = "10", required=false)int limit){
+        System.out.println("#######     api/normal/cardnews/knowledge   GET #######");
 
         try{
             User user = userService.getUserByJwtToken(jwtToken);
@@ -83,6 +87,9 @@ public class CardnewsController {
                                                       @PathVariable("cardnewsId")int cardnewsId,
                                                       @RequestParam(name="page", defaultValue="0",required = false)int page,
                                                       @RequestParam(name="limit",defaultValue = "10", required=false)int limit){
+
+        System.out.println("#######     api/normal/cardnews/:cardnewsId/contents   GET #######");
+
         try{
             User user = userService.getUserByJwtToken(jwtToken);
 
@@ -101,6 +108,9 @@ public class CardnewsController {
     @PostMapping("{cardnewsId}/complete")
     public ResponseEntity createComplete(@RequestHeader(value="Authorization", required = false) final String jwtToken,
                                          @PathVariable("cardnewsId")int cardnewsId){
+
+        System.out.println("#######     api/normal/cardnews/:cardnewsId/complete   POST #######");
+
         try {
             User user = userService.getUserByJwtToken(jwtToken);
             return new ResponseEntity(cardnewsService.createCardnewsEducated(user,cardnewsId),HttpStatus.OK);
@@ -112,6 +122,9 @@ public class CardnewsController {
     @PostMapping("{cardnewsId}/scrap")
     public ResponseEntity createscrap(@RequestHeader(value="Authorization", required = false) final String jwtToken,
                                       @PathVariable("cardnewsId")int cardnewsId){
+
+        System.out.println("#######     api/normal/cardnews/:cardnewsId/scrap   POST #######");
+
         try {
             User user = userService.getUserByJwtToken(jwtToken);
             if(user != null) {
