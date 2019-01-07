@@ -44,13 +44,13 @@ public class NormalAuthAop {
 
 
 
-    @Pointcut("execution(* com..service..*Service.create*(..))")
+    @Pointcut("execution(* com..service.normal.*Service.create*(..))")
     public void create() {}
 
-    @Pointcut("execution(* com..service..*Service.update*(..))")
+    @Pointcut("execution(* com..service.normal.*Service.update*(..))")
     public void update() {}
 
-    @Pointcut("execution(* com..service..*Service.delete*(..))")
+    @Pointcut("execution(* com..service.normal.*Service.delete*(..))")
     public void delete() {}
 
 
@@ -102,6 +102,9 @@ public class NormalAuthAop {
             System.out.println("해당 유저 존재하지 않음");
             return false;
         }
+
+        System.out.println("검증완료");
+
         return true;
     }
 

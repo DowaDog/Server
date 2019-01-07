@@ -1,10 +1,12 @@
-/*
+
 package com.sopt.dowadog.model.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
-import javax.persistence.Entity;
+
+import javax.persistence.*;
+import java.time.LocalDate;
 
 
 @Entity
@@ -15,8 +17,18 @@ import javax.persistence.Entity;
 @AllArgsConstructor
 @JsonIgnoreProperties(value={"hibernateLazyInitializer", "handler"})
 public class MailboxReservation {
-    //private String
+    //예약에 대해서
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    private LocalDate time;
+    private String title;
+    private String detail;
+    private String type;
+    private String state;
+
+    @ManyToOne
+    private User user;
 
 
 }
-*/

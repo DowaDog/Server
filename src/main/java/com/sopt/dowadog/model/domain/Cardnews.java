@@ -45,6 +45,7 @@ public class Cardnews extends DateEntity {
     @JsonIgnore
     private MultipartFile cardnewsImgFile;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "cardnews")
     private List<UserCardnewsEducate> userCardnewsEducateList = new ArrayList<>();
 

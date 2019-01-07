@@ -4,6 +4,7 @@ import com.sopt.dowadog.annotation.Auth;
 import com.sopt.dowadog.model.common.DefaultRes;
 import com.sopt.dowadog.model.domain.AnimalUserAdopt;
 import com.sopt.dowadog.model.domain.User;
+import com.sopt.dowadog.model.dto.MailboxDto;
 import com.sopt.dowadog.model.dto.MyinfoChangeDto;
 import com.sopt.dowadog.service.normal.MyinfoService;
 import com.sopt.dowadog.service.normal.UserService;
@@ -89,6 +90,7 @@ public class MyinfoController {
             return new ResponseEntity(myinfoService.updateAnimalByAnimalId(user, animalUserAdopt, adoptAnimalId), HttpStatus.OK);
 
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
         }
     }
@@ -148,12 +150,12 @@ public class MyinfoController {
 
     //우체통 조회
     @GetMapping("/mailboxes")
-    public ResponseEntity readMypageMailboxes(@RequestHeader(value = "Authorization", required = false) String jwtToken) {
+    public ResponseEntity<MailboxDto> readMypageMailboxes(@RequestHeader(value = "Authorization", required = false) String jwtToken) {
         try{
             User user = userService.getUserByJwtToken(jwtToken);
             return new ResponseEntity(myinfoService.readMailboxes(user), HttpStatus.OK);
         } catch (Exception e){
-            return new ResponseEntity<>(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
         }
 
         //return new ResponseEntity(HttpStatus.OK);
