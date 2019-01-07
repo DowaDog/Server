@@ -2,7 +2,6 @@ package com.sopt.dowadog.aop;
 
 import com.sopt.dowadog.model.common.DefaultRes;
 import com.sopt.dowadog.repository.CareRepository;
-import com.sopt.dowadog.repository.UserRepository;
 import com.sopt.dowadog.service.common.JwtService;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -17,10 +16,9 @@ import java.util.Optional;
 
 @Aspect
 @Component
-public class NormalAuthAop {
+public class CareAuthAop {
 
-    private final UserRepository userRepository;
-
+    private final CareRepository careRepository;
 
     private final JwtService jwtService;
 
@@ -31,42 +29,28 @@ public class NormalAuthAop {
     private final HttpServletRequest httpServletRequest;
 
 
-    public NormalAuthAop(UserRepository userRepository, JwtService jwtService, final HttpServletRequest httpServletRequest) {
-        this.userRepository = userRepository;
+    public CareAuthAop(CareRepository careRepository, JwtService jwtService, final HttpServletRequest httpServletRequest) {
+        this.careRepository = careRepository;
         this.jwtService = jwtService;
         this.httpServletRequest = httpServletRequest;
 
     }
 
+    @Pointcut("execution(* com..service.care.*Service.create*(..))")
+    public void select() {}
 
-    @Pointcut("execution(* com..service.normal.*Service.create*(..))")
+    @Pointcut("execution(* com..service.care.*Service.create*(..))")
     public void create() {}
 
-    @Pointcut("execution(* com..service.normal.*Service.update*(..))")
+    @Pointcut("execution(* com..service.care.*Service.update*(..))")
     public void update() {}
 
-    @Pointcut("execution(* com..service.normal.*Service.delete*(..))")
+    @Pointcut("execution(* com..service.care.*Service.delete*(..))")
     public void delete() {}
 
 
-    //조회인데 로그인 필요한경우 사용
-    @Pointcut("@annotation(com.sopt.dowadog.annotation.Auth)")
-    public void auth() {
-    }
-
-
-    @Around("auth()")
-    public Object around(final ProceedingJoinPoint pjp) throws Throwable {
-        System.out.println("AUTH!!!");
-        if(validToken() == false) {
-            return DEFAULT_RES;
-        }
-        return pjp.proceed(pjp.getArgs());
-    }
-
-
     //권한 기본적으로 필요한 작업들
-    @Around("create() || update() || delete()")
+    @Around("select() || create() || update() || delete()")
     public Object AuthForGuest(final ProceedingJoinPoint pjp) throws Throwable{
 
         if(validToken() == false) return DEFAULT_RES;
@@ -78,7 +62,7 @@ public class NormalAuthAop {
     { // User의 권한 체크 - false:인증(로그인)되지 않은 사용자, true:인증된 사용자
         System.out.println("========= AOP ==========");
 
-        System.out.println("일반 사용자 검증");
+        System.out.println("보호소 사용자 검증");
         final String jwt = httpServletRequest.getHeader("Authorization");
 
         if(!Optional.ofNullable(jwt).isPresent()){
@@ -93,7 +77,7 @@ public class NormalAuthAop {
             return false;
         }
 
-        if(!userRepository.findById(userId).isPresent()) {
+        if(!careRepository.findByCareUserId(userId).isPresent()) {
             System.out.println("해당 유저 존재하지 않음");
             return false;
         }
@@ -104,6 +88,4 @@ public class NormalAuthAop {
     }
 
 
-
 }
-

@@ -28,6 +28,9 @@ public class RegistrationController {
     @PostMapping("online")
     public ResponseEntity online(@RequestHeader(value = "Authorization", required = false) final String jwtToken,
                                 @RequestBody RegistrationDto registrationDto) {
+
+        System.out.println("#######     api/normal/registrations/online   POST #######");
+
         try{
             User user = userService.getUserByJwtToken(jwtToken);
             System.out.println("온라인 신청서 사용자 검증완료");
@@ -42,6 +45,9 @@ public class RegistrationController {
     @PostMapping("offline")
     public ResponseEntity offline(@RequestHeader(value = "Authorization", required = false) final String jwtToken,
                                  @RequestBody RegistrationDto registrationDto) {
+
+        System.out.println("#######     api/normal/registrations/offline   POST #######");
+
         try{
             User user = userService.getUserByJwtToken(jwtToken);
             System.out.println("오프라인 신청서 사용자 검증완료");
@@ -55,6 +61,9 @@ public class RegistrationController {
 
     @PostMapping("check")
     public ResponseEntity check(@RequestHeader(value = "Authorization", required = false) final String jwtToken) {
+
+        System.out.println("#######     api/normal/registrations/check   POST #######");
+
         try{
             User user = userService.getUserByJwtToken(jwtToken);
 

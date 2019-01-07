@@ -23,6 +23,7 @@ public class MainController {
 
     @GetMapping
     public ResponseEntity main(@RequestHeader(value = "Authorization", required = false) final String jwtToken) {
+        System.out.println("#######     api/normal/main   GET #######");
 
         try {
             if (userService.getUserByJwtToken(jwtToken) != null) {

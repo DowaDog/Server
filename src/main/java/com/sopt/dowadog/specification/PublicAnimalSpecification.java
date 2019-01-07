@@ -1,6 +1,5 @@
 package com.sopt.dowadog.specification;
 
-import com.sopt.dowadog.enumeration.PublicAnimalTypeEnum;
 import com.sopt.dowadog.model.domain.PublicAnimal;
 import org.springframework.data.jpa.domain.Specification;
 

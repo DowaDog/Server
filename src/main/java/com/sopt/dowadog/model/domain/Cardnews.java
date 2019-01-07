@@ -49,6 +49,7 @@ public class Cardnews extends DateEntity {
     @OneToMany(mappedBy = "cardnews")
     private List<UserCardnewsEducate> userCardnewsEducateList = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "cardnews")
     private List<UserCardnewsScrap> userCardnewsScrapList = new ArrayList<>();
 

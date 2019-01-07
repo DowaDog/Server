@@ -24,18 +24,27 @@ public class AdminAnimalController {
 
     @PostMapping
     public ResponseEntity animal(Animal animal, @RequestParam("careId") int careId) {
+
+        System.out.println("#######     api/admin/animal   POST #######");
+
         adminAnimalService.createAnimal(animal, careId);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @GetMapping
     @ResponseBody
-    public List<Animal> animalList() {
+    public List<Animal> animalList()
+    {
+        System.out.println("#######     api/admin/animal   GET #######");
+
         return adminAnimalService.allAnimal();
     }
 
     @PostMapping("stories")
     public ResponseEntity animalStoryList(AnimalStory animalStory, @RequestParam("animalId") int animalId) {
+
+        System.out.println("#######     api/admin/animal/stories   POST #######");
+
         adminAnimalService.createAnimalStory(animalStory, animalId);
         return new ResponseEntity(HttpStatus.CREATED);
     }

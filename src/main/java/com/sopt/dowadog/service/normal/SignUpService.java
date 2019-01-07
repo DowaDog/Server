@@ -2,6 +2,7 @@ package com.sopt.dowadog.service.normal;
 
 import com.sopt.dowadog.model.common.DefaultRes;
 import com.sopt.dowadog.model.domain.User;
+import com.sopt.dowadog.model.dto.SignupFormDto;
 import com.sopt.dowadog.repository.UserRepository;
 import com.sopt.dowadog.service.common.FileService;
 import com.sopt.dowadog.util.ResponseMessage;
@@ -26,18 +27,17 @@ public class SignUpService {
 
     //회원가입
     @Transactional
-    public DefaultRes<User> newUser(User user) {
+    public DefaultRes<SignupFormDto> newUser(SignupFormDto signupFormDto, MultipartFile profileImgFile) {
 
-        MultipartFile profileImgFile = user.getProfileImgFile();
+//        MultipartFile profileImgFile = user.getProfileImgFile();
+        User user = User.setUserBySignupDto(signupFormDto);
 
-        if(user.getProfileImgFile() != null){
-
+        if(profileImgFile != null){
             String filePath = new StringBuilder(baseDir).
                     append(S3Util.getUuid()).
                     append(profileImgFile.getOriginalFilename()).toString();
 
             fileService.fileUpload(profileImgFile, filePath);
-
             user.setProfileImg(filePath);
         }
 
