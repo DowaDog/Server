@@ -66,7 +66,7 @@ public class AdminCardnewsController {
     }
 
     //카드뉴스 대분류 수정
-    @PostMapping("{cardnewsId}")
+    @PutMapping("{cardnewsId}")
     public ResponseEntity updateCardnews(Cardnews cardnews, @PathVariable("cardnewsId")int cardnewsId) {
         return new ResponseEntity(adminCardnewsService.updateCardnewsById(cardnews, cardnewsId), HttpStatus.OK);
     }
