@@ -6,6 +6,7 @@ import com.sopt.dowadog.model.domain.AnimalUserAdopt;
 import com.sopt.dowadog.model.domain.User;
 import com.sopt.dowadog.model.dto.MailboxDto;
 import com.sopt.dowadog.model.dto.MyinfoChangeDto;
+import com.sopt.dowadog.model.dto.SignupFormDto;
 import com.sopt.dowadog.service.normal.MyinfoService;
 import com.sopt.dowadog.service.normal.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RequestMapping("api/normal/mypage")  //URL Mapping은 myinfo 라는 의미이다.
 @Controller
@@ -38,10 +40,11 @@ public class MyinfoController {
 
     //사람 정보 수정
     @PutMapping
-    public ResponseEntity updateUserInfo(@RequestHeader(value = "Authorization", required = false) String jwtToken, User modifiedUser) {
+    public ResponseEntity updateUserInfo(@RequestHeader(value = "Authorization", required = false) String jwtToken, MyinfoChangeDto myinfoChangeDto,
+                                         @RequestPart(value="profileImgFile", required=false) final MultipartFile profileImgFile) {
         try{
             User user = userService.getUserByJwtToken(jwtToken);
-            return new ResponseEntity(myinfoService.updateUserInfo(user, modifiedUser), HttpStatus.OK);
+            return new ResponseEntity(myinfoService.updateUserInfo(user, myinfoChangeDto, profileImgFile), HttpStatus.OK);
         } catch(Exception e){
             return new ResponseEntity<>(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
         }

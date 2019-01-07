@@ -16,6 +16,7 @@ import com.sopt.dowadog.util.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.util.*;
@@ -66,19 +67,20 @@ public class MyinfoService {
     }
 
     //사용자 정보 수정
-    public DefaultRes updateUserInfo(User user, User modifiedUser) {
+    public DefaultRes updateUserInfo(User user, MyinfoChangeDto myinfoChangeDto, MultipartFile profileImgFile) {
 
-        if (Optional.ofNullable(modifiedUser.getProfileImgFile()).isPresent()) {
-            String filePath = S3Util.getFilePath(baseDir, modifiedUser.getProfileImgFile());
 
-            fileService.fileUpload(modifiedUser.getProfileImgFile(), filePath);
+
+        if (profileImgFile != null) {
+            String filePath = S3Util.getFilePath(baseDir, profileImgFile);
+
+            fileService.fileUpload(profileImgFile, filePath);
             user.setProfileImg(filePath);
         }
 
-        user.setName(modifiedUser.getName());
-        user.setPhone(modifiedUser.getPhone());
-        user.setEmail(modifiedUser.getEmail());
-        user.setBirth(modifiedUser.getBirth());
+        user.setName(myinfoChangeDto.getName());
+        user.setPhone(myinfoChangeDto.getPhone());
+        user.setBirth(myinfoChangeDto.getBirth());
 
         userRepository.save(user);
         return DefaultRes.res(StatusCode.OK, ResponseMessage.UPDATE_MYINFO);
