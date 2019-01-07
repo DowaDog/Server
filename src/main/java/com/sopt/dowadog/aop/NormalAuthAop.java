@@ -43,7 +43,6 @@ public class NormalAuthAop {
     }
 
 
-
     @Pointcut("execution(* com..service.normal.*Service.create*(..))")
     public void create() {}
 
@@ -52,7 +51,6 @@ public class NormalAuthAop {
 
     @Pointcut("execution(* com..service.normal.*Service.delete*(..))")
     public void delete() {}
-
 
 
     //조회인데 로그인 필요한경우 사용
