@@ -10,6 +10,7 @@ import com.sopt.dowadog.util.S3Util;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,6 +30,7 @@ public class S3FileServiceImpl implements FileService {
 
 
     //todo 파일 삭제 관련 생각
+    @Async
     @Override
     public void fileUpload(MultipartFile multipartFile, String filePath) {
         try {

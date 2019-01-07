@@ -38,6 +38,7 @@ public class CommunityController {
      @RequestParam(name = "page", defaultValue = "0") int page,
      @RequestParam(name = "limit", defaultValue = "10") int limit) {
 
+        System.out.println("#######     api/normal/community   GET #######");
 
         try {
             User user = null; //게스트의 경우 널값으로 유저 생성해서 넘겨줌
@@ -59,6 +60,8 @@ public class CommunityController {
     (@RequestHeader(value = "Authorization", required = false) final String jwtToken,
      @PathVariable("communityId") int communityId) {
 
+        System.out.println("#######     api/normal/community/:communityId   GET #######");
+
         try {
             User user = null;
             if (userService.getUserByJwtToken(jwtToken) != null) {
@@ -77,6 +80,9 @@ public class CommunityController {
     public ResponseEntity createCommunity
     (@RequestHeader(value = "Authorization", required = false) final String jwtToken,
      Community community) throws Exception {
+
+        System.out.println("#######     api/normal/community   POST #######");
+
         try {
             User user = userService.getUserByJwtToken(jwtToken);
             return new ResponseEntity(communityService.createCommunity(user, community), HttpStatus.CREATED);
@@ -91,6 +97,9 @@ public class CommunityController {
     public ResponseEntity updateCommunity
     (@RequestHeader(value = "Authorization", required = false) final String jwtToken,
      Community community, @PathVariable("communityId") int communityId) {
+
+        System.out.println("#######     api/normal/community/:communityId   PUT #######");
+
         try {
             User user = userService.getUserByJwtToken(jwtToken);
             return new ResponseEntity(communityService.updateCommunityById(user, community, communityId), HttpStatus.OK);
@@ -103,6 +112,9 @@ public class CommunityController {
     @DeleteMapping("{communityId}/communityimg/{communityImgId}")
     public ResponseEntity deleteCommunityImg(@RequestHeader(value = "Authorization") final String jwtToken,
                                              @PathVariable("communityImgId") int communityImgId){
+
+        System.out.println("#######     api/normal/community/:communityId/communityimg/:communityImgId   DELETE #######");
+
 
         return new ResponseEntity(communityService.deleteCommunityImgById(communityImgId), HttpStatus.OK);
     }
@@ -119,6 +131,9 @@ public class CommunityController {
     public ResponseEntity deleteCommunity
     (@RequestHeader(value = "Authorization", required = false) final String jwtToken,
      @PathVariable("communityId") int communityId) {
+
+        System.out.println("#######     api/normal/community/{communityId}   DELETE #######");
+
         try {
             User user = userService.getUserByJwtToken(jwtToken);
             return new ResponseEntity(communityService.deleteCommunityById(user, communityId), HttpStatus.OK);
@@ -135,6 +150,8 @@ public class CommunityController {
     (@RequestHeader(value = "Authorization", required = false) final String jwtToken,
      @PathVariable("communityId") int communityId) {
 
+        System.out.println("#######     api/normal/community/{communityId}/comments   GET #######");
+
         try {
             User user = userService.getUserByJwtToken(jwtToken);
             return new ResponseEntity(communityCommentService.readCommunityCommentList(user, communityId), HttpStatus.CREATED);
@@ -150,6 +167,8 @@ public class CommunityController {
     (@RequestHeader(value = "Authorization", required = false) final String jwtToken,
      @RequestBody CommunityComment communityComment, @PathVariable(name = "communityId") int communityId) {
 
+        System.out.println("#######     api/normal/community/{communityId}/comments   POST #######");
+
         try {
             User user = userService.getUserByJwtToken(jwtToken);
             return new ResponseEntity(communityCommentService.createCommunityComment(user, communityComment, communityId), HttpStatus.OK);
@@ -163,6 +182,8 @@ public class CommunityController {
     public ResponseEntity updateComment
     (@RequestHeader(value = "Authorization", required = false) final String jwtToken,
      @RequestBody CommunityComment communityComment, @PathVariable("commnetId") int commentId) {
+
+        System.out.println("#######     api/normal/community/{communityId}/comments   PUT #######");
 
         try {
             User user = userService.getUserByJwtToken(jwtToken);
@@ -179,6 +200,9 @@ public class CommunityController {
     public ResponseEntity deleteComment
     (@RequestHeader(value = "Authorization", required = false) final String jwtToken,
      @PathVariable("commentId") int commentId) {
+
+        System.out.println("#######     api/normal/community/{communityId}/comments   DELETE #######");
+
         try {
             User user = userService.getUserByJwtToken(jwtToken);
             return new ResponseEntity(communityCommentService.deleteCommunityComment(user, commentId), HttpStatus.OK);
