@@ -40,9 +40,11 @@ public class S3FileServiceImpl implements FileService {
 
             System.out.println(dirName);
 
-            //dir 생성
-            new File(dirName);
-            System.out.println("dir 생성");
+            File f = new File(filePath);
+            if (!f.getParentFile().exists())
+                f.getParentFile().mkdirs();
+            if (!f.exists())
+                f.createNewFile();
 
             File convFile = new File(multipartFile.getOriginalFilename());
             convFile.createNewFile();
