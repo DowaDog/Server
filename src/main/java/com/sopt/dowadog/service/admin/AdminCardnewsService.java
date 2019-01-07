@@ -60,6 +60,9 @@ public class AdminCardnewsService {
     @Value("${uploadpath.cardnewsContents}")
     private String cardnewsContentBaseDir;
 
+    @Value("${fcm.server.key}")
+    private String fcmKey;
+
 
 
 
@@ -85,8 +88,18 @@ public class AdminCardnewsService {
     //카드뉴스 생성
     public DefaultRes<Cardnews> createCardnewsService(Cardnews cardnews) {
         try{
+
+
+            System.out.println("---서버키---");
+
+            System.out.println(fcmKey);
+
+            List<User> notnulluserList = userRepository.findAllByNotDeviceToken();
             List<User> userList = userRepository.findAll();
-            System.out.println(userList.size());
+            System.out.println(notnulluserList.get(1).getDeviceToken());
+            System.out.println(notnulluserList.get(0).getDeviceToken());
+
+            System.out.println(notnulluserList.size());
             List<String> tokenArr = new ArrayList<>();
             AsyncUtil asyncUtil = new AsyncUtil();
 
@@ -103,12 +116,14 @@ public class AdminCardnewsService {
 
             cardnewsRepository.save(cardnews);
 
-            for(User u : userList){
+            for(User u : notnulluserList){
                 //토큰 생성
                 tokenArr.add(u.getDeviceToken());
+                System.out.println(tokenArr.toArray());
+            }
 
+            for(User u : userList){
                 //메일박스 넣기
-
                 Mailbox mailbox = Mailbox.builder()
                         .user(u)
                         .title(cardnews.getTitle())
@@ -169,7 +184,6 @@ public class AdminCardnewsService {
     //카드뉴스 컨텐츠 생성
     public DefaultRes createCardnewsContentsService(CardnewsContents cardnewsContents, int cardnewsId) {
         //todo 에러처리 해야댐!
-
         MultipartFile cardnewsContentsImgFile = cardnewsContents.getCardnewsContentsImgFile();
 
         if (cardnewsContents.getCardnewsContentsImgFile() != null) {

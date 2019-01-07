@@ -38,6 +38,10 @@ public class ResponseMessage {
     public static final String CREATED_CARE = "보호소 가입 성공";
     public static final String READ_CARE = "보호소 정보 조회 성공";
 
+    //푸시알람
+    public static final String FAIL_PUSH = "푸시 알람 실패";
+
+
 
 
     //Cardnews
