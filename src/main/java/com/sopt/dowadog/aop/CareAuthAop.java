@@ -49,22 +49,6 @@ public class CareAuthAop {
     public void delete() {}
 
 
-
-    //조회인데 로그인 필요한경우 사용
-    @Pointcut("@annotation(com.sopt.dowadog.annotation.Auth)")
-    public void auth() {
-    }
-
-
-    @Around("auth()")
-    public Object around(final ProceedingJoinPoint pjp) throws Throwable {
-        if(validToken() == false) {
-            return DEFAULT_RES;
-        }
-        return pjp.proceed(pjp.getArgs());
-    }
-
-
     //권한 기본적으로 필요한 작업들
     @Around("select() || create() || update() || delete()")
     public Object AuthForGuest(final ProceedingJoinPoint pjp) throws Throwable{

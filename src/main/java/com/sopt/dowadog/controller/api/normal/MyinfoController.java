@@ -30,6 +30,9 @@ public class MyinfoController {
     //마이페이지 조회
     @GetMapping
     public ResponseEntity readMyinfo(@RequestHeader(value = "Authorization", required = false) String jwtToken) {
+
+        System.out.println("#######     api/normal/mypage   GET #######");
+
         try {
             User user = userService.getUserByJwtToken(jwtToken);
             return new ResponseEntity(myinfoService.readMypage(user), HttpStatus.OK);
@@ -43,6 +46,8 @@ public class MyinfoController {
     public ResponseEntity updateUserInfo(@RequestHeader(value = "Authorization", required = false) String jwtToken,
                                          MyinfoChangeDto myinfoChangeDto,
                                          @RequestPart(value="profileImgFile", required=false) final MultipartFile profileImgFile) {
+
+        System.out.println("#######     api/normal/mypage   PUT #######");
         try{
             User user = userService.getUserByJwtToken(jwtToken);
             return new ResponseEntity(myinfoService.updateUserInfo(user, myinfoChangeDto, profileImgFile), HttpStatus.OK);
@@ -54,6 +59,8 @@ public class MyinfoController {
     //내 입양동물 리스트 정보 조회
     @GetMapping("adoptAnimals")
     public ResponseEntity readMyAdoptAnimal(@RequestHeader(value = "Authorization", required = false) String jwtToken) {
+
+        System.out.println("#######     api/normal/mypage/adoptAnimals   GET #######");
 
         try {
             User user = userService.getUserByJwtToken(jwtToken);
@@ -70,6 +77,7 @@ public class MyinfoController {
     public ResponseEntity readAnimalInfo(@RequestHeader(value = "Authorization", required = false) String jwtToken,
                                          @PathVariable(name = "adoptAnimalId") int adoptAnimalId) {
 
+        System.out.println("#######     api/normal/mypage/adoptAnimals/:adoptAnimalId   GET #######");
 
         try {
             User user = userService.getUserByJwtToken(jwtToken);
@@ -87,6 +95,7 @@ public class MyinfoController {
                                            @RequestBody AnimalUserAdopt animalUserAdopt,
                                            @PathVariable(name = "adoptAnimalId") int adoptAnimalId) {
 
+        System.out.println("#######     api/normal/mypage/adoptAnimals/:adoptAnimalId   PUT #######");
 
         try {
 
@@ -105,6 +114,9 @@ public class MyinfoController {
     @GetMapping("/likes")
     public ResponseEntity readMypageLikes
     (@RequestHeader(value = "Authorization", required = false) String jwtToken) {
+
+        System.out.println("#######     api/normal/mypage/likes   GET #######");
+
         try {
 
             User user = userService.getUserByJwtToken(jwtToken);
@@ -122,6 +134,8 @@ public class MyinfoController {
     public ResponseEntity readMypageClips
     (@RequestHeader(value = "Authorization", required = false) String jwtToken) {
         //todo 나중에 상세 예외처리
+
+        System.out.println("#######     api/normal/mypage/scraps   GET #######");
 
         try {
             //밑의 함수의 경우 throws를 사용해서 꼭 try catch문을 해야 함!(에러를 최상단에서 처리하기 위해서)
@@ -141,6 +155,8 @@ public class MyinfoController {
     public ResponseEntity readMypageCommunity
     (@RequestHeader(value = "Authorization", required = false) String jwtToken) {
 
+        System.out.println("#######     api/normal/mypage/community   GET #######");
+
         //todo 나중에 상세 예외처리
         try {
             User user = userService.getUserByJwtToken(jwtToken);
@@ -155,6 +171,9 @@ public class MyinfoController {
     //우체통 조회
     @GetMapping("/mailboxes")
     public ResponseEntity<MailboxDto> readMypageMailboxes(@RequestHeader(value = "Authorization", required = false) String jwtToken) {
+
+        System.out.println("#######     api/normal/mypage/mailboxes   GET #######");
+
         try{
             User user = userService.getUserByJwtToken(jwtToken);
             return new ResponseEntity(myinfoService.readMailboxes(user), HttpStatus.OK);
@@ -168,11 +187,12 @@ public class MyinfoController {
     @Auth
     @GetMapping("/myinfo")
     public ResponseEntity<MyinfoChangeDto> readMypageMyinfo(@RequestHeader(value = "Authorization",required = false)final String jwtToken){
+
+        System.out.println("#######     api/normal/mypage/myinfo   GET #######");
+
         try{
             User user = userService.getUserByJwtToken(jwtToken);
             return new ResponseEntity(myinfoService.readMyinfo(user),HttpStatus.OK);
-
-
         }catch (Exception e){
             e.printStackTrace();
             return new ResponseEntity(DefaultRes.FAIL_DEFAULT_RES,HttpStatus.INTERNAL_SERVER_ERROR);

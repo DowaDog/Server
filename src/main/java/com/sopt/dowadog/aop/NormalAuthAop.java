@@ -59,6 +59,7 @@ public class NormalAuthAop {
 
     @Around("auth()")
     public Object around(final ProceedingJoinPoint pjp) throws Throwable {
+        System.out.println("AUTH!!!");
         if(validToken() == false) {
             return DEFAULT_RES;
         }

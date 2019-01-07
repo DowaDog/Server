@@ -25,12 +25,16 @@ public class SignUpController {
     @GetMapping("duplicateId")
     public ResponseEntity duplicateUserId(@RequestParam String id){
 
+        System.out.println("#######     api/signup/duplicateId   GET #######");
+
         return new ResponseEntity(signUpService.duplicateUserId(id), HttpStatus.OK);
     }
 
     //Email 중복체크
     @GetMapping("duplicateEmail")
     public ResponseEntity duplicateUserEmail(@RequestParam String email){
+
+        System.out.println("#######     api/signup/duplicateEmail   GET #######");
 
         return new ResponseEntity(signUpService.duplicateUserEmail(email), HttpStatus.OK);
     }
@@ -39,6 +43,7 @@ public class SignUpController {
     @PostMapping
     public ResponseEntity signup(SignupFormDto signupFormDto, @RequestPart(value="profileImgFile", required=false) final MultipartFile profileImgFile) {
 
+        System.out.println("#######     api/signup   POST #######");
 
         System.out.println("##### HERE MULTIPART COME!");
 

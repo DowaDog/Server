@@ -28,6 +28,8 @@ public class AuthController {
 
     @PostMapping("refresh") // 리프레시 토큰값을 통해 AccessToken 갱신
     public ResponseEntity refreshToken(@RequestHeader("Authorization") String refreshTokenData) {
+
+
         return new ResponseEntity(jwtService.renewAccessToken(refreshTokenData, "normal"), HttpStatus.OK);
     }
 
