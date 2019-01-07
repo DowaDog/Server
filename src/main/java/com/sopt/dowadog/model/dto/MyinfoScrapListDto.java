@@ -12,6 +12,6 @@ import java.time.LocalDateTime;
 public class MyinfoScrapListDto {
     private int id;
     private String title;
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
 
 }
