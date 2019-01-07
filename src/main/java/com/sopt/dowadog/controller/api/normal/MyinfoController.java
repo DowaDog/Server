@@ -92,7 +92,7 @@ public class MyinfoController {
     //동물 정보 수정 //todo codetable로 접종여부도 가져와야함
     @PutMapping("adoptAnimals/{adoptAnimalId}")
     public ResponseEntity updateAnimalInfo(@RequestHeader(value = "Authorization", required = false) String jwtToken,
-                                           @RequestBody AnimalUserAdopt animalUserAdopt,
+                                           AnimalUserAdopt animalUserAdopt,
                                            @PathVariable(name = "adoptAnimalId") int adoptAnimalId) {
 
         System.out.println("#######     api/normal/mypage/adoptAnimals/:adoptAnimalId   PUT #######");

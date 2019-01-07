@@ -50,6 +50,10 @@ public class MyinfoService {
 
     @Value("${uploadpath.myinfo}")
     private String baseDir;
+
+    @Value("${uploadpath.myinfoAnimals}")
+    private String myinfoAnimalBaseDir;
+
     @Value("${cloud.aws.endpoint}")
     private String s3Endpoint;
 
@@ -135,7 +139,7 @@ public class MyinfoService {
 
     //입양한 동물 정보 수정 //todo 여기 모델이 DTO로 받고, 예방접종내용까지 같이 줘야됨
     @Transactional
-    public DefaultRes<AnimalUserAdopt> updateAnimalByAnimalId(User user, AnimalUserAdopt modifiedAnimalUserAdopt,
+    public DefaultRes updateAnimalByAnimalId(User user, AnimalUserAdopt modifiedAnimalUserAdopt,
                                                               int animalAdoptId) {
 
         AnimalUserAdopt animalUserAdopt = animalUserAdoptRepository.findById(animalAdoptId);
@@ -143,9 +147,20 @@ public class MyinfoService {
         System.out.println(user.getId());
         System.out.println("######## Auth");
         System.out.println(auth);
-        System.out.println(modifiedAnimalUserAdopt.getInoculationArray()[0]);
+
+
 
         if (auth) {
+
+            if(modifiedAnimalUserAdopt.getProfileImgFile() != null) {
+                System.out.println("변경된 파일 있음");
+
+                String filePath = S3Util.getFilePath(myinfoAnimalBaseDir, modifiedAnimalUserAdopt.getProfileImgFile());
+                fileService.fileUpload(modifiedAnimalUserAdopt.getProfileImgFile(), filePath);
+
+                animalUserAdopt.setProfileImg(filePath);
+                System.out.println("파일 변경 완료");
+            }
             animalUserAdopt.setName(modifiedAnimalUserAdopt.getName());
             animalUserAdopt.setGender(modifiedAnimalUserAdopt.getGender());
             animalUserAdopt.setKind(modifiedAnimalUserAdopt.getKind());
@@ -170,8 +185,8 @@ public class MyinfoService {
                                             .build());
             }
             System.out.println("예방접종 리스트 업데이트");
-
-            return DefaultRes.res(StatusCode.OK, ResponseMessage.UPDATE_USER_ANIMAL, animalUserAdoptRepository.save(animalUserAdopt));
+            animalUserAdoptRepository.save(animalUserAdopt);
+            return DefaultRes.res(StatusCode.OK, ResponseMessage.UPDATE_USER_ANIMAL);
         } else {
             return DefaultRes.UNAUTHORIZATION;
         }
@@ -271,8 +286,10 @@ public class MyinfoService {
 
         List<MailboxDto> mailboxDtoList = new ArrayList<>();
 
+        List<Mailbox> mailboxList = mailboxRepository.findByUserOrderByCreatedAtDesc(user);
+
         System.out.println("mailbox list select come");
-        for(Mailbox mailbox : user.getMailboxList()) {
+        for(Mailbox mailbox : mailboxList) {
             mailboxDtoList.add(mailbox.getMailboxDto());
         }
         System.out.println("mailboxDTO setted");
