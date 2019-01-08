@@ -213,6 +213,10 @@ private String defaultUrl;
         Pageable pageable = PageRequest.of(page, limit,Sort.by(Sort.Direction.DESC,"createdAt"));
 
 
+        System.out.println("#### 필터 리스트 동물보기 ####");
+        System.out.println(filterDto.toString());
+
+
         //todo 최신순 정렬
         if (filterDto.getType() != null) filter.put("type", filterDto.getType());
         if (filterDto.getRegion() != null) filter.put("region", filterDto.getRegion());
