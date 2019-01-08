@@ -78,6 +78,10 @@ public class MyinfoService {
 
             fileService.fileUpload(profileImgFile, filePath);
             user.setProfileImg(filePath);
+        } else{
+           String temp = user.getProfileImg();
+
+           user.setProfileImg(temp);
         }
 
         user.setName(myinfoChangeDto.getName());
