@@ -30,6 +30,7 @@ public class PublicAnimalDetailDto {
     private String happenPlace;
     private String careName;
     private String careTel;
+    private boolean educationState;
 
     // 좋아요에 대해서는 나중에 구현
 

@@ -50,6 +50,10 @@ public class MyinfoService {
 
     @Value("${uploadpath.myinfo}")
     private String baseDir;
+
+    @Value("${uploadpath.myinfoAnimals}")
+    private String myinfoAnimalBaseDir;
+
     @Value("${cloud.aws.endpoint}")
     private String s3Endpoint;
 
@@ -59,6 +63,8 @@ public class MyinfoService {
 
     //UserID로 정보가져오기
     public DefaultRes<MyinfoDto> readMypage(User user) {
+
+        System.out.println("readMyPage COME!");
 
         MyinfoDto myinfoDto = user.getMyinfoDto();
         myinfoDto.setProfileImg(S3Util.getImgPath(s3Endpoint, user.getProfileImg()));
@@ -76,6 +82,10 @@ public class MyinfoService {
 
             fileService.fileUpload(profileImgFile, filePath);
             user.setProfileImg(filePath);
+        } else{
+           String temp = user.getProfileImg();
+
+           user.setProfileImg(temp);
         }
 
         user.setName(myinfoChangeDto.getName());
@@ -88,7 +98,13 @@ public class MyinfoService {
 
     //입양한 동물 리스트 //todo 리스폰스메세지 변경
     public DefaultRes<List<AnimalUserAdopt>> readAnimalUserAdoptList(User user) {
-        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_ANIMAL, user.getAnimalUserAdoptList());
+        List<AnimalUserAdopt> animalUserAdoptList = user.getAnimalUserAdoptList();
+
+        for(AnimalUserAdopt animalUserAdopt : animalUserAdoptList) {
+            animalUserAdopt.setProfileImg(S3Util.getImgPath(s3Endpoint, animalUserAdopt.getProfileImg()));
+        }
+
+        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_ANIMAL, animalUserAdoptList);
     }
 
     //입양한 동물 정보 조회
@@ -127,7 +143,7 @@ public class MyinfoService {
 
     //입양한 동물 정보 수정 //todo 여기 모델이 DTO로 받고, 예방접종내용까지 같이 줘야됨
     @Transactional
-    public DefaultRes<AnimalUserAdopt> updateAnimalByAnimalId(User user, AnimalUserAdopt modifiedAnimalUserAdopt,
+    public DefaultRes updateAnimalByAnimalId(User user, AnimalUserAdopt modifiedAnimalUserAdopt,
                                                               int animalAdoptId) {
 
         AnimalUserAdopt animalUserAdopt = animalUserAdoptRepository.findById(animalAdoptId);
@@ -135,9 +151,20 @@ public class MyinfoService {
         System.out.println(user.getId());
         System.out.println("######## Auth");
         System.out.println(auth);
-        System.out.println(modifiedAnimalUserAdopt.getInoculationArray()[0]);
+
+
 
         if (auth) {
+
+            if(modifiedAnimalUserAdopt.getProfileImgFile() != null) {
+                System.out.println("변경된 파일 있음");
+
+                String filePath = S3Util.getFilePath(myinfoAnimalBaseDir, modifiedAnimalUserAdopt.getProfileImgFile());
+                fileService.fileUpload(modifiedAnimalUserAdopt.getProfileImgFile(), filePath);
+
+                animalUserAdopt.setProfileImg(filePath);
+                System.out.println("파일 변경 완료");
+            }
             animalUserAdopt.setName(modifiedAnimalUserAdopt.getName());
             animalUserAdopt.setGender(modifiedAnimalUserAdopt.getGender());
             animalUserAdopt.setKind(modifiedAnimalUserAdopt.getKind());
@@ -162,8 +189,8 @@ public class MyinfoService {
                                             .build());
             }
             System.out.println("예방접종 리스트 업데이트");
-
-            return DefaultRes.res(StatusCode.OK, ResponseMessage.UPDATE_USER_ANIMAL, animalUserAdoptRepository.save(animalUserAdopt));
+            animalUserAdoptRepository.save(animalUserAdopt);
+            return DefaultRes.res(StatusCode.OK, ResponseMessage.UPDATE_USER_ANIMAL);
         } else {
             return DefaultRes.UNAUTHORIZATION;
         }
@@ -209,11 +236,12 @@ public class MyinfoService {
 
             for(UserCardnewsScrap temp : userCardnewsScrapRepository.findAllBy(user.getId())){
 
+
                 MyinfoScrapListDto myinfoScrapListDto = MyinfoScrapListDto
                         .builder()
                         .id(temp.getCardnews().getId())
                         .title(temp.getCardnews().getTitle())
-                        .createAt(temp.getCreatedAt())
+                        .createdAt(temp.getCreatedAt())//todo
                         .build();
                 tempList.add(myinfoScrapListDto);
 
@@ -263,8 +291,10 @@ public class MyinfoService {
 
         List<MailboxDto> mailboxDtoList = new ArrayList<>();
 
+        List<Mailbox> mailboxList = mailboxRepository.findByUserOrderByCreatedAtDesc(user);
+
         System.out.println("mailbox list select come");
-        for(Mailbox mailbox : user.getMailboxList()) {
+        for(Mailbox mailbox : mailboxList) {
             mailboxDtoList.add(mailbox.getMailboxDto());
         }
         System.out.println("mailboxDTO setted");
@@ -288,6 +318,34 @@ public class MyinfoService {
 
         }catch (Exception e){
             e.printStackTrace();
+            return DefaultRes.res(StatusCode.DB_ERROR,ResponseMessage.DB_ERROR);
+        }
+    }
+
+    public DefaultRes updateMailboxesState(final User user){
+
+        try{
+            List<Mailbox> mailboxList = mailboxRepository.findAllByUser(user);
+            System.out.println("111111"+mailboxList.size());
+            for(Mailbox u : mailboxRepository.findAllByUser(user)){
+                Mailbox mailbox = Mailbox.builder()
+                        .id(u.getId())
+                        .complete(true)
+                        .title(u.getTitle())
+                        .type(u.getType())
+                        .user(user)
+                        .detail(u.getDetail())
+                        .build();
+
+
+                mailboxRepository.save(mailbox);
+            }
+
+            return DefaultRes.res(StatusCode.OK,ResponseMessage.UPDATE_MAILBOX,"");
+
+
+        }catch (Exception e){
+
             return DefaultRes.res(StatusCode.DB_ERROR,ResponseMessage.DB_ERROR);
         }
     }

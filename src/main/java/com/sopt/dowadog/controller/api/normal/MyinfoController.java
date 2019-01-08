@@ -37,6 +37,7 @@ public class MyinfoController {
             User user = userService.getUserByJwtToken(jwtToken);
             return new ResponseEntity(myinfoService.readMypage(user), HttpStatus.OK);
         } catch(Exception e){
+            e.printStackTrace();
             return new ResponseEntity<>(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
         }
     }
@@ -52,6 +53,8 @@ public class MyinfoController {
             User user = userService.getUserByJwtToken(jwtToken);
             return new ResponseEntity(myinfoService.updateUserInfo(user, myinfoChangeDto, profileImgFile), HttpStatus.OK);
         } catch(Exception e){
+            e.printStackTrace();
+
             return new ResponseEntity<>(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
         }
     }
@@ -72,7 +75,6 @@ public class MyinfoController {
 
 
     //todo 인증 예외처리, 예방접종 코드테이블도 같이해서 보내줘야함 ( DTO 필요 )
-    @Auth
     @GetMapping("adoptAnimals/{adoptAnimalId}")
     public ResponseEntity readAnimalInfo(@RequestHeader(value = "Authorization", required = false) String jwtToken,
                                          @PathVariable(name = "adoptAnimalId") int adoptAnimalId) {
@@ -92,7 +94,7 @@ public class MyinfoController {
     //동물 정보 수정 //todo codetable로 접종여부도 가져와야함
     @PutMapping("adoptAnimals/{adoptAnimalId}")
     public ResponseEntity updateAnimalInfo(@RequestHeader(value = "Authorization", required = false) String jwtToken,
-                                           @RequestBody AnimalUserAdopt animalUserAdopt,
+                                           AnimalUserAdopt animalUserAdopt,
                                            @PathVariable(name = "adoptAnimalId") int adoptAnimalId) {
 
         System.out.println("#######     api/normal/mypage/adoptAnimals/:adoptAnimalId   PUT #######");
@@ -110,7 +112,6 @@ public class MyinfoController {
 
 
     //좋아요 리스트 조회 완료
-    @Auth
     @GetMapping("/likes")
     public ResponseEntity readMypageLikes
     (@RequestHeader(value = "Authorization", required = false) String jwtToken) {
@@ -129,7 +130,6 @@ public class MyinfoController {
     }
 
     //스크랩 리스트 조회 //todo 수한이 작업 완료하면 그때
-    @Auth
     @GetMapping("/scraps")
     public ResponseEntity readMypageClips
     (@RequestHeader(value = "Authorization", required = false) String jwtToken) {
@@ -141,6 +141,8 @@ public class MyinfoController {
             //밑의 함수의 경우 throws를 사용해서 꼭 try catch문을 해야 함!(에러를 최상단에서 처리하기 위해서)
             User user = userService.getUserByJwtToken(jwtToken);
 
+            System.out.println(myinfoService.readMyClipsList(user).getData().get(0).getCreatedAt().getClass().getName());
+
             return new ResponseEntity(myinfoService.readMyClipsList(user), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
@@ -150,7 +152,6 @@ public class MyinfoController {
     }
 
     //내가 쓴글 리스트 조회
-    @Auth
     @GetMapping("/community")
     public ResponseEntity readMypageCommunity
     (@RequestHeader(value = "Authorization", required = false) String jwtToken) {
@@ -184,7 +185,6 @@ public class MyinfoController {
         //return new ResponseEntity(HttpStatus.OK);
     }
     //내 정보 조회
-    @Auth
     @GetMapping("/myinfo")
     public ResponseEntity<MyinfoChangeDto> readMypageMyinfo(@RequestHeader(value = "Authorization",required = false)final String jwtToken){
 
@@ -200,5 +200,18 @@ public class MyinfoController {
         }
 
     }
+
+    //우체통 읽음처리 컨트롤러
+    @GetMapping("/mailboxes/readings")
+    public ResponseEntity updateMailboxState(@RequestHeader(value = "Authorization",required = false) final String jwtToken){
+        System.out.println("#######     api/normal/mypage/mailboxes/readings  GET #######");
+        try{
+            User user = userService.getUserByJwtToken(jwtToken);
+            return new ResponseEntity(myinfoService.updateMailboxesState(user),HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity(DefaultRes.FAIL_DEFAULT_RES,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
 //컨트롤러는 클라이언트에게 보여줄 뷰

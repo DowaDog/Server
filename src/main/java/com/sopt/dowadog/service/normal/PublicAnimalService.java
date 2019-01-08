@@ -25,6 +25,9 @@ public class PublicAnimalService {
     PublicAnimalRepository publicAnimalRepository;
     @Autowired
     AnimalService animalService;
+    @Autowired
+    CardnewsService cardnewsService;
+
 
 
     //타입이랑 종류 파씽 함수
@@ -156,6 +159,7 @@ public class PublicAnimalService {
     public DefaultRes<PublicAnimalDetailDto> readPublicAnimal(final User user, final int animalId){
 
         Optional<PublicAnimal> publicAnimal  = publicAnimalRepository.findById(animalId);
+        AllEducatedDto allEducatedDto = cardnewsService.getAllEducatedDtoComplete(user);
 
 
         /*
@@ -182,6 +186,7 @@ public class PublicAnimalService {
         publicAnimalDetailDto.setAge(getAge(publicAnimalObject.getAge()));
         publicAnimalDetailDto.setWeight(getWeigth(publicAnimalObject.getWeight()));
         publicAnimalDetailDto.setRemainDateState(animalService.getDdayState(getDate(publicAnimalObject.getNoticeEdt())));
+        publicAnimalDetailDto.setEducationState(allEducatedDto.isAllComplete());
 
         return DefaultRes.res(StatusCode.OK,ResponseMessage.READ_ANIMAL,publicAnimalDetailDto);
 

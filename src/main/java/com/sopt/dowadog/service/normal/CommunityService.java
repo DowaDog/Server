@@ -56,6 +56,8 @@ public class CommunityService {
         List<CommunityImg> communityImgList = new ArrayList();
 
         if (Optional.ofNullable(communityImgFileList).isPresent()) {
+            //todo 파일 검증 => 파일이 없으면 디폴트 이미지 or 아예 안넣든지 해야함
+            //todo 파일이 null이냐도 체크하고 bytesize도 한번더!
             for (MultipartFile imgFile : communityImgFileList) {
 
                 String filePath = S3Util.getFilePath(baseDir, imgFile);
@@ -103,6 +105,21 @@ public class CommunityService {
         for (Community community : communityList) {
             CommunityDto communityDto = community.getCommunityDto();
 //            communityDto.setUserProfileImg(new StringBuilder()s3Endpoint);
+            List<CommunityImg> communityImgs = new ArrayList<>();
+
+            for(CommunityImg communityImg : community.getCommunityImgList()){
+                CommunityImg imgTemp = new CommunityImg();
+
+                imgTemp.setCreatedAt(communityImg.getCreatedAt());
+                imgTemp.setUpdatedAt(communityImg.getUpdatedAt());
+                imgTemp.setFilePath(S3Util.getImgPath(s3Endpoint,communityImg.getFilePath()));
+                imgTemp.setOriginFileName(communityImg.getOriginFileName());
+                imgTemp.setId(communityImg.getId());
+
+                communityImgs.add(imgTemp);
+            }
+
+            communityDto.setCommunityImgList(communityImgs);
 
             communityDto = setCommunityDtoAuthAndProfileImgWithUser(user, community, communityDto);
 
