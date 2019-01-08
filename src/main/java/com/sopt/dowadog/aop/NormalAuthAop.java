@@ -39,13 +39,13 @@ public class NormalAuthAop {
     }
 
 
-    @Pointcut("execution(* com..service.normal.*Service.create*(..))")
+    @Pointcut("execution(* com..normal.*Service.create*(..))")
     public void create() {}
 
-    @Pointcut("execution(* com..service.normal.*Service.update*(..))")
-    public void update() {}
+    @Pointcut("execution(* com..normal.*Service.update*(..))")
+    public void update() {System.out.println("=========================");}
 
-    @Pointcut("execution(* com..service.normal.*Service.delete*(..))")
+    @Pointcut("execution(* com..normal.*Service.delete*(..))")
     public void delete() {}
 
 
@@ -69,7 +69,7 @@ public class NormalAuthAop {
     //권한 기본적으로 필요한 작업들
     @Around("create() || update() || delete()")
     public Object AuthForGuest(final ProceedingJoinPoint pjp) throws Throwable{
-
+        System.out.println("=====normalAOP 잘들어오는지!=======");
         if(validToken() == false) return DEFAULT_RES;
         return pjp.proceed(pjp.getArgs());
     }

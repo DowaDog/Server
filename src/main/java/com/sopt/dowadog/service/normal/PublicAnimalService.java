@@ -88,8 +88,6 @@ public class PublicAnimalService {
 
         }else if(reg.equals("광주")||reg.equals("전북")||reg.equals("전남")){
             reg = "전라";
-        }else if(reg.equals("인천")){
-            reg = "경기";
         }
 
         return  reg;

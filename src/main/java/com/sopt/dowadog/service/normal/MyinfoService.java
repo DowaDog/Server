@@ -318,6 +318,9 @@ public class MyinfoService {
         }
     }
 
+
+
+    @Transactional
     public DefaultRes updateMailboxesState(final User user){
 
         try{
