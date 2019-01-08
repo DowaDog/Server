@@ -36,8 +36,22 @@ public class S3FileServiceImpl implements FileService {
         try {
 
             System.out.println("FILE UPLOAD COME");
+            System.out.println("###### ORIGIN FILE NAME #####");
+            System.out.println(multipartFile.getOriginalFilename());
+            System.out.println("###### CONTENT TYPE #####");
+            System.out.println(multipartFile.getContentType());
+            System.out.println("###### FILE NAME #####");
+            System.out.println(multipartFile.getName());
+            System.out.println("###### FILE SIZE #####");
+            System.out.println(multipartFile.getSize());
+
+            System.out.println("###### FILE PATH #####");
+            System.out.println(filePath);
+
+
             String dirName = filePath.substring(0, filePath.lastIndexOf("/"));
 
+            System.out.println("###### DIR NAME #####");
             System.out.println(dirName);
 
             File f = new File(filePath);

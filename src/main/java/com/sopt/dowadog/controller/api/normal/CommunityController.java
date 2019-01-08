@@ -41,11 +41,8 @@ public class CommunityController {
         System.out.println("#######     api/normal/community   GET #######");
 
         try {
-            User user = null; //게스트의 경우 널값으로 유저 생성해서 넘겨줌
 
-            if (userService.getUserByJwtToken(jwtToken) != null) {
-                user = userService.getUserByJwtToken(jwtToken);
-            }
+            User user = userService.getUserByJwtToken(jwtToken);
             return new ResponseEntity(communityService.readCommunityList(user, page, limit), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
@@ -111,7 +108,7 @@ public class CommunityController {
     //커뮤니티 수정시 사진 삭제
     @DeleteMapping("{communityId}/communityimg/{communityImgId}")
     public ResponseEntity deleteCommunityImg(@RequestHeader(value = "Authorization") final String jwtToken,
-                                             @PathVariable("communityImgId") int communityImgId){
+                                             @PathVariable("communityImgId") int communityImgId) {
 
         System.out.println("#######     api/normal/community/:communityId/communityimg/:communityImgId   DELETE #######");
 
@@ -206,7 +203,7 @@ public class CommunityController {
         try {
             User user = userService.getUserByJwtToken(jwtToken);
             return new ResponseEntity(communityCommentService.deleteCommunityComment(user, commentId), HttpStatus.OK);
-        } catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(DefaultRes.FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
