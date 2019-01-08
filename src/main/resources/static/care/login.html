@@ -110,7 +110,7 @@
 //                        console.log("액세스토큰 갱신 완료");
                         //갱신코드
                         $.cookie("accessToken", res.data.data);
-                        $.cookie("accessTokenExpiredAt, res.data.expiredAt");
+                        $.cookie("accessTokenExpiredAt", res.data.expiredAt);
 
                     } else {
 //                        console.log("액세스토큰 갱신 실패");
@@ -150,6 +150,8 @@
                     location.href="/care/main.html";
                 }
             } 
+        } else{
+                location.href="/care/login.html";
         }
         
         //리프레시 토큰이 없다
