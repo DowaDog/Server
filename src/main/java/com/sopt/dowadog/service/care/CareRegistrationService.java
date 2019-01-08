@@ -4,16 +4,18 @@ import com.sopt.dowadog.model.common.DefaultRes;
 import com.sopt.dowadog.model.domain.*;
 import com.sopt.dowadog.model.dto.RegistrationDto;
 import com.sopt.dowadog.model.dto.RegistrationMaterialDto;
-import com.sopt.dowadog.repository.AnimalRepository;
-import com.sopt.dowadog.repository.AnimalUserAdoptRepository;
-import com.sopt.dowadog.repository.CareRepository;
-import com.sopt.dowadog.repository.RegistrationRepository;
+import com.sopt.dowadog.repository.*;
+import com.sopt.dowadog.util.AsyncUtil;
 import com.sopt.dowadog.util.ResponseMessage;
 import com.sopt.dowadog.util.StatusCode;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class CareRegistrationService {
@@ -26,7 +28,12 @@ public class CareRegistrationService {
     AnimalRepository animalRepository;
     @Autowired
     AnimalUserAdoptRepository animalUserAdoptRepository;
-
+    @Autowired
+    MailboxRepository mailboxRepository;
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    MailboxReservationRepository mailboxReservationRepository;
 
     private final String REG_STATUS_DENY = "deny";
     private final String REG_STATUS_STEP0 = "step0";
@@ -41,11 +48,69 @@ public class CareRegistrationService {
     private final String PROCESS_ADOPT = "adopt";
     private final String PROCESS_END = "end";
 
+
+
+
+    //우체통 생성, 푸시알람 한 번에 처리하는 함수
+    private boolean setMailAndAlram (User user, String title, String detail){
+        try{
+            System.out.println("---우체통 생성, 푸시알람 함수 들어옴---");
+            //우체통 생성
+            Mailbox mailbox = Mailbox.builder()
+                    .type("registration")
+                    .detail(detail)// 바꿔야함 (임의로)
+                    .title(title)// 바꿔야함 (임의로)
+                    .user(user)
+                    .build();
+
+            // 우체통에 접근
+            mailboxRepository.save(mailbox);
+
+            if(user.getDeviceToken()!=null){// 아요에스는 애초에 디바이스 토큰을 널로 주기 때문에 분기 처리
+                //푸시 생성
+                AsyncUtil asyncUtil = new AsyncUtil();
+                System.out.println(user.getDeviceToken());
+
+                return asyncUtil.sendOne(user.getDeviceToken(),title,detail).isDone();
+
+            }else{
+
+                return true;
+            }
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+
+        }
+
+    }
+    // 날짜 리스트 계산해서 배열에 넣는 함수(사진을 위한 데이트)
+    private List<LocalDate> getDateList(){
+
+
+        List<LocalDate> dateList = new ArrayList<>();
+        LocalDate nowDate = LocalDate.now();
+        LocalDate afterOneYear = nowDate.plusYears(1);
+        System.out.println(afterOneYear);
+
+        for(int i = 1 ; i<13; i++){
+            dateList.add(nowDate.plusMonths(i));
+        }
+        // 날짜에 대해서 한 달에 한 번씩
+
+        System.out.println(dateList.size());
+        return dateList;
+    }
+
+
     public DefaultRes<RegistrationDto> readRegistrationById(Care care, int registrationId) {
         if(!registrationRepository.findById(registrationId).isPresent()) return DefaultRes.NOT_FOUND;
 
         return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_REGISTRATION, registrationRepository.findById(registrationId).get().getRegistrationDto());
     }
+
 
     //STEP0 사용자가 신청
     @Transactional
@@ -66,6 +131,14 @@ public class CareRegistrationService {
         registration.setUserCheck(false);
         animal.setProcessState(PROCESS_STEP);
         //todo 우체통 생성, 푸시생성
+
+        // 유저 가져오기
+        User user = registrationRepository.findById(registrationId).get().getUser();
+        // 메세지 바꾸기
+        if(!setMailAndAlram(user,"스텝0 요청 수락","메일함을 확인해보세요")){
+            return DefaultRes.res(StatusCode.BAD_REQUEST,ResponseMessage.FAIL_PUSH);
+        }
+
 
         registrationRepository.save(registration);
         animalRepository.save(animal);
@@ -92,6 +165,13 @@ public class CareRegistrationService {
         registration.setValidReg(false);
         registration.setUserCheck(false);
         //todo 우체통 생성, 푸시생성
+
+        // 유저 가져오기
+        User user = registrationRepository.findById(registrationId).get().getUser();
+        // 메세지 바꾸기
+        if(!setMailAndAlram(user,"스텝0 요청 거절","메일함을 확인해보세요")){
+            return DefaultRes.res(StatusCode.BAD_REQUEST,ResponseMessage.FAIL_PUSH);
+        }
 
         return DefaultRes.res(StatusCode.OK, ResponseMessage.UPDATE_REGISTRATION);
     }
@@ -144,6 +224,13 @@ public class CareRegistrationService {
         registration.setMeetMaterial(registrationMaterialDto.getMeetMaterial());
         //todo 우체통 생성, 푸시생성
 
+        // 유저 가져오기
+        User user = registrationRepository.findById(registrationId).get().getUser();
+        // 메세지 바꾸기
+        if(!setMailAndAlram(user,"스텝1 요청 수락","메일함을 확인해보세요")){
+            return DefaultRes.res(StatusCode.BAD_REQUEST,ResponseMessage.FAIL_PUSH);
+        }
+
         registrationRepository.save(registration);
         animalRepository.save(animal);
 
@@ -168,6 +255,12 @@ public class CareRegistrationService {
         registration.setUserCheck(false);
         animal.setProcessState(PROCESS_NOTICE);
         //todo 우체통 생성, 푸시생성
+        // 유저 가져오기
+        User user = registrationRepository.findById(registrationId).get().getUser();
+        // 메세지 바꾸기
+        if(!setMailAndAlram(user,"스텝1 요청 거절","메일함을 확인해보세요")){
+            return DefaultRes.res(StatusCode.BAD_REQUEST,ResponseMessage.FAIL_PUSH);
+        }
 
         registrationRepository.save(registration);
         animalRepository.save(animal);
@@ -205,7 +298,7 @@ public class CareRegistrationService {
     //STEP2 수락   전화받은 후 수락 대기
     @Transactional
     public DefaultRes updateRegistrationAcceptStepTwo(Care care, int registrationId) {
-        System.out.println("스텝1 요청 수락");
+        System.out.println("스텝2 요청 수락");
 
         //검증
         if (!registrationRepository.findById(registrationId).isPresent()) return DefaultRes.BAD_REQUEST;
@@ -219,6 +312,12 @@ public class CareRegistrationService {
         registration.setRegStatus(REG_STATUS_STEP3);
         registration.setUserCheck(false);
         //todo 우체통 생성, 푸시생성
+        // 유저 가져오기
+        User user = registrationRepository.findById(registrationId).get().getUser();
+        // 메세지 바꾸기
+        if(!setMailAndAlram(user,"스텝2 요청 수락","메일함을 확인해보세요")){
+            return DefaultRes.res(StatusCode.BAD_REQUEST,ResponseMessage.FAIL_PUSH);
+        }
 
         registrationRepository.save(registration);
         animalRepository.save(animal);
@@ -229,7 +328,7 @@ public class CareRegistrationService {
     //STEP2 반려
     @Transactional
     public DefaultRes updateRegistrationDenyStepTwo(Care care, int registrationId) {
-        System.out.println("스텝1 요청 거절");
+        System.out.println("스텝2 요청 거절");
         //검증
         if (!registrationRepository.findById(registrationId).isPresent()) return DefaultRes.BAD_REQUEST;
         Registration registration = registrationRepository.findById(registrationId).get();
@@ -244,6 +343,13 @@ public class CareRegistrationService {
         registration.setUserCheck(false);
         animal.setProcessState(PROCESS_NOTICE);
         //todo 우체통 생성, 푸시생성
+
+        // 유저 가져오기
+        User user = registrationRepository.findById(registrationId).get().getUser();
+        // 메세지 바꾸기
+        if(!setMailAndAlram(user,"스텝2 요청 거절","메일함을 확인해보세요")){
+            return DefaultRes.res(StatusCode.BAD_REQUEST,ResponseMessage.FAIL_PUSH);
+        }
 
         registrationRepository.save(registration);
         animalRepository.save(animal);
@@ -312,6 +418,47 @@ public class CareRegistrationService {
 
         //todo 우체통 생성, 푸시생성
 
+        // 우체통 저장 및 푸시알람
+        // 유저 가져오기
+        User temp = registrationRepository.findById(registrationId).get().getUser();
+        // 메세지 바꾸기
+        if(!setMailAndAlram(user,"입양완료 요청 수락","메일함을 확인해보세요")){
+
+            return DefaultRes.res(StatusCode.BAD_REQUEST,ResponseMessage.FAIL_PUSH);
+        }
+
+        //예방 접종에 대해서 레절베이션 테이블에 추가
+
+        MailboxReservation mailboxReservation = MailboxReservation.builder()
+                .state("on")
+                .type("medical")
+                .title("예방 접종 정보")
+                .detail("내 동물 정보에서 확인해주세요!")
+                .time(LocalDate.now().plusWeeks(2))//2주 후
+                .user(temp)
+                .build();
+        mailboxReservationRepository.save(mailboxReservation);
+
+
+        System.out.println("koooooooooo"+getDateList().size());
+        //사진에 대해서 레절베이션 테이블에 추가
+        for(int i = 0 ; i<getDateList().size();i++){
+            MailboxReservation mailboxReservation1 = MailboxReservation.builder()
+                    .user(temp)
+                    .time(getDateList().get(i))
+                    .detail("1년동안 사진을 올려주셔야 합니다")
+                    .title("사진을 올려주세요")
+                    .type("photo")
+                    .state("on")
+                    .build();
+            mailboxReservationRepository.save(mailboxReservation1);
+            System.out.println(getDateList().get(i));
+        }
+
+        //todo 스케쥴러
+
+
+
         registrationRepository.save(registration);
         animalRepository.save(animal);
         animalUserAdoptRepository.save(animalUserAdopt);
@@ -339,6 +486,14 @@ public class CareRegistrationService {
         registration.setUserCheck(false);
         animal.setProcessState(PROCESS_NOTICE);
         //todo 우체통 생성, 푸시생성
+
+
+        // 유저 가져오기
+        User user = registrationRepository.findById(registrationId).get().getUser();
+        // 메세지 바꾸기
+        if(!setMailAndAlram(user,"입양완료 요청 거절","메일함을 확인해보세요")){
+            return DefaultRes.res(StatusCode.BAD_REQUEST,ResponseMessage.FAIL_PUSH);
+        }
 
         registrationRepository.save(registration);
         animalRepository.save(animal);
