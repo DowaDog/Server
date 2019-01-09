@@ -1,90 +1,131 @@
-//package com.sopt.dowadog.service;
-//
-//import com.sopt.dowadog.model.common.DefaultRes;
-//import com.sopt.dowadog.model.domain.Registration;
-//import com.sopt.dowadog.model.domain.User;
-//import com.sopt.dowadog.model.dto.MainDto;
-//import com.sopt.dowadog.util.ResponseMessage;
-//import com.sopt.dowadog.util.StatusCode;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Service;
-//
-//import java.util.List;
-//
-//@Service
-//public class MainService {
-//
-//    @Autowired
-//    UserService userService;
-//
-//    DefaultRes<MainDto> readMain(User user) {
-//
-//        // 게스트일경우 빈 객체 생성
-//        MainDto mainDto = new MainDto();
-//
-//        if(user != null) {
-//            mainDto = user.getMainDto();
-//            lastRegistration = registration
-//
-//            List<Registration> registrationList = user.getRegistrationList();
-//
-//            for(Registration registration : registrationList) {
-//                registration.getStatus();
-//            }
-//
-////            registrationList.
-//
-//        }
-//
-//        //todo 임시 메시지
-//        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_ANIMAL, mainDto);
-//
-////         이부분 비즈니스로직으로 뺄것
-//        if (this.registrationList.size() == 0) {
-//            mainDto.setAdopting(false);
-//        } else {
-//
-//            //현재 진행중인 마지막 registration 가져옴
-//            Registration lastRegistration = this.registrationList.get(this.registrationList.size() - 1);
-//
-//
-//            mainDto.setRegStatus(lastRegistration.getRegStatus());
-//            mainDto.setUserCheck(lastRegistration.isUserCheck());
-//
-//
-//            if (lastRegistration.getRegStatus().equals("deny")) mainDto.setAdopting(false);
-//            lastRegistration.getRegStatus();
-//
-//
-//            lastRegistration.getRegistrationMeeting().getMaterial()
-//            private boolean login;
-//
-//            private boolean todayAdopt;
-//
-//            private Boolean registrationUpdated = null;
-//            private Boolean mailboxUpdated = null;
-//            private String status = null; // step1, step2, step3, step4, step5
-//
-//            //on step3
-//            private String place = null;
-//            private String time = null;
-//            private String item = null;
-//
-//
-//
-//
-//            if (communityRepository.findById(communityId).isPresent()) {
-//                Community community = communityRepository.findById(communityId).get();
-//                CommunityDto communityDto = community.getCommunityDto();
-//                if (user != null) communityDto.setAuth(community.getAuth(user.getId()));
-//
-//                return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_COMMUNITY, communityDto);
-//            } else {
-//                return DefaultRes.res(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_COMMUNITY);
-//            }
-//
-//            return DefaultRes.FAIL_DEFAULT_RES;
-//
-//
-//
-//}
+package com.sopt.dowadog.service.normal;
+
+import com.sopt.dowadog.model.common.DefaultRes;
+import com.sopt.dowadog.model.domain.Registration;
+import com.sopt.dowadog.model.domain.User;
+import com.sopt.dowadog.model.dto.MainDto;
+import com.sopt.dowadog.repository.MailboxRepository;
+import com.sopt.dowadog.repository.RegistrationRepository;
+import com.sopt.dowadog.util.ResponseMessage;
+import com.sopt.dowadog.util.StatusCode;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.swing.text.html.Option;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class MainService {
+
+    @Autowired
+    UserService userService;
+    @Autowired
+    RegistrationRepository registrationRepository;
+    @Autowired
+    MailboxRepository mailboxRepository;
+
+    public DefaultRes<MainDto> readMain(User user) {
+
+        System.out.println("### MAIN VIEW COME ###");
+
+        // 게스트일경우 빈 객체 생성
+        MainDto mainDto = new MainDto();
+
+        //로그인 안했을시 뷰
+        //login 안한 경우 view는 동일하게 고정 ( 클라쪽에선 맨처음 로그인 여부로 뷰 결정 )
+        mainDto.setView("입양 안했을 때(단계시작전)");
+
+        if (user != null) {
+            mainDto.setLogin(true);
+            //
+            //view 결정 비즈니스로직
+            //
+            //로그인 했을시 뷰 default
+            mainDto.setView("입양 안했을 때(단계시작전)");
+            //
+            Optional<Registration> lastRegistrationOptional = registrationRepository.findFirstByUserOrderByIdDesc(user);
+            System.out.println("## 마지막 신청서 정보 ##");
+
+            if (lastRegistrationOptional.isPresent()) {
+                Registration lastRegistration = lastRegistrationOptional.get();
+//                mainDto.setRegStatus(lastRegistration.getRegStatus());
+                mainDto.setUserCheck(lastRegistration.isUserCheck());
+
+                if (lastRegistration.getRegStatus().equals("complete")) { // 마지막 신청서가 입양 절차 완료일경우
+                    System.out.println("## 마지막 신청서 : 입양 절차 완료 ##");
+
+                    if (!lastRegistration.isUserCheck()) { // 유저체크 안함
+                        System.out.println("## 마지막 신청서 : 유저가 확인하지 않았습니다 ##");
+                        mainDto.setView("입양 안했을 때(단계시작전)");
+                    } else {
+                        mainDto.setView("main 4단계");
+                    }
+                } else {
+                    System.out.println("## 마지막 신청서 : 입양 절차 완료되지 않았습니다 ##");
+
+                    if (!lastRegistration.isValidReg()) {
+                        System.out.println("##   마지막 신청서 : 유효한 신청서가 없습니다 ##");
+                        if (!lastRegistration.isUserCheck()) {
+                            mainDto.setView("단계별로 승인되지 않았을 때");
+                        } else {
+                            mainDto.setView("입양 안했을 때(단계시작전)");
+                        }
+                    } else {
+//                        mainDto.setAdopting(true);
+
+                        switch (lastRegistration.getRegStatus()) {
+                            case "step0":
+                                mainDto.setView("main 1단계 입양신청");
+                                break;
+                            case "step1":
+                                mainDto.setView("main 2단계 전화 상담");
+                                mainDto.setPlace(lastRegistration.getMeetPlace());
+                                mainDto.setTime(lastRegistration.getMeetTime());
+                                mainDto.setMaterial(lastRegistration.getMeetMaterial());
+
+                                break;
+                            case "step2":
+                                mainDto.setView("main 3단계 직접 방문전");
+                                break;
+                            case "step3":
+                                mainDto.setView("main 3단계 직접 방문후");
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_MAIN, mainDto);
+    }
+
+
+    // 완료
+    public DefaultRes checkMain(User user) {
+        if (user != null) {
+            System.out.println("## 메인뷰 : 회원 로그인 확인##");
+
+            if (registrationRepository.findByUserAndUserCheck(user, false).isPresent()) { // 유저가 확인하지 않은 신청서에 대해서
+
+                System.out.println("## 유저가 확인하지 않은 신청서가 존재합니다 ##");
+
+                List<Registration> registrationList = registrationRepository.findByUserAndUserCheck(user, false).get();
+
+                //true로 변경
+                for (Registration registration : registrationList) {
+                    System.out.println("## 유저 확인 완료 ##");
+                    registration.setUserCheck(true);
+                    registrationRepository.save(registration);
+                }
+
+            }
+            ;
+            return DefaultRes.res(StatusCode.OK, ResponseMessage.CHECK_MAIN);
+        }
+
+        System.out.println("#   # 메인뷰 : 메인뷰 : 비회원 확인##");
+
+        return DefaultRes.res(StatusCode.OK, ResponseMessage.CHECK_MAIN);
+    }
+
+}

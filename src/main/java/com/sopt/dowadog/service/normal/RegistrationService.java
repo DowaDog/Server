@@ -13,7 +13,9 @@ import com.sopt.dowadog.util.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Service
 public class RegistrationService {
@@ -43,7 +45,13 @@ public class RegistrationService {
 
     @Transactional
     public DefaultRes createRegistration(User user, RegistrationDto registrationDto, String regType) {
+
+        if(!animalRepository.findById(registrationDto.getAnimalId()).isPresent()) {
+            return DefaultRes.BAD_REQUEST;
+        }
+
         Animal animal = animalRepository.findById(registrationDto.getAnimalId()).get();
+
         //검증 부분
         if(!checkRequest(user, animal, registrationDto)) return DefaultRes.BAD_REQUEST;
 
