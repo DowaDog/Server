@@ -55,13 +55,19 @@ public class SignUpService {
             user.setName(name);
 
 
-            if(profileImgFile != null){
+            if(profileImgFile != null) {
                 String filePath = new StringBuilder(baseDir).
                         append(S3Util.getUuid()).
                         append(profileImgFile.getOriginalFilename()).toString();
 
                 fileService.fileUpload(profileImgFile, filePath);
                 user.setProfileImg(filePath);
+            }else{
+                // 이미지 널일때 분기 처리
+                user.setProfileImg(new StringBuilder(baseDir).
+                        append("profile_default_img.png")
+                        .toString());
+
             }
 
             userRepository.save(user);
