@@ -119,29 +119,42 @@ public class CareRegistrationService {
         System.out.println("스텝0 요청 수락");
 
         //검증
-        if (!registrationRepository.findById(registrationId).isPresent()) return DefaultRes.BAD_REQUEST;
+        if (!registrationRepository.findById(registrationId).isPresent()){
+            System.out.println("해당 신청서 없음");
+            return DefaultRes.BAD_REQUEST;
+        }
         Registration registration = registrationRepository.findById(registrationId).get();
         Animal animal = registration.getAnimal();
 
-        if (!checkStepZeroRequest(care, animal, registration)) return DefaultRes.BAD_REQUEST;
+        if (!checkStepZeroRequest(care, animal, registration)) {
+            System.out.println("해당 신청서 상태 검증 실패");
+
+            return DefaultRes.BAD_REQUEST;
+        }
         //검증 끝
 
         //비즈니스로직
         registration.setRegStatus(REG_STATUS_STEP1);
         registration.setUserCheck(false);
         animal.setProcessState(PROCESS_STEP);
+        System.out.println("비즈니스 로직 실행완료");
+
         //todo 우체통 생성, 푸시생성
 
         // 유저 가져오기
         User user = registrationRepository.findById(registrationId).get().getUser();
         // 메세지 바꾸기
         if(!setMailAndAlram(user,"스텝0 요청 수락","메일함을 확인해보세요")){
+            System.out.println("우편함 발송 실패");
             return DefaultRes.res(StatusCode.BAD_REQUEST,ResponseMessage.FAIL_PUSH);
+
         }
 
 
         registrationRepository.save(registration);
         animalRepository.save(animal);
+        System.out.println("flush완료");
+
 
         return DefaultRes.res(StatusCode.OK, ResponseMessage.UPDATE_REGISTRATION);
     }
@@ -179,6 +192,7 @@ public class CareRegistrationService {
     private boolean checkStepZeroRequest(Care care, Animal animal, Registration registration) {
 
         if (!registration.getAnimal().getCare().equals(care)) {
+            System.out.println("해당 보호소의 동물이 아님");
             return false;
         }
 

@@ -1,6 +1,8 @@
 package com.sopt.dowadog.model.domain;
 
 import com.sopt.dowadog.model.domain.auditing.DateEntity;
+import com.sopt.dowadog.model.dto.MailboxDto;
+import com.sopt.dowadog.model.dto.MainDto;
 import com.sopt.dowadog.model.dto.RegistrationDto;
 import lombok.*;
 
@@ -80,8 +82,19 @@ public class Registration extends DateEntity {
                 .validReg(this.isValidReg())
                 .userCheck(this.isUserCheck())
                 .regType(this.regType)
+                .animalId(this.animal.getId())
                 .build();
     }
 
+    public MainDto getMainDto() {
+        return MainDto.builder()
+                .place(this.meetPlace)
+                .time(this.meetTime)
+                .material(this.meetMaterial)
+                .userCheck(this.userCheck)
+                .build();
+        //on step3
+
+    }
 
 }

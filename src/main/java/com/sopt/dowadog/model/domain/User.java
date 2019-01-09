@@ -106,15 +106,6 @@ public class User extends DateEntity {
     //todo 태경 추가 코드 확인 필요 : @ 26살 성찬쓰
 
 
-//animaluser의 필드값을 가져와야한다.
-
-    @JsonIgnore
-    public MainDto getMainDto() {
-        return MainDto.builder()
-                .login(true)
-                .mailboxUpdated(isNewMailbox())
-                .build();
-    }
 
     @JsonIgnore
     public MyinfoDto getMyinfoDto() {
@@ -151,6 +142,8 @@ public class User extends DateEntity {
     public boolean getAuth(String userId){
         return userId.equals(this.id);
     }
+
+   
 
 }
 

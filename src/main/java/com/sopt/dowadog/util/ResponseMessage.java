@@ -113,6 +113,8 @@ public class ResponseMessage {
 
     public static final String CHECK_REGISTRATION = "신청서 확인 완료";
 
+    public static final String READ_MAIN = "메인 뷰 조회";
+    public static final String CHECK_MAIN = "메인 뷰 체크";
 
 
 }
