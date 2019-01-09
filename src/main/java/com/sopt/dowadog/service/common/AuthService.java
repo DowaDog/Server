@@ -5,6 +5,7 @@ import com.sopt.dowadog.model.domain.Care;
 import com.sopt.dowadog.model.domain.User;
 import com.sopt.dowadog.repository.CareRepository;
 import com.sopt.dowadog.repository.UserRepository;
+import com.sopt.dowadog.util.SHA256Util;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,7 +21,11 @@ public class AuthService {
     }
 
     public boolean loginCheck(LoginReq loginReq, String type) {
-        String hashedPassword = loginReq.getPassword();
+
+        SHA256Util sha256Util = new SHA256Util();
+        String hashedPassword = sha256Util.SHA256Util(loginReq.getPassword());
+
+
 
         if (type.equals("normal")) {
             final User user = userRepository.findByIdAndPassword(loginReq.getId(), hashedPassword);
