@@ -27,6 +27,15 @@ public class MainService {
 
     public DefaultRes<MainDto> readMain(User user) {
 
+        //입양 안했을 때(단계시작전) : NO
+        //main 1단계 입양신청 : S0
+        //main 2단계 전화 상담 : S1
+        //main 3단계 직접 방문전 : S2
+        //main 3단계 직접 방문후 : S3
+        //main 4단계 : COMPLETE
+        //단계별로 승인되지 않았을 때 : DENY
+
+
         System.out.println("### MAIN VIEW COME ###");
 
         // 게스트일경우 빈 객체 생성
@@ -34,7 +43,7 @@ public class MainService {
 
         //로그인 안했을시 뷰
         //login 안한 경우 view는 동일하게 고정 ( 클라쪽에선 맨처음 로그인 여부로 뷰 결정 )
-        mainDto.setView("입양 안했을 때(단계시작전)");
+        mainDto.setView("NO");
 
         if (user != null) {
             mainDto.setLogin(true);
@@ -42,7 +51,7 @@ public class MainService {
             //view 결정 비즈니스로직
             //
             //로그인 했을시 뷰 default
-            mainDto.setView("입양 안했을 때(단계시작전)");
+            mainDto.setView("NO");
             //
             Optional<Registration> lastRegistrationOptional = registrationRepository.findFirstByUserOrderByIdDesc(user);
             System.out.println("## 마지막 신청서 정보 ##");
@@ -57,9 +66,9 @@ public class MainService {
 
                     if (!lastRegistration.isUserCheck()) { // 유저체크 안함
                         System.out.println("## 마지막 신청서 : 유저가 확인하지 않았습니다 ##");
-                        mainDto.setView("입양 안했을 때(단계시작전)");
+                        mainDto.setView("NO");
                     } else {
-                        mainDto.setView("main 4단계");
+                        mainDto.setView("COMPLETE");
                     }
                 } else {
                     System.out.println("## 마지막 신청서 : 입양 절차 완료되지 않았습니다 ##");
@@ -69,27 +78,27 @@ public class MainService {
                         if (!lastRegistration.isUserCheck()) {
                             mainDto.setView("단계별로 승인되지 않았을 때");
                         } else {
-                            mainDto.setView("입양 안했을 때(단계시작전)");
+                            mainDto.setView("NO");
                         }
                     } else {
 //                        mainDto.setAdopting(true);
 
                         switch (lastRegistration.getRegStatus()) {
                             case "step0":
-                                mainDto.setView("main 1단계 입양신청");
+                                mainDto.setView("S0");
                                 break;
                             case "step1":
-                                mainDto.setView("main 2단계 전화 상담");
+                                mainDto.setView("S1");
                                 mainDto.setPlace(lastRegistration.getMeetPlace());
                                 mainDto.setTime(lastRegistration.getMeetTime());
                                 mainDto.setMaterial(lastRegistration.getMeetMaterial());
 
                                 break;
                             case "step2":
-                                mainDto.setView("main 3단계 직접 방문전");
+                                mainDto.setView("S2");
                                 break;
                             case "step3":
-                                mainDto.setView("main 3단계 직접 방문후");
+                                mainDto.setView("S3");
                                 break;
                         }
                     }
