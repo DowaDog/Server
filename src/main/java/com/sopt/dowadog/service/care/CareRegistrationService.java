@@ -144,11 +144,7 @@ public class CareRegistrationService {
         // 유저 가져오기
         User user = registrationRepository.findById(registrationId).get().getUser();
         // 메세지 바꾸기
-        if(!setMailAndAlram(user,"스텝0 요청 수락","메일함을 확인해보세요")){
-            System.out.println("우편함 발송 실패");
-            return DefaultRes.res(StatusCode.BAD_REQUEST,ResponseMessage.FAIL_PUSH);
-
-        }
+        setMailAndAlram(user,"스텝0 요청 수락","메일함을 확인해보세요");
 
 
         registrationRepository.save(registration);
@@ -182,9 +178,7 @@ public class CareRegistrationService {
         // 유저 가져오기
         User user = registrationRepository.findById(registrationId).get().getUser();
         // 메세지 바꾸기
-        if(!setMailAndAlram(user,"스텝0 요청 거절","메일함을 확인해보세요")){
-            return DefaultRes.res(StatusCode.BAD_REQUEST,ResponseMessage.FAIL_PUSH);
-        }
+        setMailAndAlram(user,"스텝0 요청 거절","메일함을 확인해보세요");
 
         return DefaultRes.res(StatusCode.OK, ResponseMessage.UPDATE_REGISTRATION);
     }
@@ -241,9 +235,7 @@ public class CareRegistrationService {
         // 유저 가져오기
         User user = registrationRepository.findById(registrationId).get().getUser();
         // 메세지 바꾸기
-        if(!setMailAndAlram(user,"스텝1 요청 수락","메일함을 확인해보세요")){
-            return DefaultRes.res(StatusCode.BAD_REQUEST,ResponseMessage.FAIL_PUSH);
-        }
+        setMailAndAlram(user,"스텝1 요청 수락","메일함을 확인해보세요");
 
         registrationRepository.save(registration);
         animalRepository.save(animal);
@@ -272,9 +264,7 @@ public class CareRegistrationService {
         // 유저 가져오기
         User user = registrationRepository.findById(registrationId).get().getUser();
         // 메세지 바꾸기
-        if(!setMailAndAlram(user,"스텝1 요청 거절","메일함을 확인해보세요")){
-            return DefaultRes.res(StatusCode.BAD_REQUEST,ResponseMessage.FAIL_PUSH);
-        }
+        setMailAndAlram(user,"스텝1 요청 거절","메일함을 확인해보세요");
 
         registrationRepository.save(registration);
         animalRepository.save(animal);
@@ -329,9 +319,7 @@ public class CareRegistrationService {
         // 유저 가져오기
         User user = registrationRepository.findById(registrationId).get().getUser();
         // 메세지 바꾸기
-        if(!setMailAndAlram(user,"스텝2 요청 수락","메일함을 확인해보세요")){
-            return DefaultRes.res(StatusCode.BAD_REQUEST,ResponseMessage.FAIL_PUSH);
-        }
+        setMailAndAlram(user,"스텝2 요청 수락","메일함을 확인해보세요");
 
         registrationRepository.save(registration);
         animalRepository.save(animal);
@@ -361,9 +349,7 @@ public class CareRegistrationService {
         // 유저 가져오기
         User user = registrationRepository.findById(registrationId).get().getUser();
         // 메세지 바꾸기
-        if(!setMailAndAlram(user,"스텝2 요청 거절","메일함을 확인해보세요")){
-            return DefaultRes.res(StatusCode.BAD_REQUEST,ResponseMessage.FAIL_PUSH);
-        }
+        setMailAndAlram(user,"스텝2 요청 거절","메일함을 확인해보세요");
 
         registrationRepository.save(registration);
         animalRepository.save(animal);
@@ -436,10 +422,7 @@ public class CareRegistrationService {
         // 유저 가져오기
         User temp = registrationRepository.findById(registrationId).get().getUser();
         // 메세지 바꾸기
-        if(!setMailAndAlram(user,"입양완료 요청 수락","메일함을 확인해보세요")){
-
-            return DefaultRes.res(StatusCode.BAD_REQUEST,ResponseMessage.FAIL_PUSH);
-        }
+        setMailAndAlram(user,"입양완료 요청 수락","메일함을 확인해보세요");
 
         //예방 접종에 대해서 레절베이션 테이블에 추가
 
@@ -505,9 +488,8 @@ public class CareRegistrationService {
         // 유저 가져오기
         User user = registrationRepository.findById(registrationId).get().getUser();
         // 메세지 바꾸기
-        if(!setMailAndAlram(user,"입양완료 요청 거절","메일함을 확인해보세요")){
-            return DefaultRes.res(StatusCode.BAD_REQUEST,ResponseMessage.FAIL_PUSH);
-        }
+        setMailAndAlram(user,"입양완료 요청 거절","메일함을 확인해보세요");
+
 
         registrationRepository.save(registration);
         animalRepository.save(animal);
