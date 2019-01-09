@@ -94,6 +94,7 @@ public class JwtService {
         //todo 예외부분 throw 해서 호출부분( AOP 에서 처리하도록 변경 )
         //토큰 해독 객체 생성
 
+
         try {
             final JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(SECRET)).withIssuer(ISSUER).build();
             //토큰 검증

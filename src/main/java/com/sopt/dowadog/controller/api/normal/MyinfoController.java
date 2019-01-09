@@ -209,6 +209,7 @@ public class MyinfoController {
             User user = userService.getUserByJwtToken(jwtToken);
             return new ResponseEntity(myinfoService.updateMailboxesState(user),HttpStatus.OK);
         }catch (Exception e){
+            e.printStackTrace();
             return new ResponseEntity(DefaultRes.FAIL_DEFAULT_RES,HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

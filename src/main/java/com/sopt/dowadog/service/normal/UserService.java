@@ -44,7 +44,7 @@ public class UserService {
     }
 
 
-    public User getUserByJwtToken(String jwtToken) throws Exception{
+    public User getUserByJwtToken(String jwtToken) {
 
         String userId = jwtService.decode(jwtToken);
 
