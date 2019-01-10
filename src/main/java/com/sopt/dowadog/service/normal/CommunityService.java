@@ -72,8 +72,6 @@ public class CommunityService {
                         .filePath(filePath)
                         .originFileName(imgFile.getOriginalFilename())
                         .build();
-
-
                 communityImgList.add(communityImgRepository.save(communityImg));
             }
             community.setCommunityImgList(communityImgList);
@@ -171,6 +169,77 @@ public class CommunityService {
 
 
     }
+
+
+
+//    public DefaultRes<Community> updateCommunityByIdOnMobile(User user, Community modifiedCommunity, int communityId) {
+//
+//        if (!communityRepository.findById(communityId).isPresent()) {
+//            return DefaultRes.res(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_COMMUNITY);
+//        }
+//        Community community = communityRepository.findById(communityId).get();
+//
+//
+//        List<MultipartFile> communityImgFileList = modifiedCommunity.getCommunityImgFiles();
+//        List<CommunityImg> communityImgList = new ArrayList();
+//        System.out.println("## UPDATE COMMUNITY IMG MOBILE COME ##");
+//
+//
+//        if (Optional.ofNullable(communityImgFileList).isPresent()) {
+//
+//            System.out.println("here come img not null");
+//            //todo 파일 검증 => 파일이 없으면 디폴트 이미지 or 아예 안넣든지 해야함
+//            //todo 파일이 null이냐도 체크하고 bytesize도 한번더!
+//            for (MultipartFile imgFile : communityImgFileList) {
+//
+//                String filePath = S3Util.getFilePath(baseDir, imgFile);
+//
+//                fileService.fileUpload(imgFile, filePath); // s3 upload
+//
+//                System.out.print(imgFile.toString());
+//                System.out.print(filePath);
+//
+//                CommunityImg communityImg = CommunityImg.builder()
+//                        .community(community)
+//                        .filePath(filePath)
+//                        .originFileName(imgFile.getOriginalFilename())
+//                        .build();
+//
+//
+//                communityImgList.add(communityImgRepository.save(communityImg));
+//            }
+//            community.setCommunityImgList(communityImgList);
+//        }else{
+//            community.setCommunityImgList(communityImgList);
+//        }
+//
+//
+//        //이미지 삭제내용
+//        if (checkAuth(user.getId(), community.getUser().getId())) {
+//            community.setTitle(modifiedCommunity.getTitle());
+//            community.setDetail(modifiedCommunity.getDetail());
+//
+//            System.out.println("title, detail 수정 완료");
+//
+//            if(modifiedCommunity.getRemoveImgArray().length != 0 ){
+//
+//                for(int i =0;i<modifiedCommunity.getRemoveImgArray().length ; i++){
+//                    System.out.println(modifiedCommunity.getRemoveImgArray()[i]);
+//                    communityImgRepository.deleteById(modifiedCommunity.getRemoveImgArray()[i]);
+//                    System.out.println("인덱스의 이미지 제거 완료");
+//
+//                }
+//            }
+//            return DefaultRes.res(StatusCode.OK, ResponseMessage.UPDATE_COMMUNITY, communityRepository.save(community));
+//        }
+//
+//        return DefaultRes.UNAUTHORIZATION;
+//    }
+
+
+
+
+
 
     public DefaultRes<Community> updateCommunityById(User user, Community modifiedCommunity, int communityId) {
 
