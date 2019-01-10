@@ -29,9 +29,17 @@ public class AnimalStory extends DateEntity {
     private Animal animal;
 
     private String filePath;
+    private String filePathAos;
     private String originFileName;
+
 
     @Transient
     @JsonIgnore
-    List<MultipartFile> animalStoryFiles;
+    MultipartFile animalStoryFiles;
+
+    @Transient
+    @JsonIgnore
+    MultipartFile animalStoryFilesAos;
+
+
 }

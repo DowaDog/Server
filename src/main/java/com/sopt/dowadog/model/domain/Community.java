@@ -41,6 +41,10 @@ public class Community extends DateEntity {
     @ManyToOne
     private User user;
 
+
+    @Transient
+    private int[] removeImgArray;
+
     @Transient
     @JsonIgnore
     private List<MultipartFile> communityImgFiles;

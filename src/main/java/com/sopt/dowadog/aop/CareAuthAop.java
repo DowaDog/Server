@@ -36,7 +36,7 @@ public class CareAuthAop {
 
     }
 
-    @Pointcut("execution(* com..service.care.*Service.create*(..))")
+    @Pointcut("execution(* com..service.care.*Service.read*(..))")
     public void select() {}
 
     @Pointcut("execution(* com..service.care.*Service.create*(..))")

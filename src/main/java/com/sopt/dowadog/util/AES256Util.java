@@ -14,13 +14,16 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
-
+import org.springframework.stereotype.Component;
 
 public class AES256Util {
     private String iv;
     private Key keySpec;
 
+
     public AES256Util(String key) throws UnsupportedEncodingException {
+
+
         this.iv = key.substring(0, 16);
 
         byte[] keyBytes = new byte[16];
@@ -32,7 +35,9 @@ public class AES256Util {
         System.arraycopy(b, 0, keyBytes, 0, len);
         SecretKeySpec keySpec = new SecretKeySpec(keyBytes, "AES");
 
-        this.keySpec = keySpec;
+        System.out.println(keyBytes);
+        System.out.println(b);
+        this.keySpec = keySpec;// 들어온 키를 AES의 알고리즘으로 구축하여 시크릿키 반환
     }
 
 
@@ -44,11 +49,12 @@ public class AES256Util {
             InvalidAlgorithmParameterException,
             IllegalBlockSizeException,
             BadPaddingException {
-        Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");//알고리즘/모드/패딩
         c.init(Cipher.ENCRYPT_MODE, keySpec, new IvParameterSpec(iv.getBytes()));
 
-        byte[] encrypted = c.doFinal(str.getBytes("UTF-8"));
-        String enStr = new String(Base64.encodeBase64(encrypted));
+        byte[] encrypted = c.doFinal(str.getBytes("UTF-8"));// 작업에 대한 결론
+        String enStr = new String(Base64.encodeBase64(encrypted));//base64로 인코딩
+        System.out.println("인코딩="+enStr);
 
         return enStr;
     }
@@ -64,7 +70,8 @@ public class AES256Util {
         Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
         c.init(Cipher.DECRYPT_MODE, keySpec, new IvParameterSpec(iv.getBytes("UTF-8")));
 
-        byte[] byteStr = Base64.decodeBase64(str.getBytes());
+        byte[] byteStr = Base64.decodeBase64(str.getBytes());//base64로 디코딩
+
 
         return new String(c.doFinal(byteStr),"UTF-8");
     }

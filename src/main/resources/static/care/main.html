@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="https://ryudd.s3.amazonaws.com/dowadog/common/dowadog.png" type="image/x-icon"/>
+    <link rel="icon" href="https://ryudd.s3.amazonaws.com/dowadog/common/dowadog.png" type="image/x-icon"/>
+
+    <title>기다릴개 보호소 | 메인페이지</title>
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/font-awesome/css/font-awesome.css" rel="stylesheet">
+
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="/css/animate.css" rel="stylesheet">
+    <link href="/css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+
+</head>
+
+<div id="wrapper">
+    <div class="gray-bg" style="min-height: 917px;">
+        <div class="row border-bottom">
+            <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
+
+
+                <ul class="nav navbar-top-links navbar-right">
+
+                    <li>
+                        <a href="login.html" id="logoutBtn">
+                            <i class="fa fa-sign-out"></i> Log out
+                        </a>
+                    </li>
+                </ul>
+                <div class="row wrapper border-bottom white-bg page-heading">
+                    <div class="col-lg-10">
+                        <h2 class="col-sm-offset-1 text-warning"><strong>기다릴개</strong> 보호소 웹 </h2>
+
+
+                        <ol class="breadcrumb col-sm-offset-1">
+                            <li>
+                                <a href="/care/main.html">
+                                    메인
+                                </a>
+                            </li>
+                            <li>
+                                <strong>보호 동물 목록</strong>
+                            </li>
+                        </ol>
+                    </div>
+                    <div class="col-lg-2">
+
+                    </div>
+                </div>
+            </nav>
+
+        </div>
+
+
+        <div class="wrapper wrapper-content animated fadeInRight">
+            <div class="row" id="animalList">
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Mainly scripts -->
+<script src="/js/jquery-3.1.1.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+<!-- Custom and plugin javascript -->
+<script src="/js/inspinia.js"></script>
+<script src="/js/plugins/pace/pace.min.js"></script>
+
+<!-- Jasny -->
+<script src="/js/plugins/jasny/jasny-bootstrap.min.js"></script>
+
+<!-- CodeMirror -->
+<script src="/js/plugins/sweetalert/sweetalert.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="./js/logincheck.js"></script>
+<script>
+    $('#logoutBtn').click(function () {
+        var cookies = $.cookie();
+        for (var cookie in cookies) {
+            $.removeCookie(cookie);
+        }
+    });
+
+    var init = (function () {
+
+        var headers = {};
+        headers["Authorization"] = $.cookie("accessToken");
+
+        var makeAnimalContentsHtml = function (data) {
+            var animalContentsHtml =
+                "<a href='./animal.html?animalId=" + data.id + "'><div id=\"animalList\">\n" +
+                "                <div class=\"col-lg-3\">\n" +
+                "                    <div class=\"ibox\">\n" +
+                "                        <div class=\"ibox-content\">\n" +
+                "                            <div class=\"row\">\n" +
+                "                                <img alt=\"image\" style=\"width:150px;height:100px\" id=\"animalImg\"\n" +
+                "                                     class=\"img-responsive col-lg-6\"\n" +
+                "                                     src='https://ryudd.s3.amazonaws.com/" + data.thumbnailImg + "'>" +
+                "                                <span class=\"col-lg-6\">\n" +
+                "                                <h5 class=\"m-b-md\">" + '[' + data.happenPlace + ']' + data.kindCd + "</h5>\n" +
+                "                                <small><strong>공고 기간</strong><br/>" + data.noticeStdt + " ~ " + data.noticeEddt + "</small>\n" +
+                "                            </span>\n" +
+                "                            </div>\n" +
+                "                        </div>\n" +
+                "                    </div>\n" +
+                "                </div>\n" +
+                "            </div>" +
+                "</a>"
+            $('#animalList').append(animalContentsHtml);
+
+        }
+
+        $.ajax({
+
+            url: "/api/care/animals",
+            type: 'GET',
+            headers: headers,
+            success: function (data) {
+
+
+                // makeAnimalContentsHtml
+                console.log(data);
+                for (var i = 0; i < data.length; i++) {
+                    makeAnimalContentsHtml(data[i]);
+                }
+                // var care = '<option value="default">' + '보호소를 선택해주세요' + '</option>';
+                // $.each(data, function (i, list) {
+                //     care = care + '<option value=' + list.id + '>' + '[' + list.region + ']' + list.name + '</option>';
+                // })
+
+            },
+            error: function (e) {
+                swal({
+                    title: "BAD REQUEST",
+                    text: "입력정보가 맞지 않습니다",
+                    type: "error"
+                }, function () {
+                    location.href = "./login.html"
+                });
+            }
+        });
+    })();
+
+
+    // <div class="col-lg-3">
+    //     <div class="ibox">
+    //     <div class="ibox-content">
+    //     <h5 class="m-b-md">Server status Q12</h5>
+    // <h2 class="text-navy">
+    //     <i class="fa fa-play fa-rotate-270"></i> Up
+    //     </h2>
+    //     <small>Last down 42 days ago</small>
+    // </div>
+    // </div>
+    // </div>
+
+
+</script>
+
+<style>
+    a { color: inherit; }
+</style>
+

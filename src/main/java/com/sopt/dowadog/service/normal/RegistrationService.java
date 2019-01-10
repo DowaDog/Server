@@ -8,12 +8,18 @@ import com.sopt.dowadog.model.dto.AllEducatedDto;
 import com.sopt.dowadog.model.dto.RegistrationDto;
 import com.sopt.dowadog.repository.AnimalRepository;
 import com.sopt.dowadog.repository.RegistrationRepository;
+import com.sopt.dowadog.service.common.FileService;
 import com.sopt.dowadog.util.ResponseMessage;
+import com.sopt.dowadog.util.S3Util;
 import com.sopt.dowadog.util.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Service
 public class RegistrationService {
@@ -26,6 +32,12 @@ public class RegistrationService {
 
     @Autowired
     CardnewsService cardnewsService;
+
+    @Autowired
+    FileService fileService;
+
+    @Value("${uploadpath.registration}")
+    private String baseDir;
 
     private final String REG_STATUS_DENY = "deny";
     private final String REG_STATUS_STEP0 = "step0";
@@ -42,8 +54,14 @@ public class RegistrationService {
 
 
     @Transactional
-    public DefaultRes createRegistration(User user, RegistrationDto registrationDto, String regType) {
+    public DefaultRes createRegistration(User user, RegistrationDto registrationDto, String regType, MultipartFile animalImg) {
+
+        if(!animalRepository.findById(registrationDto.getAnimalId()).isPresent()) {
+            return DefaultRes.BAD_REQUEST;
+        }
+
         Animal animal = animalRepository.findById(registrationDto.getAnimalId()).get();
+
         //검증 부분
         if(!checkRequest(user, animal, registrationDto)) return DefaultRes.BAD_REQUEST;
 
@@ -54,7 +72,21 @@ public class RegistrationService {
         registration.setRegType(regType);
         registration.setRegStatus("step0");
 
+        //반려동물 이미지 삽입
+
+        if(animalImg != null){
+            String filePath = S3Util.getFilePath(baseDir,animalImg);
+
+            fileService.fileUpload(animalImg,filePath);
+            registration.setAnimalFileImgPath(filePath);
+
+        }else{
+            registration.setAnimalFileImgPath(null);
+
+        }
+
         //todo 보호소측으로 PUSh
+
 
         registrationRepository.save(registration);
         return DefaultRes.res(StatusCode.CREATED, ResponseMessage.CREATE_REGISTRATION);

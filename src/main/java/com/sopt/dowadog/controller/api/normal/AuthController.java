@@ -1,4 +1,4 @@
-package com.sopt.dowadog.controller.api.common;
+package com.sopt.dowadog.controller.api.normal;
 
 import com.sopt.dowadog.model.common.LoginReq;
 import com.sopt.dowadog.service.common.JwtService;

@@ -90,15 +90,21 @@ public class JwtService {
     }
 
 
-    public String decode(String token) throws Exception {
+    public String decode(String token) {
         //todo 예외부분 throw 해서 호출부분( AOP 에서 처리하도록 변경 )
         //토큰 해독 객체 생성
-        final JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(SECRET)).withIssuer(ISSUER).build();
-        //토큰 검증
-        DecodedJWT decodedJWT = jwtVerifier.verify(token);
-        //토큰 payload 반환, 정상적인 토큰이라면 토큰 주인(사용자) 고유 ID, 아니라면 null
 
-        return decodedJWT.getClaim("user_id").asString();
+
+        try {
+            final JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(SECRET)).withIssuer(ISSUER).build();
+            //토큰 검증
+            DecodedJWT decodedJWT = jwtVerifier.verify(token);
+            //토큰 payload 반환, 정상적인 토큰이라면 토큰 주인(사용자) 고유 ID, 아니라면 null
+
+            return decodedJWT.getClaim("user_id").asString();
+        } catch (Exception e){
+            return null;
+        }
 
     }
 
