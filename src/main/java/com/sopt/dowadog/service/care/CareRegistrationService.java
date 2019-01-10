@@ -104,7 +104,7 @@ public class CareRegistrationService {
         return dateList;
     }
 
-    public DefaultRes<List<Registration>> readAnimalRegistrationByAnimalId(int animalId) {
+    public List<Registration> readAnimalRegistrationByAnimalId(int animalId) {
 
         Animal animal = animalRepository.findById(animalId).get();
 
@@ -114,7 +114,8 @@ public class CareRegistrationService {
             registrationList = registrationRepository.findByAnimal(animal).get();
         }
 
-        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_REGISTRATION, registrationList);
+        return registrationList;
+
     }
 
 

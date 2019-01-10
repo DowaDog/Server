@@ -28,8 +28,9 @@ var initCookie = function() {
 initCookie();
 
 var doRefreshRequest = function () {
+
     var headers = {};
-    headers["Authorization"] = refreshToken;
+    headers["Authorization"] = $.cookie("refreshToken");
     $.ajax({
         type: "POST",
         headers: headers,
@@ -57,9 +58,14 @@ var doRefreshRequest = function () {
 }
 
 if ($.cookie("refreshToken") !== undefined) { // 리프레시 토큰이 있다
+    console.log("리프레시 토큰 있습니다");
     if (this.now < this.refreshTokenExpiredAt) { // 리프레시토큰이 만료되지 않았다
+        console.log("리프레시 토큰은 만료되지 않았습니다");
+
         //아무것도 안해도됨
-        if (this.accessTokenExpiredAt < now) { // 엑세스토큰이 만료되었다
+        if (this.accessTokenExpiredAt < this.now) { // 엑세스토큰이 만료되었다
+            console.log("액세스 토큰은 만료되었습니다");
+
             alert("accessToken 만료");
 
             doRefreshRequest();

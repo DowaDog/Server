@@ -38,10 +38,8 @@ public class CareAnimalController {
     @GetMapping("{animalId}")
     public ResponseEntity animal(@RequestHeader(value = "Authorization", required = false) final String jwtToken,
                                  @PathVariable(name = "animalId") int animalId) {
-
         try{
-            Care care = careService.getCareByJwtToken(jwtToken);
-//            return new ResponseEntity(careRegistrationService.  .(care), HttpStatus.OK);
+            return new ResponseEntity(careRegistrationService.readAnimalRegistrationByAnimalId(animalId), HttpStatus.OK);
         } catch (Exception e){
             e.printStackTrace();
         }

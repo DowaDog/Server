@@ -40,6 +40,9 @@ public class MainController {
 
     @PostMapping("check")
     public ResponseEntity mainCheck(@RequestHeader(value = "Authorization", required = false) final String jwtToken){
+        System.out.println("#######     api/normal/main   GET #######");
+
+
         try{
             User user = userService.getUserByJwtToken(jwtToken);
             return new ResponseEntity(mainService.checkMain(user), HttpStatus.OK);

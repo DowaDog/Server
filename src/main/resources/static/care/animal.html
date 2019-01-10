@@ -49,7 +49,10 @@
                                 </a>
                             </li>
                             <li>
-                                <strong>보호 동물 목록</strong>
+                                보호 동물 목록
+                            </li>
+                            <li>
+                                <strong>신청서 목록</strong>
                             </li>
                         </ol>
                     </div>
@@ -63,8 +66,59 @@
 
 
         <div class="wrapper wrapper-content animated fadeInRight">
-            <div class="row" id="animalList">
+            <div class="project-list">
 
+                <table class="table table-hover" id="registrationTable">
+                    <tbody>
+                    <thead>
+                    <tr>
+                        <td data-toggle="true">상태</td>
+                        <td>신청자명</td>
+                        <td class="text-right">작업</td>
+                        <!--<td>법인 연락처</td>-->
+                        <!--<td>상태</td>-->
+                        <!--<td>요청/등록일</td>-->
+                        <!--<td>관리자</td>-->
+                        <!--<td class="text-right" data-sort-ignore="true">작업</td>-->
+                    </tr>
+                    </thead>
+
+                    <tr>
+                        <td class="project-status">
+                            <span class="label label-primary">Active</span>
+                        </td>
+                        <td class="project-title">
+                            <a href="project_detail.html">Contract with Zender Company</a>
+                            <br>
+                            <small>Created 14.08.2014</small>
+                        </td>
+
+                        <td class="project-actions">
+                            <a href="#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> 열람 </a>
+                            <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i> 수락 </a>
+                            <a href="#" class="btn btn-danger btn-sm"><i class="fa fa-pencil"></i> 거절 </a>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="project-status">
+                            <span class="label label-primary">Active</span>
+                        </td>
+                        <td class="project-title">
+                            <a href="project_detail.html">Contract with Zender Company</a>
+                            <br>
+                            <small>Created 14.08.2014</small>
+                        </td>
+
+                        <td class="project-actions">
+                            <a href="#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> 열람 </a>
+                            <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i> 수락 </a>
+                            <a href="#" class="btn btn-danger btn-sm"><i class="fa fa-pencil"></i> 거절 </a>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
             </div>
 
 
@@ -90,7 +144,10 @@
 <!-- CodeMirror -->
 <script src="/js/plugins/sweetalert/sweetalert.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
 <script src="./js/logincheck.js"></script>
+
+
 <script>
     $('#logoutBtn').click(function () {
         var cookies = $.cookie();
@@ -99,45 +156,24 @@
         }
     });
 
+    var urlParams = new URLSearchParams(window.location.search);
+    var animalId = urlParams.get('animalId');
+
     var init = (function () {
 
         var headers = {};
         headers["Authorization"] = $.cookie("accessToken");
 
-        var makeAnimalContentsHtml = function (data) {
-            var animalContentsHtml =
-                "<a href='./animal.html?animalId=" + data.id + "'><div id=\"animalList\">\n" +
-                "                <div class=\"col-lg-3\">\n" +
-                "                    <div class=\"ibox\">\n" +
-                "                        <div class=\"ibox-content\">\n" +
-                "                            <div class=\"row\">\n" +
-                "                                <img alt=\"image\" style=\"width:150px;height:100px\" id=\"animalImg\"\n" +
-                "                                     class=\"img-responsive col-lg-6\"\n" +
-                "                                     src='https://ryudd.s3.amazonaws.com/" + data.thumbnailImg + "'>" +
-                "                                <span class=\"col-lg-6\">\n" +
-                "                                <h5 class=\"m-b-md\">" + '[' + data.happenPlace + ']' + data.kindCd + "</h5>\n" +
-                "                                <small><strong>공고 기간</strong><br/>" + data.noticeStdt + " ~ " + data.noticeEddt + "</small>\n" +
-                "                            </span>\n" +
-                "                            </div>\n" +
-                "                        </div>\n" +
-                "                    </div>\n" +
-                "                </div>\n" +
-                "            </div>" +
-                "</a>"
-            $('#animalList').append(animalContentsHtml);
-
-        }
-
         $.ajax({
-
-            url: "/api/care/animals",
+            url: "/api/care/animals/" + animalId,
             type: 'GET',
             headers: headers,
-            success: function (data) {
+            success: function (res) {
+                console.log(res);
 
-                console.log(data);
-                for (var i = 0; i < data.length; i++) {
-                    makeAnimalContentsHtml(data[i]);
+
+                for (var i = 0; i < res.length; i++) {
+                    makeAnimalContentsHtml(res[i]);
                 }
 
             },
@@ -151,13 +187,41 @@
                 });
             }
         });
+
+        var makeAnimalContentsHtml = function(res) {
+            var regStatus = res.regStatus;
+            console.log(res);
+
+            var registrationHtml = " <tr>\n" +
+                "            <td class=\"project-status\">\n" +
+                "                <span class=\"label label-primary\">" + regStatus + "</span>\n" +
+                "                </td>\n" +
+                "                <td class=\"project-title\">\n" +
+                "                <a href=\"project_detail.html\">" + res.name + "</a>\n" +
+                "            <br>\n" +
+                "            <small>Created 14.08.2014</small>\n" +
+                "            </td>\n" +
+                "\n" +
+                "            <td class=\"project-actions\">\n" +
+                "                <a href=\"#\" class=\"btn btn-white btn-sm\"><i class=\"fa fa-folder\"></i> 열람 </a>\n" +
+                "            <a href=\"#\" class=\"btn btn-primary btn-sm\"><i class=\"fa fa-pencil\"></i> 수락 </a>\n" +
+                "            <a href=\"#\" class=\"btn btn-danger btn-sm\"><i class=\"fa fa-pencil\"></i> 거절 </a>\n" +
+                "            </td>\n" +
+                "            </tr>";
+
+            $('#registrationTable').append(registrationHtml);
+        }
+
     })();
+
 
 
 
 </script>
 
 <style>
-    a { color: inherit; }
+    a {
+        color: inherit;
+    }
 </style>
 
