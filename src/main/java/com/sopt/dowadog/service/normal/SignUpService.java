@@ -50,9 +50,11 @@ public class SignUpService {
 
             String email = aes256Util.aesEncode(user.getEmail());
             String name = aes256Util.aesEncode(user.getName());
+            String phone = aes256Util.aesEncode(user.getPhone());
 
             user.setEmail(email);
             user.setName(name);
+            user.setPhone(phone);
 
 
             if(profileImgFile != null) {
