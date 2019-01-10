@@ -134,17 +134,9 @@
             type: 'GET',
             headers: headers,
             success: function (data) {
-
-
-                // makeAnimalContentsHtml
-                console.log(data);
                 for (var i = 0; i < data.length; i++) {
                     makeAnimalContentsHtml(data[i]);
                 }
-                // var care = '<option value="default">' + '보호소를 선택해주세요' + '</option>';
-                // $.each(data, function (i, list) {
-                //     care = care + '<option value=' + list.id + '>' + '[' + list.region + ']' + list.name + '</option>';
-                // })
 
             },
             error: function (e) {
@@ -159,18 +151,6 @@
         });
     })();
 
-
-    // <div class="col-lg-3">
-    //     <div class="ibox">
-    //     <div class="ibox-content">
-    //     <h5 class="m-b-md">Server status Q12</h5>
-    // <h2 class="text-navy">
-    //     <i class="fa fa-play fa-rotate-270"></i> Up
-    //     </h2>
-    //     <small>Last down 42 days ago</small>
-    // </div>
-    // </div>
-    // </div>
 
 
 </script>

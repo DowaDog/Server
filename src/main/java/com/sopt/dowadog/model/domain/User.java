@@ -6,6 +6,7 @@ import com.sopt.dowadog.model.dto.MainDto;
 import com.sopt.dowadog.model.dto.MyinfoChangeDto;
 import com.sopt.dowadog.model.dto.MyinfoDto;
 import com.sopt.dowadog.model.dto.SignupFormDto;
+import com.sopt.dowadog.util.AES256Util;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -35,7 +36,24 @@ public class User extends DateEntity {
     private String type = "NORMAL";
     private String profileImg;
     private boolean pushAllow;
+//
+    public String getDecodedName() {
+        try {
+            AES256Util aes256Util = new AES256Util("12345678901234567890123456789012");
+            return aes256Util.aesDecode(this.name);
+        } catch (Exception e){
+            return "DECODE_ERROR";
+        }
+    }
 
+    public String getDecodedPhone() {
+        try{
+            AES256Util aes256Util = new AES256Util("12345678901234567890123456789012");
+            return aes256Util.aesDecode(this.phone);
+        } catch(Exception e){
+            return "DECODE_ERROR";
+        }
+    }
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @JsonIgnore

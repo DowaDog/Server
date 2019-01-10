@@ -21,8 +21,6 @@ public class AdminMailboxService {
     @Autowired
     MailboxRepository mailboxRepository;
 
-    @Autowired
-    AsyncUtil asyncUtil;
 
     public void createMailboxes(Mailbox mailbox) {
 
@@ -48,6 +46,8 @@ public class AdminMailboxService {
 
 
         try {
+            AsyncUtil asyncUtil = new AsyncUtil();
+
             List<String> tokenArr = new ArrayList<>();
 
             List<User> notnulluserList = userRepository.findAllByNotDeviceToken();

@@ -145,6 +145,12 @@ public class CareRegistrationService {
 
             return DefaultRes.BAD_REQUEST;
         }
+
+        if (!animal.getProcessState().equals(PROCESS_NOTICE)) {
+            System.out.println("동물 공고중 아님");
+            return DefaultRes.BAD_REQUEST;
+        }
+
         //검증 끝
 
         //비즈니스로직
@@ -209,10 +215,6 @@ public class CareRegistrationService {
             return false;
         }
 
-        if (!animal.getProcessState().equals(PROCESS_NOTICE)) {
-            System.out.println("동물 공고중 아님");
-            return false;
-        }
 
         if (!registration.getRegStatus().equals(REG_STATUS_STEP0)) {
             System.out.println("STEP0 단계가 아님");

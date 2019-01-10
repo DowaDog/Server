@@ -40,8 +40,6 @@
                 <div class="row wrapper border-bottom white-bg page-heading">
                     <div class="col-lg-10">
                         <h2 class="col-sm-offset-1 text-warning"><strong>기다릴개</strong> 보호소 웹 </h2>
-
-
                         <ol class="breadcrumb col-sm-offset-1">
                             <li>
                                 <a href="/care/main.html">
@@ -72,51 +70,14 @@
                     <tbody>
                     <thead>
                     <tr>
-                        <td data-toggle="true">상태</td>
-                        <td>신청자명</td>
+                        <td>상태</td>
+                        <td>신청자 정보</td>
+                        <td>연락처</td>
+                        <td>신청서 타입</td>
                         <td class="text-right">작업</td>
-                        <!--<td>법인 연락처</td>-->
-                        <!--<td>상태</td>-->
-                        <!--<td>요청/등록일</td>-->
-                        <!--<td>관리자</td>-->
-                        <!--<td class="text-right" data-sort-ignore="true">작업</td>-->
+
                     </tr>
                     </thead>
-
-                    <tr>
-                        <td class="project-status">
-                            <span class="label label-primary">Active</span>
-                        </td>
-                        <td class="project-title">
-                            <a href="project_detail.html">Contract with Zender Company</a>
-                            <br>
-                            <small>Created 14.08.2014</small>
-                        </td>
-
-                        <td class="project-actions">
-                            <a href="#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> 열람 </a>
-                            <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i> 수락 </a>
-                            <a href="#" class="btn btn-danger btn-sm"><i class="fa fa-pencil"></i> 거절 </a>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td class="project-status">
-                            <span class="label label-primary">Active</span>
-                        </td>
-                        <td class="project-title">
-                            <a href="project_detail.html">Contract with Zender Company</a>
-                            <br>
-                            <small>Created 14.08.2014</small>
-                        </td>
-
-                        <td class="project-actions">
-                            <a href="#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> 열람 </a>
-                            <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i> 수락 </a>
-                            <a href="#" class="btn btn-danger btn-sm"><i class="fa fa-pencil"></i> 거절 </a>
-                        </td>
-                    </tr>
-
                     </tbody>
                 </table>
             </div>
@@ -125,6 +86,58 @@
         </div>
 
     </div>
+
+</div>
+
+<!--COMPANY Approve MODAL-->
+<div class="modal inmodal" id="regModal" tabindex="-1" role="dialog" style="display: none;"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content animated bounceInRight">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                        class="sr-only">Close</span></button>
+                <h2 id="regModal_title">방문 일정
+                    <br/>
+                    <small class="modal-type"></small>
+                </h2>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12 b-r">
+                        <form id="meetForm">
+                            <div class="col-sm-12 row">
+                                <div class="form-group col-sm-12">
+                                    <label class="control-label"><h3>장소</h3></label>
+                                    <input type="text" class="form-control modalInput" name="place" placeholder="용인 보호소"
+                                           required>
+                                </div>
+
+                                <div class="form-group col-sm-12">
+                                    <label class="control-label"><h3>일시</h3></label>
+                                    <input type="email" class="form-control modalInput" name="time"
+                                           placeholder="12월 25 (화) 오후 5시" required>
+                                </div>
+
+                                <div class="form-group col-sm-12">
+                                    <label class="control-label"><h3>준비물</h3></label>
+                                    <textarea name="material" rows="8" style="width:100%"
+                                              placeholder="1. 강아지목줄 &#13;&#10;2. 신분증사본 &#13;&#10;3. 강아지 집"></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">닫기</button>
+                <button type="button" class="btn btn-primary" id="modalStep1AcceptBtn">승인</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 </div>
 
@@ -171,10 +184,243 @@
             success: function (res) {
                 console.log(res);
 
-
                 for (var i = 0; i < res.length; i++) {
                     makeAnimalContentsHtml(res[i]);
                 }
+
+                var tableRegStatus = $('#registrationTable').find('.regStatus');
+
+                for (var i = 0; i < tableRegStatus.length; i++) {
+                    $rowReg = $(tableRegStatus[i]);
+
+                    if ($rowReg.text() === "deny") {
+                        $rowReg.closest('tr').find('.actionBtn').children().remove();
+                    }
+
+                    if ($rowReg.text() === "complete") {
+                        $rowReg.closest('tr').find('.completeAcceptBtn').remove();
+                        $rowReg.closest('tr').find('.completeDenyBtn').remove();
+                    }
+
+                    if ($rowReg.text() === "step1") {
+                        $rowReg.closest('tr').find('.step1AcceptBtn').attr("data-toggle", "modal");
+                        $rowReg.closest('tr').find('.step1AcceptBtn').attr("data-target", "#regModal");
+                    }
+
+
+                }
+
+
+                $('.viewBtn').click(function () {
+                    var regId = $(this).closest('.regRow').attr('data');
+
+                    alert("view Btn");
+                })
+
+
+                $('.step0AcceptBtn').click(function () {
+                    var regId = $(this).closest('.regRow').attr('data');
+
+                    $.ajax({
+                        url: "/api/care/registrations/" + regId + "/acceptStepZero",
+                        type: 'PUT',
+                        headers: headers,
+                        success: function (res) {
+                            console.log(res.status);
+                            if (res.status === 400) {
+                                alert("올바르지 않은 요청입니다");
+                            } else {
+                                alert("스텝 변경 성공");
+                            }
+                            window.location.reload();
+                        },
+                        error: function (res) {
+                            alert("서버 에러");
+                        }
+                    });
+                });
+
+                $('.step0DenyBtn').click(function () {
+                    var regId = $(this).closest('.regRow').attr('data');
+
+                    $.ajax({
+                        url: "/api/care/registrations/" + regId + "/denyStepZero",
+                        type: 'PUT',
+                        headers: headers,
+                        success: function (res) {
+                            console.log(res.status);
+                            if (res.status === 400) {
+                                alert("올바르지 않은 요청입니다");
+                            } else {
+                                alert("스텝 변경 성공");
+                            }
+                            window.location.reload();
+
+                        },
+                        error: function (res) {
+                            alert("서버 에러");
+                        }
+                    });
+                });
+
+
+                //step1 절차
+                $('#modalStep1AcceptBtn').click(function (e) {
+                    e.preventDefault();
+
+                    var regId = $('.step1AcceptBtn').closest('.regRow').attr('data');
+
+                    var meetForm = {
+                        meetPlace: $('input[name=place]').val(),
+                        meetTime: $('input[name=time]').val(),
+                        meetMaterial: $('textarea[name=material]').val()
+                    }
+
+                    console.log(JSON.stringify(meetForm))
+
+
+                    $.ajax({
+                        type: "PUT",
+                        headers: headers,
+                        contentType: "application/json",
+                        url: "/api/care/registrations/" + regId + "/acceptStepOne",
+                        data: JSON.stringify(meetForm),
+                        timeout: 600000,
+                        success: function () {
+                            swal({
+                                title: "Success!",
+                                text: "상태 변경에 성공했습니다",
+                                type: "success"
+                            }, function () {
+                                window.location.reload();
+                            });
+                        },
+                        error: function () {
+                            swal({
+                                title: "Server error",
+                                text: "에러가 발생했습니다 다시 입력해주세요",
+                                type: "error"
+                            });
+                        }
+                    });
+
+                });
+
+
+                $('.step1DenyBtn').click(function () {
+                    var regId = $(this).closest('.regRow').attr('data');
+
+                    $.ajax({
+                        url: "/api/care/registrations/" + regId + "/denyStepOne",
+                        type: 'PUT',
+                        headers: headers,
+                        success: function (res) {
+                            console.log(res.status);
+                            if (res.status === 400) {
+                                alert("올바르지 않은 요청입니다");
+                            } else {
+                                alert("스텝 변경 성공");
+                            }
+                            window.location.reload();
+
+                        },
+                        error: function (res) {
+                            alert("서버 에러");
+                        }
+                    });
+                });
+
+                $('.step2AcceptBtn').click(function () {
+                    var regId = $(this).closest('.regRow').attr('data');
+
+                    $.ajax({
+                        url: "/api/care/registrations/" + regId + "/acceptStepTwo",
+                        type: 'PUT',
+                        headers: headers,
+                        success: function (res) {
+                            console.log(res.status);
+                            if (res.status === 400) {
+                                alert("올바르지 않은 요청입니다");
+                            } else {
+                                alert("스텝 변경 성공");
+                            }
+                            window.location.reload();
+
+                        },
+                        error: function (res) {
+                            alert("서버 에러");
+                        }
+                    });
+                });
+
+                $('.step2DenyBtn').click(function () {
+                    var regId = $(this).closest('.regRow').attr('data');
+
+                    $.ajax({
+                        url: "/api/care/registrations/" + regId + "/denyStepTwo",
+                        type: 'PUT',
+                        headers: headers,
+                        success: function (res) {
+                            console.log(res.status);
+                            if (res.status === 400) {
+                                alert("올바르지 않은 요청입니다");
+                            } else {
+                                alert("스텝 변경 성공");
+                            }
+                            window.location.reload();
+
+                        },
+                        error: function (res) {
+                            alert("서버 에러");
+                        }
+                    });
+                });
+
+                $('.step3AcceptBtn').click(function () {
+                    var regId = $(this).closest('.regRow').attr('data');
+
+                    $.ajax({
+                        url: "/api/care/registrations/" + regId + "/acceptFinal",
+                        type: 'PUT',
+                        headers: headers,
+                        success: function (res) {
+                            console.log(res.status);
+                            if (res.status === 400) {
+                                alert("올바르지 않은 요청입니다");
+                            } else {
+                                alert("스텝 변경 성공");
+                            }
+                            window.location.reload();
+
+                        },
+                        error: function (res) {
+                            alert("서버 에러");
+                        }
+                    });
+                });
+
+                $('.step3DenyBtn').click(function () {
+                    var regId = $(this).closest('.regRow').attr('data');
+
+                    $.ajax({
+                        url: "/api/care/registrations/" + regId + "/denyFinal",
+                        type: 'PUT',
+                        headers: headers,
+                        success: function (res) {
+                            console.log(res.status);
+                            if (res.status === 400) {
+                                alert("올바르지 않은 요청입니다");
+                            } else {
+                                alert("스텝 변경 성공");
+                            }
+                            window.location.reload();
+
+                        },
+                        error: function (res) {
+                            alert("서버 에러");
+                        }
+                    });
+                });
 
             },
             error: function (e) {
@@ -188,33 +434,38 @@
             }
         });
 
-        var makeAnimalContentsHtml = function(res) {
-            var regStatus = res.regStatus;
-            console.log(res);
+        var makeAnimalContentsHtml = function (res) {
 
-            var registrationHtml = " <tr>\n" +
+            var id = res.id;
+            var regStatus = res.regStatus;
+            var userName = res.user.decodedName;
+            var updatedAt = res.updatedAt;
+            var phone = res.user.decodedPhone;
+            var regType = res.regType;
+
+            var registrationHtml = " <tr class='regRow' data='" + res.id + "'>\n" +
                 "            <td class=\"project-status\">\n" +
-                "                <span class=\"label label-primary\">" + regStatus + "</span>\n" +
+                "                <span class=\"label regStatus\">" + regStatus + "</span>\n" +
                 "                </td>\n" +
                 "                <td class=\"project-title\">\n" +
-                "                <a href=\"project_detail.html\">" + res.name + "</a>\n" +
+                "                신청자 명 : " + userName +
                 "            <br>\n" +
-                "            <small>Created 14.08.2014</small>\n" +
-                "            </td>\n" +
-                "\n" +
-                "            <td class=\"project-actions\">\n" +
-                "                <a href=\"#\" class=\"btn btn-white btn-sm\"><i class=\"fa fa-folder\"></i> 열람 </a>\n" +
-                "            <a href=\"#\" class=\"btn btn-primary btn-sm\"><i class=\"fa fa-pencil\"></i> 수락 </a>\n" +
-                "            <a href=\"#\" class=\"btn btn-danger btn-sm\"><i class=\"fa fa-pencil\"></i> 거절 </a>\n" +
+                "            <small><strong>Updated at</strong> " + updatedAt.split("T")[0] + "   " + updatedAt.split("T")[1] + "</small>\n" +
+                "            </td>" +
+                "            <n></n><" +
+                "               <td class=\"project-title\">" + phone +
+                "               </td>" +
+                "               <td class=\"project-title\">" + regType +
+                "               </td>" +
+                "            <td class=\"project-actions actionBtn\">\n" +
+                "                <a href=\"#\" class=\"btn btn-white btn-sm viewBtn\"><i class=\"fa fa-folder\"></i> 열람 </a>\n" +
+                "            <a href=\"#\" class=\"btn btn-primary btn-sm " + regStatus + "AcceptBtn\"><i class=\"fa fa-pencil\"></i> 수락 </a>\n" +
+                "            <a href=\"#\" class=\"btn btn-danger btn-sm " + regStatus + "DenyBtn\"><i class=\"fa fa-pencil\"></i> 거절 </a>\n" +
                 "            </td>\n" +
                 "            </tr>";
-
             $('#registrationTable').append(registrationHtml);
         }
-
     })();
-
-
 
 
 </script>

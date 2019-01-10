@@ -35,8 +35,8 @@ public class AES256Util {
         System.arraycopy(b, 0, keyBytes, 0, len);
         SecretKeySpec keySpec = new SecretKeySpec(keyBytes, "AES");
 
-        System.out.println(keyBytes);
-        System.out.println(b);
+//        System.out.println(keyBytes);
+//        System.out.println(b);
         this.keySpec = keySpec;// 들어온 키를 AES의 알고리즘으로 구축하여 시크릿키 반환
     }
 
