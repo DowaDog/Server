@@ -88,21 +88,21 @@ public class CommunityController {
         }
     }
 
-//    //커뮤니티 글 수정
-//    @PutMapping("{communityId}/mobile")
-//    public ResponseEntity updateCommunityOnMobile
-//    (@RequestHeader(value = "Authorization", required = false) final String jwtToken,
-//     Community community, @PathVariable("communityId") int communityId) {
-//
-//        System.out.println("#######     api/normal/community/:communityId/mobile   PUT #######");
-//
-//        try {
-//            User user = userService.getUserByJwtToken(jwtToken);
-//            return new ResponseEntity(communityService.updateCommunityById(user, community, communityId), HttpStatus.OK);
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(DefaultRes.FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
+    //커뮤니티 글 수정(다른 수정 버전)
+    @PutMapping("{communityId}/mobile")
+    public ResponseEntity updateCommunityOnMobile
+    (@RequestHeader(value = "Authorization", required = false) final String jwtToken,
+     Community community, @PathVariable("communityId") int communityId) {
+
+        System.out.println("#######     api/normal/community/:communityId/mobile   PUT #######");
+
+        try {
+            User user = userService.getUserByJwtToken(jwtToken);
+            return new ResponseEntity(communityService.updateCommunityByIdOnMobile(user, community, communityId), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(DefaultRes.FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 
     //커뮤니티 글 수정
