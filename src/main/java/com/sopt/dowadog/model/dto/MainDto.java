@@ -20,6 +20,7 @@ public class MainDto {
     private String time = null;
     private String material = null;
 
+    private int totalCount;
     private String view;
 
 }

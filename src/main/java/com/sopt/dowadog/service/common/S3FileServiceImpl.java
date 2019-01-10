@@ -54,11 +54,11 @@ public class S3FileServiceImpl implements FileService {
             System.out.println("###### DIR NAME #####");
             System.out.println(dirName);
 
-            /*File f = new File(filePath);
+            File f = new File(filePath);
             if (!f.getParentFile().exists())
                 f.getParentFile().mkdirs();
             if (!f.exists())// 이부분에서 로컬에 자꾸 파일이 생성됐던 것...!
-                f.createNewFile();*/
+                f.createNewFile();
 
             File convFile = new File(multipartFile.getOriginalFilename());
             convFile.createNewFile();

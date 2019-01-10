@@ -75,6 +75,7 @@ public class MyinfoService {
 
             MyinfoDto myinfoDto = user.getMyinfoDto();
             myinfoDto.setUserName(aes256Util.aesDecode(myinfoDto.getUserName()));
+
             myinfoDto.setProfileImg(S3Util.getImgPath(s3Endpoint, user.getProfileImg()));
 
             return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_MYINFO, myinfoDto);
@@ -102,8 +103,9 @@ public class MyinfoService {
             }
 
             user.setName(aes256Util.aesEncode(myinfoChangeDto.getName()));
-            user.setPhone(myinfoChangeDto.getPhone());
+            user.setPhone(aes256Util.aesEncode(myinfoChangeDto.getPhone()));
             user.setBirth(myinfoChangeDto.getBirth());
+
 
             userRepository.save(user);
             return DefaultRes.res(StatusCode.OK, ResponseMessage.UPDATE_MYINFO);
@@ -334,7 +336,7 @@ public class MyinfoService {
                     .thumbnailImg(S3Util.getImgPath(s3Endpoint,temp.getProfileImg()))
                     .birth(temp.getBirth())
                     .name(aes256Util.aesDecode(temp.getName()))
-                    .phone(temp.getPhone())
+                    .phone(aes256Util.aesDecode(temp.getPhone()))
                     .email(aes256Util.aesDecode(temp.getEmail()))
                     .build();
 

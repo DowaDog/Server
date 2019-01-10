@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +25,8 @@ public interface AnimalRepository extends JpaRepository<Animal,Integer>, PagingA
 
     Optional<List<Animal>> findByCare(Care care);
 
+    @Query("select count(u) from #{#entityName} u")
+    int findAnimalBy();
 
 
 
