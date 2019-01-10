@@ -13,5 +13,6 @@ public class MyinfoScrapListDto {
     private int id;
     private String title;
     private LocalDateTime createdAt;
+    private String type;
 
 }

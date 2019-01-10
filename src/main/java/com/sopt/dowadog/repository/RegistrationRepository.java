@@ -1,5 +1,6 @@
 package com.sopt.dowadog.repository;
 
+import com.sopt.dowadog.model.domain.Animal;
 import com.sopt.dowadog.model.domain.Registration;
 import com.sopt.dowadog.model.domain.User;
 import com.sun.org.apache.regexp.internal.RE;
@@ -16,4 +17,5 @@ public interface RegistrationRepository extends JpaRepository<Registration, Inte
     Optional<List<Registration>> findByUserAndUserCheck(User user, boolean isComplete);
     boolean existsByUserAndRegStatusNotInAndValidReg(User user, String regStatus, boolean validReg);
     Optional<Registration> findFirstByUserOrderByIdDesc(User user);
+    Optional<List<Registration>> findByAnimal(Animal animal);
 }

@@ -1,6 +1,7 @@
 package com.sopt.dowadog.repository;
 
 import com.sopt.dowadog.model.domain.Animal;
+import com.sopt.dowadog.model.domain.Care;
 import com.sopt.dowadog.model.domain.PublicAnimal;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AnimalRepository extends JpaRepository<Animal,Integer>, PagingAndSortingRepository<Animal,Integer>,JpaSpecificationExecutor<Animal> {
@@ -20,6 +22,7 @@ public interface AnimalRepository extends JpaRepository<Animal,Integer>, PagingA
     Page<Animal> findAllBy(LocalDate localDate, String processState ,Pageable pageable);
 
 
+    Optional<List<Animal>> findByCare(Care care);
 
 
 

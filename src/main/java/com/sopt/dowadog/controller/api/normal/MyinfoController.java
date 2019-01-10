@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+
 @RequestMapping("api/normal/mypage")  //URL Mapping은 myinfo 라는 의미이다.
 @Controller
 public class MyinfoController {
@@ -25,6 +26,7 @@ public class MyinfoController {
 
     @Autowired
     UserService userService;
+
 
 
     //마이페이지 조회
@@ -140,8 +142,6 @@ public class MyinfoController {
         try {
             //밑의 함수의 경우 throws를 사용해서 꼭 try catch문을 해야 함!(에러를 최상단에서 처리하기 위해서)
             User user = userService.getUserByJwtToken(jwtToken);
-
-            System.out.println(myinfoService.readMyClipsList(user).getData().get(0).getCreatedAt().getClass().getName());
 
             return new ResponseEntity(myinfoService.readMyClipsList(user), HttpStatus.OK);
         } catch (Exception e) {

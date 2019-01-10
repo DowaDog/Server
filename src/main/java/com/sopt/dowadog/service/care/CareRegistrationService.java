@@ -8,7 +8,6 @@ import com.sopt.dowadog.repository.*;
 import com.sopt.dowadog.util.AsyncUtil;
 import com.sopt.dowadog.util.ResponseMessage;
 import com.sopt.dowadog.util.StatusCode;
-import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,6 +46,7 @@ public class CareRegistrationService {
     private final String PROCESS_TEMP = "temp";
     private final String PROCESS_ADOPT = "adopt";
     private final String PROCESS_END = "end";
+
 
 
 
@@ -102,6 +102,19 @@ public class CareRegistrationService {
 
         System.out.println(dateList.size());
         return dateList;
+    }
+
+    public DefaultRes<List<Registration>> readAnimalRegistrationByAnimalId(int animalId) {
+
+        Animal animal = animalRepository.findById(animalId).get();
+
+        List<Registration> registrationList = new ArrayList<>();
+
+        if(registrationRepository.findByAnimal(animal).isPresent()){
+            registrationList = registrationRepository.findByAnimal(animal).get();
+        }
+
+        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_REGISTRATION, registrationList);
     }
 
 

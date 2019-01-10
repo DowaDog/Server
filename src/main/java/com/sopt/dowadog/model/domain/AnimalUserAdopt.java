@@ -57,6 +57,9 @@ public class AnimalUserAdopt {
         return userId.equals(this.user.getId());
     }
 
+    public String getAnimalType() {
+        return this.registration.getAnimal().getType();
+    }
 
 
 }

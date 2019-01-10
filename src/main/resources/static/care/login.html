@@ -7,9 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="https://ryudd.s3.amazonaws.com/dowadog/common/dowadog.png" type="image/x-icon"/>
     <link rel="icon" href="https://ryudd.s3.amazonaws.com/dowadog/common/dowadog.png" type="image/x-icon"/>
-
     <title>기다릴개 보호소 | 로그인</title>
-
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="/font-awesome/css/font-awesome.css" rel="stylesheet">
 
@@ -76,90 +74,11 @@
 <!-- CodeMirror -->
 <script src="/js/plugins/sweetalert/sweetalert.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<!--<script src="./js/logincheck.js"></script>-->
 <script>
 
-    $(document).ready(function () {
 
-        if (!Date.now) {
-            Date.now = function() { return new Date().getTime(); }
-        }
-        
-        var now = Math.floor(Date.now() / 1000);
-        
-        var accessToken = $.cookie("accessToken");
-        var accessTokenExpiredAt = $.cookie("accessTokenExpiredAt");
-        var refreshToken = $.cookie("refreshToken");
-        var refreshTokenExpiredAt = $.cookie("refreshTokenExpiredAt");
-        var serverNow = $.cookie("serverNow");
-
-
-        var doRefreshRequest = function() {
-            var headers = {};
-            headers["Authorization"] = refreshToken;
-            
-            $.ajax({
-                type: "POST",
-                headers : headers,
-                url: "/api/care/auth/refresh",
-                timeout: 600000,
-                success: function (res) {
-                    console.log(res);
-
-                    if (res.status == 201) {
-//                        console.log(res);
-//                        console.log("액세스토큰 갱신 완료");
-                        //갱신코드
-                        $.cookie("accessToken", res.data.data);
-                        $.cookie("accessTokenExpiredAt", res.data.expiredAt);
-
-                    } else {
-//                        console.log("액세스토큰 갱신 실패");
-                        swal({
-                            title: "Server error",
-                            text: "에러가 발생했습니다 다시 입력해주세요",
-                            type: "error"
-                        });
-                    }
-                }
-            });
-        }
-        
-
-        if (!Date.now) {
-            Date.now = function() { return new Date().getTime(); }
-        }
-        
-        if(refreshToken !== undefined) { // 리프레시 토큰이 있다
-            if(now < refreshTokenExpiredAt) { // 리프레시토큰이 만료되지 않았다
-//                console.log("리프레시토큰은 만료되지 않았음");
-//                console.log(accessTokenExpiredAt);
-//                console.log("local Now ");
-//
-//                console.log(now);
-//
-//                console.log("server Now");
-//                console.log(serverNow);
-//                console.log("accessToken expiredAt");
-//                console.log(accessTokenExpiredAt);
-                
-                if(accessTokenExpiredAt < now) { // 엑세스토큰이 만료되었다
-//                    console.log("액세스토큰 만료됨");
-                    doRefreshRequest();
-                } else{
-//                    console.log("로그인유지");
-                    location.href="/care/main.html";
-                }
-            } 
-        } else{
-                location.href="/care/login.html";
-        }
-        
-        //리프레시 토큰이 없다
-        
-        
-        
-        
-
+    $('document').ready(function () {
 
         $('#submitBtn').click(function (e) {
             e.preventDefault();
@@ -186,29 +105,25 @@
                         $.cookie("refreshTokenExpiredAt", res.data.refreshToken.expiredAt);
                         $.cookie("serverNow", res.data.accessToken.now);
 
-
                         swal({
                             title: "Success!",
                             text: "로그인에 성공하였습니다",
                             type: "success"
                         }, function () {
-//                        console.log(res.data[]);
+                            location.href = "./main.html"
                         });
                     } else {
                         swal({
-                            title: "Server error",
-                            text: "에러가 발생했습니다 다시 입력해주세요",
+                            title: "BAD request",
+                            text: "입력정보가 맞지 않습니다",
                             type: "error"
                         });
                     }
                 }
             });
-
-
         });
+
     });
-
-
 </script>
 </body>
 

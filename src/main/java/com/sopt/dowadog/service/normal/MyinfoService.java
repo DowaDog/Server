@@ -261,6 +261,7 @@ public class MyinfoService {
                         .builder()
                         .id(temp.getCardnews().getId())
                         .title(temp.getCardnews().getTitle())
+                        .type(temp.getCardnews().getType())
                         .createdAt(temp.getCreatedAt())//todo
                         .build();
                 tempList.add(myinfoScrapListDto);
