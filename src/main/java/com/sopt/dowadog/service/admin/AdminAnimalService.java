@@ -84,6 +84,11 @@ public class AdminAnimalService {
             String filePath = S3Util.getFilePath(animalStoryBaseDir, animalStory.getAnimalStoryFiles());
             String filePathAos = S3Util.getFilePath(animalStoryBaseDir, animalStory.getAnimalStoryFilesAos());
 
+            //s3 업로드
+            fileService.fileUpload(animalStory.getAnimalStoryFiles(), filePath);
+            fileService.fileUpload(animalStory.getAnimalStoryFilesAos(), filePathAos);
+
+
             AnimalStory newAnimalStory = AnimalStory.builder()
                     .animal(animal)
                     .filePath(filePath)
