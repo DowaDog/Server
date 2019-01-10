@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class MainDto {
 
     private boolean login = false;
-    private boolean userCheck = false;
+    private boolean userCheck = true;
 
     private String place = null;
     private String time = null;
