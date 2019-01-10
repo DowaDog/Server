@@ -36,6 +36,8 @@ public class Registration extends DateEntity {
     private boolean validReg = true; // true 진행중, false 종료
     private boolean userCheck = true; //true 유저가 확인함, false 유저가 확인 안함
     private String regType; // offline,online 직접방문, 온라인인지 -> 코드테이블 추가해야됨
+    private String animalFileImgPath;
+
 
     @ManyToOne
     private User user;

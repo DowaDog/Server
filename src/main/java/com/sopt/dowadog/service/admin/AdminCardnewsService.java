@@ -96,8 +96,6 @@ public class AdminCardnewsService {
 
             List<User> notnulluserList = userRepository.findAllByNotDeviceToken();
             List<User> userList = userRepository.findAll();
-            System.out.println(notnulluserList.get(1).getDeviceToken());
-            System.out.println(notnulluserList.get(0).getDeviceToken());
 
             System.out.println(notnulluserList.size());
             List<String> tokenArr = new ArrayList<>();
@@ -135,12 +133,7 @@ public class AdminCardnewsService {
                 mailboxRepository.save(mailbox);
             }
 
-            System.out.println(tokenArr.size());
-            System.out.println();
 
-            String a = asyncUtil.send(tokenArr,cardnews.getTitle(),cardnews.getSubtitle()).get();
-
-            System.out.println(a);
 
 
             return DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_CARDNEWS);
