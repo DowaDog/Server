@@ -44,6 +44,9 @@ public class Animal extends DateEntity {
     private String age;
     private String weight;
 
+
+
+
     //@Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate noticeStdt;
@@ -61,6 +64,10 @@ public class Animal extends DateEntity {
     @OneToMany(mappedBy="animal", fetch=FetchType.LAZY)
     @JsonManagedReference
     private List<AnimalStory> animalStoryList;
+
+    @OneToMany(mappedBy="animal", fetch=FetchType.LAZY)
+    @JsonManagedReference
+    private List<AnimalStory> animalStoryListAos;
 
 //    @OneToMany(mappedBy="animal", fetch=FetchType.LAZY)
 //    private List<Registration> registrationList;

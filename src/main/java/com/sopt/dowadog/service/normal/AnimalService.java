@@ -1,5 +1,6 @@
 package com.sopt.dowadog.service.normal;
 
+import com.amazonaws.services.s3.internal.S3AbortableInputStream;
 import com.sopt.dowadog.model.common.DefaultRes;
 import com.sopt.dowadog.model.domain.*;
 import com.sopt.dowadog.model.dto.*;
@@ -168,11 +169,14 @@ private String defaultUrl;
         //스토리 파일 엔드포인트 붙힌 거로 배열 작업
         List<AnimalStory> animalStories = animalStoryRepository.findAllByAnimal_Id(animalId);
         List<String> totalStoryList = new ArrayList<>();
+        List<String> totalStoryListAos = new ArrayList<>();
 
         for(AnimalStory a : animalStories){
 
             String temp = S3Util.getImgPath(defaultUrl,a.getFilePath());
+            String tempAos = S3Util.getImgPath(defaultUrl,a.getFilePathAos());
             totalStoryList.add(temp);
+            totalStoryListAos.add(tempAos);
 
         }
 
@@ -186,6 +190,7 @@ private String defaultUrl;
         animalDetailDto.setLiked(getLikedForGuest(user,animalId));
         animalDetailDto.setRemainDateState(getDdayState(animal.getNoticeEddt()));
         animalDetailDto.setEducationState(allEducatedDto.isAllComplete());
+        animalDetailDto.setAnimalStoryListAos(totalStoryListAos);
 
         return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_ANIMAL, animalDetailDto);
 

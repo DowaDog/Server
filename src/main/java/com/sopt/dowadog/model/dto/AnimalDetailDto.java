@@ -33,5 +33,6 @@ public class AnimalDetailDto {
     private boolean liked;
     private boolean educationState;
     private List<String> animalStoryList;
+    private List<String> animalStoryListAos;
 
 }

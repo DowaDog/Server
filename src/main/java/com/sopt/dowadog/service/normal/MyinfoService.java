@@ -10,6 +10,7 @@ import com.sopt.dowadog.repository.UserRepository;
 import com.sopt.dowadog.service.common.CodeService;
 import com.sopt.dowadog.service.common.FileService;
 import com.sopt.dowadog.repository.*;
+import com.sopt.dowadog.util.AES256Util;
 import com.sopt.dowadog.util.ResponseMessage;
 import com.sopt.dowadog.util.S3Util;
 import com.sopt.dowadog.util.StatusCode;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Status;
 import javax.transaction.Transactional;
 import java.util.*;
 
@@ -57,6 +59,9 @@ public class MyinfoService {
     @Value("${cloud.aws.endpoint}")
     private String s3Endpoint;
 
+    @Value("${PASSWORD.KEY}")
+    private String pwdKey;
+
     //todo 우체통 API작성 controller 작성하기 테이블도 구성되야함
 
 
@@ -64,36 +69,51 @@ public class MyinfoService {
     //UserID로 정보가져오기
     public DefaultRes<MyinfoDto> readMypage(User user) {
 
-        System.out.println("readMyPage COME!");
+        try{
+            AES256Util aes256Util = new AES256Util(pwdKey);
+            System.out.println("readMyPage COME!");
 
-        MyinfoDto myinfoDto = user.getMyinfoDto();
-        myinfoDto.setProfileImg(S3Util.getImgPath(s3Endpoint, user.getProfileImg()));
+            MyinfoDto myinfoDto = user.getMyinfoDto();
+            myinfoDto.setUserName(aes256Util.aesDecode(myinfoDto.getUserName()));
+            myinfoDto.setProfileImg(S3Util.getImgPath(s3Endpoint, user.getProfileImg()));
 
-        return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_MYINFO, myinfoDto);
+            return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_MYINFO, myinfoDto);
+
+        }catch (Exception e){
+            return DefaultRes.res(StatusCode.INTERNAL_SERVER_ERROR, ResponseMessage.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
     //사용자 정보 수정
     public DefaultRes updateUserInfo(User user, MyinfoChangeDto myinfoChangeDto, MultipartFile profileImgFile) {
 
+        try{
+            AES256Util aes256Util = new AES256Util(pwdKey);
+            if (profileImgFile != null) {
+                String filePath = S3Util.getFilePath(baseDir, profileImgFile);
 
+                fileService.fileUpload(profileImgFile, filePath);
+                user.setProfileImg(filePath);
+            } else{
+                String temp = user.getProfileImg();
 
-        if (profileImgFile != null) {
-            String filePath = S3Util.getFilePath(baseDir, profileImgFile);
+                user.setProfileImg(temp);
+            }
 
-            fileService.fileUpload(profileImgFile, filePath);
-            user.setProfileImg(filePath);
-        } else{
-           String temp = user.getProfileImg();
+            user.setName(aes256Util.aesEncode(myinfoChangeDto.getName()));
+            user.setPhone(myinfoChangeDto.getPhone());
+            user.setBirth(myinfoChangeDto.getBirth());
 
-           user.setProfileImg(temp);
+            userRepository.save(user);
+            return DefaultRes.res(StatusCode.OK, ResponseMessage.UPDATE_MYINFO);
+
+        }catch (Exception e){
+
+            return DefaultRes.res(StatusCode.INTERNAL_SERVER_ERROR, ResponseMessage.INTERNAL_SERVER_ERROR);
+
         }
 
-        user.setName(myinfoChangeDto.getName());
-        user.setPhone(myinfoChangeDto.getPhone());
-        user.setBirth(myinfoChangeDto.getBirth());
-
-        userRepository.save(user);
-        return DefaultRes.res(StatusCode.OK, ResponseMessage.UPDATE_MYINFO);
     }
 
     //입양한 동물 리스트 //todo 리스폰스메세지 변경
@@ -307,11 +327,15 @@ public class MyinfoService {
         try {
             User temp = userRepository.findById(user.getId()).get();
 
+            AES256Util aes256Util = new AES256Util(pwdKey);
+
+
             MyinfoChangeDto myinfoChangeDto = MyinfoChangeDto.builder()
                     .thumbnailImg(S3Util.getImgPath(s3Endpoint,temp.getProfileImg()))
                     .birth(temp.getBirth())
-                    .name(temp.getName())
+                    .name(aes256Util.aesDecode(temp.getName()))
                     .phone(temp.getPhone())
+                    .email(aes256Util.aesDecode(temp.getEmail()))
                     .build();
 
             return DefaultRes.res(StatusCode.OK,ResponseMessage.READ_USER,myinfoChangeDto);

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,7 +39,10 @@ public class AdminAnimalService {
     private String animalStoryBaseDir;
 
 
-//
+
+
+
+
     public void createAnimal(Animal animal, int careId){
 
 
@@ -65,27 +69,29 @@ public class AdminAnimalService {
     }
 
     public void createAnimalStory(AnimalStory animalStory, int animalId){
+
         System.out.println("come to service");
 
-        if(animalStory.getAnimalStoryFiles() != null){
-            System.out.println("come to service file");
+        Animal animal = animalRepository.findById(animalId).get();
 
-            List<MultipartFile> animalStoryFileList = animalStory.getAnimalStoryFiles();
-            Animal animal = animalRepository.findById(animalId).get();
+        animalStory.getAnimalStoryFilesAos();
+        animalStory.getAnimalStoryFiles();
 
-            for(MultipartFile imgFile : animalStoryFileList){
-                String filePath = S3Util.getFilePath(animalStoryBaseDir, imgFile);
 
-                fileService.fileUpload(imgFile, filePath); // s3 upload
+        if(!animalStory.getAnimalStoryFilesAos().isEmpty() && !animalStory.getAnimalStoryFiles().isEmpty()) {
+            System.out.println(1111111);
 
-                AnimalStory newAnimalStory = AnimalStory.builder()
-                                                .animal(animal)
-                                                .filePath(filePath)
-                                                .originFileName(imgFile.getOriginalFilename())
-                                                .build();
+            String filePath = S3Util.getFilePath(animalStoryBaseDir, animalStory.getAnimalStoryFiles());
+            String filePathAos = S3Util.getFilePath(animalStoryBaseDir, animalStory.getAnimalStoryFilesAos());
 
-                animalStoryRepository.save(newAnimalStory);
-            }
+            AnimalStory newAnimalStory = AnimalStory.builder()
+                    .animal(animal)
+                    .filePath(filePath)
+                    .filePathAos(filePathAos)
+                    .build();
+
+            animalStoryRepository.save(newAnimalStory);
         }
+
     }
 }
