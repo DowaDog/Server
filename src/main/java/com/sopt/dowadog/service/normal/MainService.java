@@ -1,9 +1,11 @@
 package com.sopt.dowadog.service.normal;
 
 import com.sopt.dowadog.model.common.DefaultRes;
+import com.sopt.dowadog.model.domain.Animal;
 import com.sopt.dowadog.model.domain.Registration;
 import com.sopt.dowadog.model.domain.User;
 import com.sopt.dowadog.model.dto.MainDto;
+import com.sopt.dowadog.repository.AnimalRepository;
 import com.sopt.dowadog.repository.MailboxRepository;
 import com.sopt.dowadog.repository.RegistrationRepository;
 import com.sopt.dowadog.util.ResponseMessage;
@@ -24,6 +26,11 @@ public class MainService {
     RegistrationRepository registrationRepository;
     @Autowired
     MailboxRepository mailboxRepository;
+    @Autowired
+    AnimalRepository animalRepository;
+
+
+
 
     public DefaultRes<MainDto> readMain(User user) {
 
@@ -105,6 +112,9 @@ public class MainService {
                 }
             }
         }
+        //전체 동물의 수 출력
+        mainDto.setTotalCount(animalRepository.findAnimalBy()+100);
+
         return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_MAIN, mainDto);
     }
 
