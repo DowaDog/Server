@@ -14,7 +14,7 @@ public class CareService {
     @Autowired
     JwtService jwtService;
 
-    public Care getCareByJwtToken(String jwtToken) throws Exception {
+    public Care getCareByJwtToken(String jwtToken) {
 
         String userId = jwtService.decode(jwtToken);
 
