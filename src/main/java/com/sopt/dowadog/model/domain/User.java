@@ -32,7 +32,7 @@ public class User extends DateEntity {
     private String email;
     private String gender;
     private String deviceToken;
-    private String type;
+    private String type = "NORMAL";
     private String profileImg;
     private boolean pushAllow;
 
