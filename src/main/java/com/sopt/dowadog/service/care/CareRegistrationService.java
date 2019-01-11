@@ -52,7 +52,7 @@ public class CareRegistrationService {
 
 
     //우체통 생성, 푸시알람 한 번에 처리하는 함수
-    private boolean setMailAndAlram (User user, String title, String detail){
+    public boolean setMailAndAlram (User user, String title, String detail){
         try{
             System.out.println("---우체통 생성, 푸시알람 함수 들어옴---");
             //우체통 생성
