@@ -30,7 +30,7 @@ public class AnimalStory extends DateEntity {
 
     private String filePath;
     private String filePathAos;
-    private String originFileName;
+    //private String originFileName;
 
 
     @Transient
