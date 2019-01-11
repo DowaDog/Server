@@ -34,6 +34,8 @@ public class CardnewsContentsService {
         if(user != null) {
             List<CardnewsContents> cardnewsContentsList = cardnewsContentsRepository.findByCardnewsId(cardnewsId);
 
+            Cardnews cardnews = cardnewsRepository.findById(cardnewsId).get();
+
             List<CardnewsContentsDto> cardnewsContentsDtoList = new ArrayList<>();
 
             for (CardnewsContents cardnewsContents : cardnewsContentsList) {
@@ -51,6 +53,7 @@ public class CardnewsContentsService {
             AllEducatedDto allEducatedDto = getAllEducatedDtoComplete(user);
 
             CardnewsContentsListDto cardnewsContentsListDto = CardnewsContentsListDto.builder().
+                    cardnewsThumbnail(new StringBuilder(s3Endpoint).append(cardnews.getImgPath()).toString()).
                     content(cardnewsContentsDtoList).
                     edu(allEducatedDto).
                     build();

@@ -15,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CardnewsContentsListDto {
+    private String cardnewsThumbnail;
     List<CardnewsContentsDto> content;
     AllEducatedDto edu;
 }

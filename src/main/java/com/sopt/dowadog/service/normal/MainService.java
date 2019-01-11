@@ -73,9 +73,9 @@ public class MainService {
 
                     if (!lastRegistration.isUserCheck()) { // 유저체크 안함
                         System.out.println("## 마지막 신청서 : 유저가 확인하지 않았습니다 ##");
-                        mainDto.setView("NO");
-                    } else {
                         mainDto.setView("COMPLETE");
+                    } else {
+                        mainDto.setView("NO");
                     }
                 } else {
                     System.out.println("## 마지막 신청서 : 입양 절차 완료되지 않았습니다 ##");
@@ -83,7 +83,7 @@ public class MainService {
                     if (!lastRegistration.isValidReg()) {
                         System.out.println("##   마지막 신청서 : 유효한 신청서가 없습니다 ##");
                         if (!lastRegistration.isUserCheck()) {
-                            mainDto.setView("단계별로 승인되지 않았을 때");
+                            mainDto.setView("DENY");
                         } else {
                             mainDto.setView("NO");
                         }
@@ -96,13 +96,12 @@ public class MainService {
                                 break;
                             case "step1":
                                 mainDto.setView("S1");
-                                mainDto.setPlace(lastRegistration.getMeetPlace());
-                                mainDto.setTime(lastRegistration.getMeetTime());
-                                mainDto.setMaterial(lastRegistration.getMeetMaterial());
-
                                 break;
                             case "step2":
                                 mainDto.setView("S2");
+                                mainDto.setPlace(lastRegistration.getMeetPlace());
+                                mainDto.setTime(lastRegistration.getMeetTime());
+                                mainDto.setMaterial(lastRegistration.getMeetMaterial());
                                 break;
                             case "step3":
                                 mainDto.setView("S3");
