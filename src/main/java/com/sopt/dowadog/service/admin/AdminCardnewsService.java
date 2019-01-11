@@ -60,11 +60,6 @@ public class AdminCardnewsService {
     @Value("${uploadpath.cardnewsContents}")
     private String cardnewsContentBaseDir;
 
-    @Value("${fcm.server.key}")
-    private String fcmKey;
-
-
-
 
     //교육 카드뉴스 리스트 조회
     public DefaultRes<List<Cardnews>> readCardnewsEducationList() {
@@ -92,7 +87,6 @@ public class AdminCardnewsService {
 
             System.out.println("---서버키---");
 
-            System.out.println(fcmKey);
 
             List<User> notnulluserList = userRepository.findAllByNotDeviceToken();
             List<User> userList = userRepository.findAll();

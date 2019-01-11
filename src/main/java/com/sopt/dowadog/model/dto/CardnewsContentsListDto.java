@@ -18,4 +18,5 @@ public class CardnewsContentsListDto {
     private String cardnewsThumbnail;
     List<CardnewsContentsDto> content;
     AllEducatedDto edu;
+    String type;
 }

@@ -56,11 +56,15 @@ public class CardnewsContentsService {
                     cardnewsThumbnail(new StringBuilder(s3Endpoint).append(cardnews.getImgPath()).toString()).
                     content(cardnewsContentsDtoList).
                     edu(allEducatedDto).
+                    type(cardnews.getType()).
                     build();
 
             return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_CARDNEWSCONTENTS, cardnewsContentsListDto);
         }else{
+
+
             List<CardnewsContents> cardnewsContentsList = cardnewsContentsRepository.findByCardnewsId(cardnewsId);
+            Cardnews cardnews = cardnewsRepository.findById(cardnewsId).get();
 
             List<CardnewsContentsDto> cardnewsContentsDtoList = new ArrayList<>();
 
@@ -76,8 +80,12 @@ public class CardnewsContentsService {
                 cardnewsContentsDtoList.add(cardnewsContentsDto);
             }
 
+
             CardnewsContentsListDto cardnewsContentsListDto = CardnewsContentsListDto.builder().
+                    cardnewsThumbnail(new StringBuilder(s3Endpoint).append(cardnews.getImgPath()).toString()).
                     content(cardnewsContentsDtoList).
+                    edu(new AllEducatedDto()).
+                    type(cardnews.getType()).
                     build();
             return DefaultRes.res(StatusCode.OK, ResponseMessage.READ_CARDNEWSCONTENTS, cardnewsContentsListDto);
         }
