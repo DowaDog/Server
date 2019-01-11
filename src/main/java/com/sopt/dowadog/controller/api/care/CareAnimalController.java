@@ -31,7 +31,7 @@ public class CareAnimalController {
             return new ResponseEntity(careAnimalService.readAnimalListByCare(care), HttpStatus.OK);
         } catch (Exception e){
             e.printStackTrace();
-            return new ResponseEntity<>(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity(DefaultRes.FAIL_DEFAULT_RES,HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -39,11 +39,13 @@ public class CareAnimalController {
     public ResponseEntity animal(@RequestHeader(value = "Authorization", required = false) final String jwtToken,
                                  @PathVariable(name = "animalId") int animalId) {
         try{
+
             return new ResponseEntity(careRegistrationService.readAnimalRegistrationByAnimalId(animalId), HttpStatus.OK);
         } catch (Exception e){
             e.printStackTrace();
         }
-        return new ResponseEntity<>(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity(DefaultRes.FAIL_DEFAULT_RES,HttpStatus.INTERNAL_SERVER_ERROR);
+
 
     }
 }

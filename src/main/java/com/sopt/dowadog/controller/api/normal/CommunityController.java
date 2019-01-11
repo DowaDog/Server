@@ -121,7 +121,7 @@ public class CommunityController {
         }
     }
 
-    //커뮤니티 수정시 사진 삭제
+    //커뮤니티 수정시 사진 삭제 - DEPRECATED
     @DeleteMapping("{communityId}/communityimg/{communityImgId}")
     public ResponseEntity deleteCommunityImg(@RequestHeader(value = "Authorization") final String jwtToken,
                                              @PathVariable("communityImgId") int communityImgId) {
