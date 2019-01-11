@@ -53,7 +53,7 @@ public class CardnewsContentsService {
             AllEducatedDto allEducatedDto = getAllEducatedDtoComplete(user);
 
             CardnewsContentsListDto cardnewsContentsListDto = CardnewsContentsListDto.builder().
-                    cardnewsThumbnail(cardnews.getImgPath()).
+                    cardnewsThumbnail(new StringBuilder(s3Endpoint).append(cardnews.getImgPath()).toString()).
                     content(cardnewsContentsDtoList).
                     edu(allEducatedDto).
                     build();
