@@ -90,12 +90,12 @@ public class ReservationScheduler {
                 }
                 //푸시알림 호출
                 if(medicalArr.size()>0){
-                    asyncUtil.send(medicalArr, "검사와 접종은 셨나요?", "입양 후 필수적인 검진과 접종을 마쳐주세요!");
+                    asyncUtil.send(medicalArr, "검사와 접종은 하셨나요?", "필수적인 검진과 접종을 마쳐주세요!");
                     System.out.println("메디컬메디컬메디컬알람알람");
 
                 }
                 if(photoArr.size()>0){
-                    asyncUtil.send(photoArr, "이달의 사진을 커뮤니티에 게시해주세요!", "");
+                    asyncUtil.send(photoArr, "이달의 사진을 게시해주세요!", "");
                     System.out.println("사진사진알람알람");
                 }
 
