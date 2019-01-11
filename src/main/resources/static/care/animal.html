@@ -39,8 +39,8 @@
                 </ul>
                 <div class="row wrapper border-bottom white-bg page-heading">
                     <div class="col-lg-10">
-                        <h2 class="col-sm-offset-1 text-warning"><strong>기다릴개</strong> 보호소 웹 </h2>
-                        <ol class="breadcrumb col-sm-offset-1">
+                        <h2 class="col-xs-offset-1 text-warning"><strong>기다릴개</strong> 보호소 웹 </h2>
+                        <ol class="breadcrumb col-xs-offset-1">
                             <li>
                                 <a href="/care/main.html">
                                     메인
@@ -69,8 +69,31 @@
                 <table class="table table-hover" id="registrationTable">
                     <tbody>
                     <thead>
+                    <colgroup>
+                        <col width="10%"/>
+                        <col width="20%"/>
+                        <col width="20%"/>
+                        <col width="15%"/>
+                        <col width="*"/>
+                    </colgroup>
                     <tr>
-                        <td>상태</td>
+                        <td>
+                        <span class="tooltip-demo text-center">
+                        <span class="btn btn-primary" data-toggle="popover" data-placement="auto bottom"
+                              data-html="true"
+                              data-content=
+                                      "<span><strong>deny </strong>입양 반려</span> <br/> 입양 반려 상태를 의미<br/><br/>
+                        <span><strong>step0 </strong>입양 신청서 수신 검토 단계 <br/> 신청서 확인 후 상태를 결정합니다</span><br/><br/>
+                        <span><strong>step1 </strong>전화 상담 단계</span> <br/>  전화를 통한 상담후 방문 일정을 전송합니다<br><br/>
+                        <span><strong>step2 </strong>직접 방문 단계</span> <br/>  사용자의 직접 방문을 확인한 후 작업을 결정합니다<br/><br/>
+                        <span><strong>step3 </strong>입양 절차 단계 확인</span> <br/>  각 보호소에서 요구하는 입양 절차가 충족여부에 따른 작업을 결정합니다.<br/> <br/>
+                        <span><strong>complete </strong>입양 완료</span> <br/>  입양 완료 상태를 의미합니다<br>"
+                        >
+
+                            상태
+                        </span>
+                        </span>
+                        </td>
                         <td>신청자 정보</td>
                         <td>연락처</td>
                         <td>신청서 타입</td>
@@ -79,6 +102,8 @@
                     </tr>
                     </thead>
                     </tbody>
+
+
                 </table>
             </div>
 
@@ -89,7 +114,108 @@
 
 </div>
 
-<!--COMPANY Approve MODAL-->
+<!--Register VIEW MODAL-->
+<div class="modal inmodal" id="regViewModal" tabindex="-1" role="dialog" style="display: none;"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content animated bounceInRight">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                        class="sr-only">Close</span></button>
+                <h2 id="regViewModalTitle">신청서
+                    <br/>
+                    <small class="modal-type"></small>
+                </h2>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12 b-r">
+                        <div class="col-sm-12 row">
+                            <div class="form-group col-sm-12">
+                                <label class="control-label col-sm-4 text-right"><strong>신청서 타입</strong></label>
+                                <span id="regType">online/offline</span>
+                            </div>
+
+                            <div class="form-group col-sm-12">
+                                <label class="control-label col-sm-4 text-right"><strong>신청자</strong></label>
+                                <span id="regUsername">강성찬</span>
+                            </div>
+
+                            <div class="form-group col-sm-12">
+                                <label class="control-label col-sm-4 text-right"><strong>이메일</strong></label>
+                                <span id="regEmail">tjdcks1781@gmail.com</span>
+                            </div>
+
+                            <div class="form-group col-sm-12">
+                                <label class="control-label col-sm-4 text-right"><strong>주소</strong></label>
+                                <span id="regAddress">인천광역시 남구 주안5동 에이스빌 6동 501호</span>
+                            </div>
+
+                            <div class="form-group col-sm-12">
+                                <label class="control-label col-sm-4 text-right"><strong>직업</strong></label>
+                                <span id="regJob">개발자</span>
+                            </div>
+
+                            <div class="form-group col-sm-12">
+                                <label class="control-label col-sm-4 text-right"><strong>연락처</strong></label>
+                                <span id="regPhone">010-2634-0871</span>
+                            </div>
+
+                            <div class="form-group col-sm-12">
+                                <label class="control-label col-sm-4 text-right"><strong>입양 타입</strong></label>
+                                <span id="adoptType">adopt/temp</span>
+                            </div>
+
+
+                            <div class="form-group col-sm-12">
+                                <label class="control-label col-sm-4 text-right"><strong>임보 가능기간</strong></label>
+                                <span id="tempPeriod">30일</span>
+                            </div>
+
+                            <div class="form-group col-sm-12">
+                                <label class="control-label col-sm-4 text-right"><strong>반려동물 존재 여부</strong></label>
+                                <span id="havePet">있음</span>
+                            </div>
+
+                            <div class="form-group col-sm-12">
+                                <label class="control-label col-sm-4 text-right"><strong>반려동물 정보</strong></label>
+                                <span id="petInfo">귀여움</span>
+                            </div>
+
+                            <div class="form-group col-sm-12">
+                                <label class="control-label col-sm-4 text-right"><strong>작성일시</strong></label>
+                                <span id="createdAt">2019-12-21 11:12:31</span>
+                            </div>
+
+                            <div class="form-group col-sm-12">
+                                <label class="control-label col-sm-4 text-right"><strong>방문 장소</strong></label>
+                                <span id="meetPlace">용인 보호소</span>
+                            </div>
+
+                            <div class="form-group col-sm-12">
+                                <label class="control-label col-sm-4 text-right"><strong>방문 시간</strong></label>
+                                <span id="meetTime">2019년 1월 8일 오후 3시</span>
+                            </div>
+
+                            <div class="form-group col-sm-12">
+                                <label class="control-label col-sm-4 text-right"><strong>준비물</strong></label>
+                                <span id="meetMaterial">1. 개목줄</span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Regist Step1 MODAL-->
 <div class="modal inmodal" id="regModal" tabindex="-1" role="dialog" style="display: none;"
      aria-hidden="true">
     <div class="modal-dialog">
@@ -98,7 +224,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
                         class="sr-only">Close</span></button>
-                <h2 id="regModal_title">방문 일정
+                <h2 id="regModalTitle">방문 일정
                     <br/>
                     <small class="modal-type"></small>
                 </h2>
@@ -110,19 +236,19 @@
                         <form id="meetForm">
                             <div class="col-sm-12 row">
                                 <div class="form-group col-sm-12">
-                                    <label class="control-label"><h3>장소</h3></label>
+                                    <label class="control-label text-right"><strong>장소</strong></label>
                                     <input type="text" class="form-control modalInput" name="place" placeholder="용인 보호소"
                                            required>
                                 </div>
 
                                 <div class="form-group col-sm-12">
-                                    <label class="control-label"><h3>일시</h3></label>
+                                    <label class="control-label text-right"><strong>일시</strong></label>
                                     <input type="email" class="form-control modalInput" name="time"
                                            placeholder="12월 25 (화) 오후 5시" required>
                                 </div>
 
                                 <div class="form-group col-sm-12">
-                                    <label class="control-label"><h3>준비물</h3></label>
+                                    <label class="control-label text-right"><strong>준비물</strong></label>
                                     <textarea name="material" rows="8" style="width:100%"
                                               placeholder="1. 강아지목줄 &#13;&#10;2. 신분증사본 &#13;&#10;3. 강아지 집"></textarea>
                                 </div>
@@ -135,6 +261,7 @@
                 <button type="button" class="btn btn-white" data-dismiss="modal">닫기</button>
                 <button type="button" class="btn btn-primary" id="modalStep1AcceptBtn">승인</button>
             </div>
+
         </div>
     </div>
 </div>
@@ -177,12 +304,15 @@
         var headers = {};
         headers["Authorization"] = $.cookie("accessToken");
 
+        var dataObj;
+        var modalTargetObj;
+
         $.ajax({
             url: "/api/care/animals/" + animalId,
             type: 'GET',
             headers: headers,
             success: function (res) {
-                console.log(res);
+                dataObj = res;
 
                 for (var i = 0; i < res.length; i++) {
                     makeAnimalContentsHtml(res[i]);
@@ -214,7 +344,35 @@
                 $('.viewBtn').click(function () {
                     var regId = $(this).closest('.regRow').attr('data');
 
-                    alert("view Btn");
+                    for (var i = 0; i < dataObj.length; i++) {
+                        if (dataObj[i].id == regId) {
+                            modalTargetObj = dataObj[i];
+                        }
+                    }
+
+                    $('#regType').text((modalTargetObj.regType === "online") ? "온라인" : "오프라인");
+                    $('#regUsername').text(modalTargetObj.user.decodedName);
+                    $('#regEmail').text(modalTargetObj.email);
+                    $('#regAddress').text(modalTargetObj.address);
+                    $('#regJob').text(modalTargetObj.job);
+                    $('#regPhone').text(modalTargetObj.phone);
+                    $('#adoptType').text((modalTargetObj.adoptType === "adopt") ? "입양" : "임시보호");
+
+                    $('#tempPeriod').text(modalTargetObj.tempPeriod);
+                    $('#havePet').text(modalTargetObj.havePet);
+                    $('#petInfo').text(modalTargetObj.petInfo);
+                    $('#createdAt').text(modalTargetObj.createdAt.split("T")[0]);
+                    $('#meetPlace').text(modalTargetObj.meetPlace);
+                    $('#meetTime').text(modalTargetObj.meetTime);
+                    $('#meetMaterial').text(modalTargetObj.meetMaterial);
+
+
+                    //adoptType
+                    //regType
+
+
+                    $(this).attr("data-toggle", "modal");
+                    $(this).attr("data-target", "#regViewModal");
                 })
 
 
@@ -226,7 +384,6 @@
                         type: 'PUT',
                         headers: headers,
                         success: function (res) {
-                            console.log(res.status);
                             if (res.status === 400) {
                                 alert("올바르지 않은 요청입니다");
                             } else {
@@ -248,7 +405,6 @@
                         type: 'PUT',
                         headers: headers,
                         success: function (res) {
-                            console.log(res.status);
                             if (res.status === 400) {
                                 alert("올바르지 않은 요청입니다");
                             } else {
@@ -276,7 +432,6 @@
                         meetMaterial: $('textarea[name=material]').val()
                     }
 
-                    console.log(JSON.stringify(meetForm))
 
 
                     $.ajax({
@@ -286,21 +441,17 @@
                         url: "/api/care/registrations/" + regId + "/acceptStepOne",
                         data: JSON.stringify(meetForm),
                         timeout: 600000,
-                        success: function () {
-                            swal({
-                                title: "Success!",
-                                text: "상태 변경에 성공했습니다",
-                                type: "success"
-                            }, function () {
+                        success: function (res) {
+                            if (res.status === 400) {
+                                alert("올바르지 않은 요청입니다");
+                            } else {
+                                alert("스텝 변경 성공");
                                 window.location.reload();
-                            });
+                            }
+
                         },
                         error: function () {
-                            swal({
-                                title: "Server error",
-                                text: "에러가 발생했습니다 다시 입력해주세요",
-                                type: "error"
-                            });
+                            alert("올바르지 않은 요청입니다");
                         }
                     });
 
@@ -315,13 +466,12 @@
                         type: 'PUT',
                         headers: headers,
                         success: function (res) {
-                            console.log(res.status);
                             if (res.status === 400) {
                                 alert("올바르지 않은 요청입니다");
                             } else {
                                 alert("스텝 변경 성공");
+                                window.location.reload();
                             }
-                            window.location.reload();
 
                         },
                         error: function (res) {
@@ -338,7 +488,6 @@
                         type: 'PUT',
                         headers: headers,
                         success: function (res) {
-                            console.log(res.status);
                             if (res.status === 400) {
                                 alert("올바르지 않은 요청입니다");
                             } else {
@@ -361,7 +510,6 @@
                         type: 'PUT',
                         headers: headers,
                         success: function (res) {
-                            console.log(res.status);
                             if (res.status === 400) {
                                 alert("올바르지 않은 요청입니다");
                             } else {
@@ -384,7 +532,6 @@
                         type: 'PUT',
                         headers: headers,
                         success: function (res) {
-                            console.log(res.status);
                             if (res.status === 400) {
                                 alert("올바르지 않은 요청입니다");
                             } else {
@@ -407,7 +554,6 @@
                         type: 'PUT',
                         headers: headers,
                         success: function (res) {
-                            console.log(res.status);
                             if (res.status === 400) {
                                 alert("올바르지 않은 요청입니다");
                             } else {
@@ -425,11 +571,12 @@
             },
             error: function (e) {
                 swal({
-                    title: "BAD REQUEST",
-                    text: "입력정보가 맞지 않습니다",
+                    title: "UNAUTHORIZATION",
+                    text: "인증정보가 만료되었습니다. 자동로그인을 시도합니다.",
                     type: "error"
                 }, function () {
-                    location.href = "./login.html"
+                    doRefreshRequest();
+                    // location.href = "./login.html"
                 });
             }
         });
@@ -443,7 +590,8 @@
             var phone = res.user.decodedPhone;
             var regType = res.regType;
 
-            var registrationHtml = " <tr class='regRow' data='" + res.id + "'>\n" +
+            var registrationHtml =
+                " <tr class='regRow' data='" + res.id + "'>\n" +
                 "            <td class=\"project-status\">\n" +
                 "                <span class=\"label regStatus\">" + regStatus + "</span>\n" +
                 "                </td>\n" +
@@ -458,9 +606,9 @@
                 "               <td class=\"project-title\">" + regType +
                 "               </td>" +
                 "            <td class=\"project-actions actionBtn\">\n" +
-                "                <a href=\"#\" class=\"btn btn-white btn-sm viewBtn\"><i class=\"fa fa-folder\"></i> 열람 </a>\n" +
-                "            <a href=\"#\" class=\"btn btn-primary btn-sm " + regStatus + "AcceptBtn\"><i class=\"fa fa-pencil\"></i> 수락 </a>\n" +
-                "            <a href=\"#\" class=\"btn btn-danger btn-sm " + regStatus + "DenyBtn\"><i class=\"fa fa-pencil\"></i> 거절 </a>\n" +
+                "                <span class=\"btn btn-white btn-sm viewBtn\"><i class=\"fa fa-folder\"></i> 열람 </span>\n" +
+                "            <span class=\"btn btn-primary btn-sm " + regStatus + "AcceptBtn\"><i class=\"fa fa-pencil\"></i> 수락 </span>\n" +
+                "            <span class=\"btn btn-danger btn-sm " + regStatus + "DenyBtn\"><i class=\"fa fa-pencil\"></i> 거절 </span>\n" +
                 "            </td>\n" +
                 "            </tr>";
             $('#registrationTable').append(registrationHtml);
@@ -474,5 +622,6 @@
     a {
         color: inherit;
     }
+
 </style>
 

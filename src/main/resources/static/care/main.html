@@ -39,10 +39,10 @@
                 </ul>
                 <div class="row wrapper border-bottom white-bg page-heading">
                     <div class="col-lg-10">
-                        <h2 class="col-sm-offset-1 text-warning"><strong>기다릴개</strong> 보호소 웹 </h2>
+                        <h2 class="col-xs-offset-1 text-warning"><strong>기다릴개</strong> 보호소 웹 </h2>
 
 
-                        <ol class="breadcrumb col-sm-offset-1">
+                        <ol class="breadcrumb col-xs-offset-1">
                             <li>
                                 <a href="/care/main.html">
                                     메인
@@ -141,11 +141,12 @@
             },
             error: function (e) {
                 swal({
-                    title: "BAD REQUEST",
-                    text: "입력정보가 맞지 않습니다",
+                    title: "UNAUTHORIZATION",
+                    text: "인증정보가 만료되었습니다. 자동로그인을 시도합니다.",
                     type: "error"
                 }, function () {
-                    location.href = "./login.html"
+                    doRefreshRequest();
+                    // location.href = "./login.html"
                 });
             }
         });
