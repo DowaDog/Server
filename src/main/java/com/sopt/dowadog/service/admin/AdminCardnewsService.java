@@ -132,6 +132,7 @@ public class AdminCardnewsService {
 
                 mailboxRepository.save(mailbox);
             }
+            asyncUtil.send(tokenArr,"새로운 컨텐츠가 등록되었습니다.","");
 
 
 

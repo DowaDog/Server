@@ -164,7 +164,7 @@ public class CareRegistrationService {
         // 유저 가져오기
         User user = registrationRepository.findById(registrationId).get().getUser();
         // 메세지 바꾸기
-        setMailAndAlram(user,"스텝0 요청 수락","메일함을 확인해보세요");
+        setMailAndAlram(user,"입양 절차가 승인되었습니다.","다음 입양 단계로 넘어갑니다.");
 
 
         registrationRepository.save(registration);
@@ -198,7 +198,7 @@ public class CareRegistrationService {
         // 유저 가져오기
         User user = registrationRepository.findById(registrationId).get().getUser();
         // 메세지 바꾸기
-        setMailAndAlram(user,"스텝0 요청 거절","메일함을 확인해보세요");
+        setMailAndAlram(user,"입양 절차가 거절되었습니다.","자세한 사항은 보호소에 문의해주세요.");
 
         return DefaultRes.res(StatusCode.OK, ResponseMessage.UPDATE_REGISTRATION);
     }
@@ -251,7 +251,7 @@ public class CareRegistrationService {
         // 유저 가져오기
         User user = registrationRepository.findById(registrationId).get().getUser();
         // 메세지 바꾸기
-        setMailAndAlram(user,"스텝1 요청 수락","메일함을 확인해보세요");
+        setMailAndAlram(user,"입양 절차가 승인되었습니다.","다음 입양 단계로 넘어갑니다.");
 
         registrationRepository.save(registration);
         animalRepository.save(animal);
@@ -280,7 +280,7 @@ public class CareRegistrationService {
         // 유저 가져오기
         User user = registrationRepository.findById(registrationId).get().getUser();
         // 메세지 바꾸기
-        setMailAndAlram(user,"스텝1 요청 거절","메일함을 확인해보세요");
+        setMailAndAlram(user,"입양 절차가 거절되었습니다.","자세한 사항은 보호소에 문의해주세요.");
 
         registrationRepository.save(registration);
         animalRepository.save(animal);
@@ -335,7 +335,7 @@ public class CareRegistrationService {
         // 유저 가져오기
         User user = registrationRepository.findById(registrationId).get().getUser();
         // 메세지 바꾸기
-        setMailAndAlram(user,"스텝2 요청 수락","메일함을 확인해보세요");
+        setMailAndAlram(user,"입양 절차가 승인되었습니다.","다음 입양 단계로 넘어갑니다.");
 
         registrationRepository.save(registration);
         animalRepository.save(animal);
@@ -365,7 +365,7 @@ public class CareRegistrationService {
         // 유저 가져오기
         User user = registrationRepository.findById(registrationId).get().getUser();
         // 메세지 바꾸기
-        setMailAndAlram(user,"스텝2 요청 거절","메일함을 확인해보세요");
+        setMailAndAlram(user,"입양 절차가 거절되었습니다.","자세한 사항은 보호소에 문의해주세요.");
 
         registrationRepository.save(registration);
         animalRepository.save(animal);
@@ -419,9 +419,10 @@ public class CareRegistrationService {
 
         User user = registration.getUser();
 
+
         AnimalUserAdopt animalUserAdopt = AnimalUserAdopt.builder()
                                             .user(user)
-                                            .name(new StringBuilder(user.getName()).append("펫").toString())
+                                            .name(new StringBuilder(user.getDecodedName()).append("펫").toString())
                                             .gender(animal.getSexCd())
                                             .kind(animal.getKindCd())
                                             .age(animal.getAge())
@@ -438,29 +439,28 @@ public class CareRegistrationService {
         // 유저 가져오기
         User temp = registrationRepository.findById(registrationId).get().getUser();
         // 메세지 바꾸기
-        setMailAndAlram(user,"입양완료 요청 수락","메일함을 확인해보세요");
+        setMailAndAlram(user,"새로운 가족을 맞이한 것을 축하드려요","");
 
         //예방 접종에 대해서 레절베이션 테이블에 추가
 
         MailboxReservation mailboxReservation = MailboxReservation.builder()
                 .state("on")
                 .type("medical")
-                .title("예방 접종 정보")
-                .detail("내 동물 정보에서 확인해주세요!")
+                .title("검사와 접종은 하셨나요?")
+                .detail("필수적인 검진과 접종을 마쳐주세요.")
                 .time(LocalDate.now().plusWeeks(2))//2주 후
                 .user(temp)
                 .build();
         mailboxReservationRepository.save(mailboxReservation);
 
 
-        System.out.println("koooooooooo"+getDateList().size());
         //사진에 대해서 레절베이션 테이블에 추가
         for(int i = 0 ; i<getDateList().size();i++){
             MailboxReservation mailboxReservation1 = MailboxReservation.builder()
                     .user(temp)
                     .time(getDateList().get(i))
-                    .detail("1년동안 사진을 올려주셔야 합니다")
-                    .title("사진을 올려주세요")
+                    .detail("")
+                    .title("이달의 사진을 커뮤니티에 게시해주세요")
                     .type("photo")
                     .state("on")
                     .build();
@@ -504,7 +504,7 @@ public class CareRegistrationService {
         // 유저 가져오기
         User user = registrationRepository.findById(registrationId).get().getUser();
         // 메세지 바꾸기
-        setMailAndAlram(user,"입양완료 요청 거절","메일함을 확인해보세요");
+        setMailAndAlram(user,"입양 절차가 거절되었습니다.","자세한 사항은 보호소에 문의해주세요.");
 
 
         registrationRepository.save(registration);
