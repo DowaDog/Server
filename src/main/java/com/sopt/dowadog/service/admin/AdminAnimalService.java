@@ -78,25 +78,31 @@ public class AdminAnimalService {
         animalStory.getAnimalStoryFiles();
 
 
-        if(!animalStory.getAnimalStoryFilesAos().isEmpty() && !animalStory.getAnimalStoryFiles().isEmpty()) {
-            System.out.println(1111111);
+        AnimalStory tempAnimal = new AnimalStory();
+
+        // 아이오에스 이미지 처리
+        if(!animalStory.getAnimalStoryFiles().isEmpty() ) {
+
 
             String filePath = S3Util.getFilePath(animalStoryBaseDir, animalStory.getAnimalStoryFiles());
-            String filePathAos = S3Util.getFilePath(animalStoryBaseDir, animalStory.getAnimalStoryFilesAos());
 
             //s3 업로드
             fileService.fileUpload(animalStory.getAnimalStoryFiles(), filePath);
-            fileService.fileUpload(animalStory.getAnimalStoryFilesAos(), filePathAos);
+            tempAnimal.setFilePath(filePath);
 
 
-            AnimalStory newAnimalStory = AnimalStory.builder()
-                    .animal(animal)
-                    .filePath(filePath)
-                    .filePathAos(filePathAos)
-                    .build();
-
-            animalStoryRepository.save(newAnimalStory);
         }
+        // 안드로이드 이미지 처리
+        if(!animalStory.getAnimalStoryFilesAos().isEmpty()){
+
+            String filePathAos = S3Util.getFilePath(animalStoryBaseDir, animalStory.getAnimalStoryFilesAos());
+            fileService.fileUpload(animalStory.getAnimalStoryFilesAos(), filePathAos);
+            tempAnimal.setFilePathAos(filePathAos);
+
+        }
+
+        tempAnimal.setAnimal(animal);
+        animalStoryRepository.save(tempAnimal);
 
     }
 }

@@ -51,71 +51,23 @@ scp -i "keyfile" "전송할 파일" ec2-user@13.124.201.59:~/
 ```cmd
 java -jar "파일명"
 ```
+## 패키지 설명
 
 
 
-
-
-## API 설계
-
-
-
-### 커뮤니티
-
-| TYPE   | URI                                  | 설명                 |
-| ------ | ------------------------------------ | -------------------- |
-| GET    | /community?page={page}&limit={limit} | 커뮤니티 리스트 조회 |
-| GET    | /community/{communityId}             | 커뮤니티 글 조회     |
-| POST   | /community                           | 커뮤니티 글 생성     |
-| PUT    | /community/{communityId}             | 커뮤니티 글 수정     |
-| DELETE | /community/{communityId}             | 커뮤니티 글 삭제     |
-
-
-
-### 댓글
-| TYPE   | URI                               | 설명                                |
-| ------ | --------------------------------- | ----------------------------------- |
-| GET    | /community/{communityId}/comments | 특정 커뮤니티 글의 댓글 리스트 조회 |
-| POST   | /community/{communityId}/comments | 특정 커뮤니티 글의 댓글 작성        |
-| PUT    | /community/comments/{commentId}   | 댓글 수정                           |
-| DELETE | /community/comments/{commentId}   | 댓글 삭제                           |
-
-
-
-### 입양
-
-| TYPE | URI                                                          | 설명                                                         |
-| ---- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| GET  | /animals/emergency?page={page}&limit={limit}                 | 긴급 유기동물 목록                                           |
-| GET  | /animals?searchParam={searchParam}&page={page}&limit={limit} | 최신순 유기 동물 목록<br />searchParam : type(String), startDate(Date), endDate(Date), region(String), tag(String), story(boolean) |
-| GET  | /animals/{animalId}                                          | 유기동물 조회                                                |
-| POST | /animals/{animalId}/registrations                            | 유기동물 신청서 작성                                         |
-| POST | /animals/{animalId}/likes                                    | 유기동물 좋아요                                              |
-
-### 마이페이지
-
-
-| TYPE | URI                                             | 설명                  |
-| ---- | ----------------------------------------------- | --------------------- |
-| GET  | /mypage                                         | 마이페이지 조회       |
-| PUT  | /mypage/animals                                 | 동물 정보 수정        |
-| PUT  | /mypage/user                                    | 사람 정보 수정        |
-| GET  | /mypage/likes/animals?page={page}&limit={limit} | 좋아요 리스트 조회    |
-| GET  | /mypage/scrap?page={page}&limit={limit}         | 스크랩 리스트 조회    |
-| GET  | /mypage/community?page={page}&limit={limit}     | 내가 쓴글 리스트 조회 |
-| GET  | /mypage/mailboxes                               | /mypage우체통 조회    |
-
-GET 마이페이지 조회할때 : view에 있는 모든 정보를 다 넘김
-
-- 사용자 정보
-
-- 사용자 동물 정보
-
-- 좋아요 갯수
-
-- 스크랩 갯수
-
-- 내가 쓴 글 갯수
+| 패키지 명                    | 간략한 설명                                                  |
+| ---------------------------- | ------------------------------------------------------------ |
+| com.sopt.dowadog.annotation  | 사용자 인증을 위한 어노테이션                                |
+| com.sopt.dowadog.aop         | - 사용자 인증을 위한 어노테이션의 포인트컷 적용 시점(CRUD 중 R을 뺀 나머지에 적용하기 위해 사용) <br/>-보호소 웹 인증에 대한 포인트 컷 적용<br/>-푸시 알람및 신청서에 대한 시스템 사용 히스토리(추후 구현 예정) |
+| com.sopt.dowadog.config      | -jpa 설정<br/>- restTemplate 사용을 위해 설정<br/>- 캐시 사용 위한 설정 |
+| com.sopt.dowadog.controller  | 컨트롤러 관련 클래스                                         |
+| com.sopt.dowadog.enumeration | 우편함 종류와 토큰에 대한 expired 기간 지정                  |
+| com.sopt.dowadog.model       | dto, 도메인 관련 클래스                                      |
+| com.sopt.dowadog.repository  | Repository 관련한 클래스                                     |
+| com.sopt.dowadog.scheduler   | 푸시알람과 공공데이터 업뎃을 위한 스케듈러 관련 클래스       |
+| com.sopt.dowadog.service     | 서비스 관련 클래스                                           |
+| com.sopt.dowadog.specifation | 필터와 검색을 위한 criteria 적용 클래스                      |
+| com.sopt.dowadog.util        | -fcm 사용을 위한 async 적용한 클래스<br/>-단방향/양방향 암호화를 위한 클래스<br/>-S3 주소를 위한 클래스<br/>-responsemessage와 statuscode를 위한 클래스 |
 
 
 ## Log 설정
