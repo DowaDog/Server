@@ -177,9 +177,12 @@ public class MyinfoController {
 
         try{
             User user = userService.getUserByJwtToken(jwtToken);
+            if(user == null) {
+                return new ResponseEntity(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
+            }
             return new ResponseEntity(myinfoService.readMailboxes(user), HttpStatus.OK);
         } catch (Exception e){
-            return new ResponseEntity(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity(DefaultRes.FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         //return new ResponseEntity(HttpStatus.OK);
