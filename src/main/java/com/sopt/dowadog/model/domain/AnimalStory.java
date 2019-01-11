@@ -28,18 +28,18 @@ public class AnimalStory extends DateEntity {
     @ManyToOne
     private Animal animal;
 
-    private String filePath;
-    private String filePathAos;
+    private String filePath = null;
+    private String filePathAos = null;
     //private String originFileName;
 
 
     @Transient
     @JsonIgnore
-    MultipartFile animalStoryFiles;
+    MultipartFile animalStoryFiles = null;
 
     @Transient
     @JsonIgnore
-    MultipartFile animalStoryFilesAos;
+    MultipartFile animalStoryFilesAos = null;
 
 
 }
