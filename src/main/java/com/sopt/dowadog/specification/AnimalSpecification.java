@@ -2,6 +2,7 @@ package com.sopt.dowadog.specification;
 
 import com.sopt.dowadog.model.domain.Animal;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.query.criteria.internal.expression.function.SubstringFunction;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.Predicate;
@@ -50,9 +51,12 @@ public class AnimalSpecification {
                                 cb.like(root.get("care").get("name").as(String.class),new StringBuilder("%").append(value.toString()).append("%").toString());
                         Predicate searchingWord2 =
                                 cb.like(root.get("kindCd").as(String.class),new StringBuilder("%").append(value.toString()).append("%").toString());
+                        Predicate searchingWord3 =
+                                cb.like(root.get("type").as(String.class),
+                                        new StringBuilder(value.toString()).append("%").toString());
 
                         Predicate totalList1 =
-                                cb.or(searchingWord,searchingWord1,searchingWord2);
+                                cb.or(searchingWord,searchingWord1,searchingWord2,searchingWord3);
                         predicates.add(totalList1);
                         break;
                     case "story":
