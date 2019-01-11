@@ -96,13 +96,12 @@ public class MainService {
                                 break;
                             case "step1":
                                 mainDto.setView("S1");
-                                mainDto.setPlace(lastRegistration.getMeetPlace());
-                                mainDto.setTime(lastRegistration.getMeetTime());
-                                mainDto.setMaterial(lastRegistration.getMeetMaterial());
-
                                 break;
                             case "step2":
                                 mainDto.setView("S2");
+                                mainDto.setPlace(lastRegistration.getMeetPlace());
+                                mainDto.setTime(lastRegistration.getMeetTime());
+                                mainDto.setMaterial(lastRegistration.getMeetMaterial());
                                 break;
                             case "step3":
                                 mainDto.setView("S3");
