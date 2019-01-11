@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by kohen.kang on 2019-01-04..
@@ -74,14 +75,14 @@ public class AdminAnimalService {
 
         Animal animal = animalRepository.findById(animalId).get();
 
-        animalStory.getAnimalStoryFilesAos();
-        animalStory.getAnimalStoryFiles();
-
 
         AnimalStory tempAnimal = new AnimalStory();
 
+
+
         // 아이오에스 이미지 처리
-        if(!animalStory.getAnimalStoryFiles().isEmpty() ) {
+        if(Optional.ofNullable(animalStory.getAnimalStoryFiles()).isPresent() ) {
+            System.out.println("aaaaaaa");
 
 
             String filePath = S3Util.getFilePath(animalStoryBaseDir, animalStory.getAnimalStoryFiles());
@@ -93,7 +94,8 @@ public class AdminAnimalService {
 
         }
         // 안드로이드 이미지 처리
-        if(!animalStory.getAnimalStoryFilesAos().isEmpty()){
+        if(Optional.ofNullable(animalStory.getAnimalStoryFilesAos()).isPresent()){
+            System.out.println("aaaaaaa");
 
             String filePathAos = S3Util.getFilePath(animalStoryBaseDir, animalStory.getAnimalStoryFilesAos());
             fileService.fileUpload(animalStory.getAnimalStoryFilesAos(), filePathAos);

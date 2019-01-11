@@ -173,10 +173,15 @@ private String defaultUrl;
 
         for(AnimalStory a : animalStories){
 
-            String temp = S3Util.getImgPath(defaultUrl,a.getFilePath());
-            String tempAos = S3Util.getImgPath(defaultUrl,a.getFilePathAos());
-            totalStoryList.add(temp);
-            totalStoryListAos.add(tempAos);
+            if(a.getFilePath()!=null){
+                String temp = S3Util.getImgPath(defaultUrl,a.getFilePath());
+                totalStoryList.add(temp);
+            }
+            if(a.getFilePathAos()!= null){
+                String tempAos = S3Util.getImgPath(defaultUrl,a.getFilePathAos());
+                totalStoryListAos.add(tempAos);
+
+            }
 
         }
 
