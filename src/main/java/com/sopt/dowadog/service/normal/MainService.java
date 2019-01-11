@@ -83,7 +83,7 @@ public class MainService {
                     if (!lastRegistration.isValidReg()) {
                         System.out.println("##   마지막 신청서 : 유효한 신청서가 없습니다 ##");
                         if (!lastRegistration.isUserCheck()) {
-                            mainDto.setView("단계별로 승인되지 않았을 때");
+                            mainDto.setView("DENY");
                         } else {
                             mainDto.setView("NO");
                         }
