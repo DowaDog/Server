@@ -26,14 +26,10 @@ public class AsyncUtil {
      */
     // 여기 부분에서 서버키가 스트링으로 넣어주는데 컴포넌트를 넣어도 에러가 난다! 그냥 String하겠
 
-    @Value("${fcm.server.key}")
-    private String server;
 
 
 
-
-
-    private String serverKey = "AAAAqVW_Pns:APA91bHYq_DWihTDjhWAmScR-RIEJj2UND8N2UGZ-Klu3uSI04MU3oLlp1O7IGTXF_h-ld5Bq1xLmbZHSNYByIw7OZjxsFKQTjGtbQ_uc88dvX30H0kp3EpQl-EeTKgn2PF9nSjRX0q0";
+    private String serverKey = "AAAAnXucKic:APA91bGIaCKimGxoQxCl2nJBYYog90Xd18KR-R4t7uXSNo9XVz4vl25z8XqfkMd1jvEJUYHigkgDibhQFM_qbIGDcYnAkwXt0JxmY2FFDiLr4YOHXm4l0cHXrzGP3MIBCHRaprtIzkbd";
     //푸시 알람 메소드
 
     //단체 메세징
@@ -44,7 +40,7 @@ public class AsyncUtil {
         System.out.println(body);
 
         System.out.println("------서버키 테스트-------");
-        System.out.println(server);
+//        System.out.println(server);
         System.out.println(serverKey);
 
         RestTemplate restTemplate = new RestTemplate();

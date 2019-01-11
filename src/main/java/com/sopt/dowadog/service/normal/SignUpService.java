@@ -32,6 +32,10 @@ public class SignUpService {
 
 
         try{
+            String id = signupFormDto.getId();
+            if(userRepository.findById(id).isPresent()){
+                return DefaultRes.res(StatusCode.BAD_REQUEST, ResponseMessage.UNABLE_USER);
+            }
 
             User user = User.setUserBySignupDto(signupFormDto);
             String pw = user.getPassword();
