@@ -141,7 +141,7 @@ public class AdminCardnewsService {
 
         }catch (Exception e){
             e.printStackTrace();
-            return DefaultRes.res(StatusCode.DB_ERROR,ResponseMessage.DB_ERROR);
+            return DefaultRes.res(StatusCode.INTERNAL_SERVER_ERROR,ResponseMessage.INTERNAL_SERVER_ERROR);
         }
     }
 

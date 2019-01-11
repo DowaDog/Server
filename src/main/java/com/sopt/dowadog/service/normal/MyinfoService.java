@@ -132,7 +132,12 @@ public class MyinfoService {
     //입양한 동물 정보 조회
     public DefaultRes<AdoptAnimalDto> readAnimalUserAdoptById(User user, int adoptAnimalId) {
 
-        AnimalUserAdopt animalUserAdopt = animalUserAdoptRepository.findById(adoptAnimalId);
+        if(!animalUserAdoptRepository.findById(adoptAnimalId).isPresent()){
+            return DefaultRes.BAD_REQUEST;
+
+        }
+        AnimalUserAdopt animalUserAdopt = animalUserAdoptRepository.findById(adoptAnimalId).get();
+
         animalUserAdopt.setProfileImg(new StringBuilder(s3Endpoint).append(animalUserAdopt.getProfileImg()).toString());
         //adopAnimalId를 가진 동물 조회
         AdoptAnimalDto animalDto = AdoptAnimalDto.builder()
@@ -168,7 +173,11 @@ public class MyinfoService {
     public DefaultRes updateAnimalByAnimalId(User user, AnimalUserAdopt modifiedAnimalUserAdopt,
                                                               int animalAdoptId) {
 
-        AnimalUserAdopt animalUserAdopt = animalUserAdoptRepository.findById(animalAdoptId);
+        if(!animalUserAdoptRepository.findById(animalAdoptId).isPresent()){
+            return DefaultRes.BAD_REQUEST;
+        }
+        AnimalUserAdopt animalUserAdopt = animalUserAdoptRepository.findById(animalAdoptId).get();
+
         boolean auth = animalUserAdopt.getAuth(user.getId());
         System.out.println(user.getId());
         System.out.println("######## Auth");
@@ -247,7 +256,7 @@ public class MyinfoService {
 
         }catch (Exception e){
             e.printStackTrace();
-            return DefaultRes.res(StatusCode.DB_ERROR,ResponseMessage.DB_ERROR);
+            return DefaultRes.res(StatusCode.INTERNAL_SERVER_ERROR,ResponseMessage.INTERNAL_SERVER_ERROR);
         }
         }
 
@@ -345,7 +354,7 @@ public class MyinfoService {
 
         }catch (Exception e){
             e.printStackTrace();
-            return DefaultRes.res(StatusCode.DB_ERROR,ResponseMessage.DB_ERROR);
+            return DefaultRes.res(StatusCode.INTERNAL_SERVER_ERROR,ResponseMessage.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -376,7 +385,7 @@ public class MyinfoService {
 
         }catch (Exception e){
 
-            return DefaultRes.res(StatusCode.DB_ERROR,ResponseMessage.DB_ERROR);
+            return DefaultRes.res(StatusCode.INTERNAL_SERVER_ERROR,ResponseMessage.INTERNAL_SERVER_ERROR);
         }
     }
 

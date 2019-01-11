@@ -37,7 +37,7 @@ public class SignUpService {
 
         }catch (Exception e){
             log.error(e.getMessage());
-            return DefaultRes.res(StatusCode.DB_ERROR, ResponseMessage.DB_ERROR);
+            return DefaultRes.res(StatusCode.INTERNAL_SERVER_ERROR, ResponseMessage.INTERNAL_SERVER_ERROR);
 
         }
 
@@ -68,7 +68,7 @@ public class SignUpService {
 
 
         }catch (Exception e){
-            return DefaultRes.res(StatusCode.DB_ERROR, ResponseMessage.DB_ERROR);
+            return DefaultRes.res(StatusCode.INTERNAL_SERVER_ERROR, ResponseMessage.INTERNAL_SERVER_ERROR);
         }
     }
 

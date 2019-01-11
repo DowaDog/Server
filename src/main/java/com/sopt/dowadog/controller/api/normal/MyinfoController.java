@@ -37,10 +37,15 @@ public class MyinfoController {
 
         try {
             User user = userService.getUserByJwtToken(jwtToken);
+            if(user == null){
+                return new ResponseEntity<>(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
+
+            }
             return new ResponseEntity(myinfoService.readMypage(user), HttpStatus.OK);
         } catch(Exception e){
             e.printStackTrace();
-            return new ResponseEntity<>(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity(DefaultRes.FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
+
         }
     }
 
@@ -53,11 +58,14 @@ public class MyinfoController {
         System.out.println("#######     api/normal/mypage   PUT #######");
         try{
             User user = userService.getUserByJwtToken(jwtToken);
+            if(user == null){
+                return new ResponseEntity<>(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
+            }
             return new ResponseEntity(myinfoService.updateUserInfo(user, myinfoChangeDto, profileImgFile), HttpStatus.OK);
         } catch(Exception e){
             e.printStackTrace();
+            return new ResponseEntity(DefaultRes.FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
 
-            return new ResponseEntity<>(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -69,9 +77,14 @@ public class MyinfoController {
 
         try {
             User user = userService.getUserByJwtToken(jwtToken);
+            if(user == null){
+                return new ResponseEntity<>(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
+
+            }
             return new ResponseEntity(myinfoService.readAnimalUserAdoptList(user), HttpStatus.OK);
         } catch (Exception e){
-            return new ResponseEntity<>(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity(DefaultRes.FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
+
         }
     }
 
@@ -84,11 +97,17 @@ public class MyinfoController {
         System.out.println("#######     api/normal/mypage/adoptAnimals/:adoptAnimalId   GET #######");
 
         try {
+
             User user = userService.getUserByJwtToken(jwtToken);
+            if(user == null){
+                return new ResponseEntity<>(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
+            }
             return new ResponseEntity(myinfoService.readAnimalUserAdoptById(user, adoptAnimalId), HttpStatus.OK);
 
         } catch (Exception e) {
-            return new ResponseEntity<>(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
+            e.printStackTrace();
+            return new ResponseEntity(DefaultRes.FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
+
         }
 
     }
@@ -104,11 +123,15 @@ public class MyinfoController {
         try {
 
             User user = userService.getUserByJwtToken(jwtToken);
+            if(user == null){
+                return new ResponseEntity<>(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
+
+            }
             return new ResponseEntity(myinfoService.updateAnimalByAnimalId(user, animalUserAdopt, adoptAnimalId), HttpStatus.OK);
 
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity(DefaultRes.FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -123,11 +146,15 @@ public class MyinfoController {
         try {
 
             User user = userService.getUserByJwtToken(jwtToken);
+            if(user == null){
+                return new ResponseEntity<>(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
 
+            }
             return new ResponseEntity(myinfoService.readMyLikeList(user), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity(DefaultRes.FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
+
         }
     }
 
@@ -142,10 +169,13 @@ public class MyinfoController {
         try {
             //밑의 함수의 경우 throws를 사용해서 꼭 try catch문을 해야 함!(에러를 최상단에서 처리하기 위해서)
             User user = userService.getUserByJwtToken(jwtToken);
-
+            if(user == null){
+                return new ResponseEntity<>(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
+            }
             return new ResponseEntity(myinfoService.readMyClipsList(user), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity(DefaultRes.FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
+
         }
 
 
@@ -161,10 +191,15 @@ public class MyinfoController {
         //todo 나중에 상세 예외처리
         try {
             User user = userService.getUserByJwtToken(jwtToken);
+            if(user == null){
+                return new ResponseEntity<>(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
+
+            }
             return new ResponseEntity(myinfoService.readMyCommunityList(user), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity(DefaultRes.FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
+
         }
     }
 
@@ -195,10 +230,14 @@ public class MyinfoController {
 
         try{
             User user = userService.getUserByJwtToken(jwtToken);
+            if(user == null){
+                return new ResponseEntity(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
+            }
             return new ResponseEntity(myinfoService.readMyinfo(user),HttpStatus.OK);
         }catch (Exception e){
             e.printStackTrace();
-            return new ResponseEntity(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity(DefaultRes.FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
+
 
         }
 
@@ -210,10 +249,13 @@ public class MyinfoController {
         System.out.println("#######     api/normal/mypage/mailboxes/readings  GET #######");
         try{
             User user = userService.getUserByJwtToken(jwtToken);
+            if(user == null){
+                return new ResponseEntity(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
+            }
             return new ResponseEntity(myinfoService.updateMailboxesState(user),HttpStatus.OK);
         }catch (Exception e){
             e.printStackTrace();
-            return new ResponseEntity(DefaultRes.UNAUTHORIZATION, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity(DefaultRes.FAIL_DEFAULT_RES, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
