@@ -73,9 +73,9 @@ public class MainService {
 
                     if (!lastRegistration.isUserCheck()) { // 유저체크 안함
                         System.out.println("## 마지막 신청서 : 유저가 확인하지 않았습니다 ##");
-                        mainDto.setView("NO");
-                    } else {
                         mainDto.setView("COMPLETE");
+                    } else {
+                        mainDto.setView("NO");
                     }
                 } else {
                     System.out.println("## 마지막 신청서 : 입양 절차 완료되지 않았습니다 ##");
