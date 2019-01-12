@@ -29,7 +29,7 @@ public class AsyncUtil {
 
 
 
-    private String serverKey = "AAAAnXucKic:APA91bGIaCKimGxoQxCl2nJBYYog90Xd18KR-R4t7uXSNo9XVz4vl25z8XqfkMd1jvEJUYHigkgDibhQFM_qbIGDcYnAkwXt0JxmY2FFDiLr4YOHXm4l0cHXrzGP3MIBCHRaprtIzkbd";
+    private final String serverKey = "AAAAnXucKic:APA91bGIaCKimGxoQxCl2nJBYYog90Xd18KR-R4t7uXSNo9XVz4vl25z8XqfkMd1jvEJUYHigkgDibhQFM_qbIGDcYnAkwXt0JxmY2FFDiLr4YOHXm4l0cHXrzGP3MIBCHRaprtIzkbd";
     //푸시 알람 메소드
 
     //단체 메세징
@@ -40,7 +40,6 @@ public class AsyncUtil {
         System.out.println(body);
 
         System.out.println("------서버키 테스트-------");
-//        System.out.println(server);
         System.out.println(serverKey);
 
         RestTemplate restTemplate = new RestTemplate();
@@ -77,6 +76,10 @@ public class AsyncUtil {
 
         System.out.println(title);
         System.out.println(body);
+
+
+        System.out.println("------서버키 테스트-------");
+        System.out.println(serverKey);
 
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getMessageConverters()

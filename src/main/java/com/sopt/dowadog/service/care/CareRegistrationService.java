@@ -48,6 +48,17 @@ public class CareRegistrationService {
     private final String PROCESS_END = "end";
 
 
+    public boolean setMailMedical(User user, String title, String detail) {
+        Mailbox mailbox = Mailbox.builder()
+                .type("medical")
+                .detail(detail)// 바꿔야함 (임의로)
+                .title(title)// 바꿔야함 (임의로)
+                .user(user)
+                .build();
+        mailboxRepository.save(mailbox);
+        return true;
+    }
+
 
 
 
@@ -65,6 +76,8 @@ public class CareRegistrationService {
 
             // 우체통에 접근
             mailboxRepository.save(mailbox);
+
+            System.out.println("---우체통 생성끝---");
 
             if(user.getDeviceToken()!=null){// 아요에스는 애초에 디바이스 토큰을 널로 주기 때문에 분기 처리
                 //푸시 생성
