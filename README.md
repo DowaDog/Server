@@ -6,12 +6,10 @@ SOPT 23rd Appjam 기다릴개 서버 프로젝트
 
 ## Project spec 정보
 
-Springboot Project
+Springboot 2.1.1 RELEASE
 
 자바 버전 : JAVA 8
 ORM 기술 : Hibernate JPA
-
-..
 
 
 
@@ -19,10 +17,12 @@ ORM 기술 : Hibernate JPA
 
 ## 서버 정보
 
-|             | 역할 |도메인                                            |
+|             | 역할 |host                                            |
 | ----------- |- |------------------------------------------------- |
-| **aws ec2** | API 애플리케이션 서버 |13.124.201.59                                     |
+| **aws ec2** | API 애플리케이션 서버 1 |ec2-user@54.180.42.254                                     |
+|  | API 애플리케이션 서버 2 |ubuntu@13.209.185.163 |
 | **aws rds** | DB 서버 |rsh.cpcceaqwm3sy.ap-northeast-2.rds.amazonaws.com |
+| **aws s3** | 파일 스토리지 |https://s3.ap-northeast-2.amazonaws.com/ryudd/ |
 
 
 
@@ -51,6 +51,21 @@ scp -i "keyfile" "전송할 파일" ec2-user@13.124.201.59:~/
 ```cmd
 java -jar "파일명"
 ```
+
+
+
+#### 4. ec2에서 실시간 로그 보기
+
+~~~cmd
+tail -f "filename"
+~~~
+
+
+
+
+
+
+
 ## 패키지 설명
 
 
@@ -70,9 +85,20 @@ java -jar "파일명"
 | com.sopt.dowadog.util        | -fcm 사용을 위한 async 적용한 클래스<br/>-단방향/양방향 암호화를 위한 클래스<br/>-S3 주소를 위한 클래스<br/>-responsemessage와 statuscode를 위한 클래스 |
 
 
-## Log 설정
 
-### logback 사용
+
+
+## Logback
+
+**Logback**은 "자바 오픈소스 로깅 프레임워크"로 SLF4J의 구현체이자 **스프링 부트의 기본 로그** 객체다.
+
+log4j, log4j2, JUL(java.util.logging)과 성능을 비교했을 때 logback은 훌륭한 성능을 보여준다.
+
+그리고 결정적으로 자바 프로그램에서 로그를 사용할 때 가장 많이 사용되고 있기 때문에 알아두어야 한다.
+
+출처: https://jeong-pro.tistory.com/154 [기본기를 쌓는 정아마추어 코딩블로그]
+
+
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -113,6 +139,22 @@ java -jar "파일명"
 
 # Ehcache
 
+캐시 엔진 중의 하나이다. 주요 특징으로는 아래와 같다.
+
+경량의 빠른 캐시 엔진
+확장성 : 메모리, 디스크 저장 지원, 멀티 CPU의 동시 접근에 튜닝
+분산 지원 : 동기, 비동기 복사, 피어 자동 발견
+높은 품질
+
+**왜 쓰는가?**
+
+Java 메서드에 캐싱을 적용함으로써 캐시에 보관된 정보로 메서드의 실행 횟수를 줄여준다.
+대상 메서드가 실행될 때마다 추상화가 해당 메서드가 같은 인자로 이미 실행되었는지 확인하는 캐싱 동작을 적용
+해당 데이터가 존재한다면 실제 메서드를 실행하지 않고 결과를 반환하고 존재하지 않는다면 메서드를 실행하고 그 결과를 캐싱한 뒤에 사용자에게 반환해서 다음번 호출 시에 사용할 수 있게 한다. 이 방법을 통해 비용이 큰 메서드(CPU든 IO든) 해당 파라미터로는 딱 한 번만 실행
+물론 이 접근방법은 얼마나 많이 호출하든지 간에 입력(혹은 인자)이 같으면 출력(결과)도 같다는 것을 보장하는 메서드에서만 동작
+
+출처: http://sjh836.tistory.com/129 [빨간색코딩]
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -142,6 +184,8 @@ java -jar "파일명"
 </ehcache>
 ```
 
+
+* spring 3.1에서 cache추상화를 시켜서 ehcache만 bean으로 등록하면 된다. (**EhcacheConfig.java**)
 * defaultCache : 기본 캐시설정 (@Cacheable만 사용시) 
 * snapshotData : 공공데이터 조회의 경우 스케줄러를 이용한 스냅샷 데이터이므로 매번 조회하는데 연산을 쓰지 않아도 됨. 이러한 부분에 리소스를 줄이기 위해 ehCache 적용
 * 공공데이터 갱신에는 10000건 이하정도의 데이터 객체가 delete/insert 되므로 메모리에저장하는 객체 수 제한을 10000으로 정하였고, 5분의 갱신주기를 가지게끔 하였음. ( delete/insert 사이 과정에 의한 데이터 불일치 가능성때문에 큰 폭으로 설정하지 않음 )
@@ -149,10 +193,9 @@ java -jar "파일명"
 
 
 
-#ec2에서 실시간 로그 보기
-~~~
-tail -f nohup.out
-~~~
+
+
+
 
 
 
@@ -160,12 +203,34 @@ tail -f nohup.out
 
 
 
-##@Scheduled
+##@EnableScheduling
+
+Spring에서는 일정한 주기마다 작업을 실행할 수 있는 Schedule기능이 포함되어있다. Spring Batch만큼 순차작업이나 실패에 따른 복구등의 많은 기능을 가지고 있지 않지만, 간략한 설정과 어노테이션만으로 편리하게 설정이 가능한 장점을 가지고 있다. 최소한의 코드를 가진다는건 한눈에 파악할 수 있고, 빠르게 수정이 가능하다는 뜻이다.
+
+스프링의 Schedule기능은 다음과 같이 구성할 수 있다. 우선 설정파일에 스케쥴을 사용하겠다는 의미로 @EnableScheduling을 추가하여 스케쥴링 기능을 사용하겠다는 것을 표기하여 줄 수 있다.
+
+```java
+@EnableScheduling
+@SpringBootApplication
+public class Application {
+	public static void main(String[] args) {
+		SpringApplication.run(Application.class, args);
+	}
+}
+```
+
+그리고 `@Scheduled` 어노테이션을 메서드 상단에 붙여 메서드가 주기적으로 동작하도록 설정할 수 있다.
+
+
+
+이러한 주기작업을 위해 다양한 옵션을 정의할 수 있다. cron식등을 활용하여 비정기적인 작업, 초기화시 딜레이 등 다양한 기능을 활용할 수 있다. 필요에 따라서는 아래와 같이 SpEL을 사용하여 프로퍼티의 값에 따른 주기적인 작업설정도 가능하다.
 
 
 
 
-##@Asyn
+
+
+##@Async
 
 #### - 스프링내에서 별도의 쓰레드에서 실행되면서 비동기로 실행하도록 한다.
 #### - 이 프로젝트 내에서는 fcm을 사용하기 위해서 사용되었다.
@@ -186,7 +251,17 @@ tail -f nohup.out
 
 
 
-## @OneToMany 와 @ManyToOne의 어노테이션 사용으로 인한 무한참조
+
+
+
+
+
+## JPA
+
+
+
+
+### @OneToMany 와 @ManyToOne의 어노테이션 사용으로 인한 무한참조
 
 #### 해결방법
 
@@ -204,6 +279,16 @@ tail -f nohup.out
 ~~~
 
 다음과 같은 방법은 Jackson이 기존의 id 값을 속성으로 잡고 독립적인 scope를 정해서 데이터를 가져올 수 있도록 하였다.
+
+
+
+
+
+
+
+
+
+
 
 ---
 
@@ -236,4 +321,14 @@ Nginx는 road-balancing을 간단한 방법으로 제공해주는데 upstream이
    2대의 서버중 1대가 작동을 멈추어도 서비스를 온전히 계속 제공할 수 있으므로 재배포나 유지 보수부분에서 얻을 수 있는 것이 많다.
 2. 저가의 서버를 여러대 이용해서 고가의 서버를 사용하는 것처럼 사용할 수 있다는 것도 장점이 될 수 있을 것이다.
 3. 또한 혹여 추후 사용량이 많아서 서버를 확장해야하는 경우가 발생해도 서비스를 중단하지 않고 확장할 수 있는 유연한 확장성을 얻는 다는 것이다.
+
+
+
+
+
+## 최종 인프라 다이어그램 모델 구상도
+
+
+
+![image-20190112091543234](https://ryudd.s3.amazonaws.com/dowadog/img_all.png)
 
