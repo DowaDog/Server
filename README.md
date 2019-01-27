@@ -307,20 +307,20 @@ nginx 서버에 ssl 설정을 해두고 443포트를 열어두었다. 그리고 
 
 ---
 
-## Nginx를 이용한 road-balancing
+## Nginx를 이용한 load-balancing
 
 ### Nginx를 사용하게 된 경위
 
-> 첫번째로 재배포의 문제가 발생했기 때문에 road-balancing을 고려해보게 되었다.
-우리의 서비스를 제공하는 것에 있어서 A타입과 B타입 두가지로 나누어진 어플 서비스를 제공해야했고 당초 개발 상황보다 살짝 빠르게 어플 스토어에 어플이 올라가야했다. 서비스를 제공하는 것은 서비스가 중단되면 안되고, 사용자는 서비스를 지속적으로 제공받을 수 있어야하는데 우리는 추가적으로 개발된 기능들을 계속 재배포해야했다. 때문에 서비스를 제공할 수 있는 서버를 두대 이상두고 road-balancing 설정을 잡아두어 중단없는 재배포가 가능하게 만들어 두려는 목적으로 시도했다.
+> 첫번째로 재배포의 문제가 발생했기 때문에 load-balancing을 고려해보게 되었다.
+우리의 서비스를 제공하는 것에 있어서 A타입과 B타입 두가지로 나누어진 어플 서비스를 제공해야했고 당초 개발 상황보다 살짝 빠르게 어플 스토어에 어플이 올라가야했다. 서비스를 제공하는 것은 서비스가 중단되면 안되고, 사용자는 서비스를 지속적으로 제공받을 수 있어야하는데 우리는 추가적으로 개발된 기능들을 계속 재배포해야했다. 때문에 서비스를 제공할 수 있는 서버를 두대 이상두고 load-balancing 설정을 잡아두어 중단없는 재배포가 가능하게 만들어 두려는 목적으로 시도했다.
 
->두번째로 곤란을 겪고 있던 https를 Nginx를 road-balancer로 사용하면서 간단하게 처리할 수 있었다. spring의 내부 톰캣에 ssl 설정을 넣는 부분에서 혼란을 겪고 있었던 https를 Nginx에 적용시키고 Nginx를 road-balancer이자 proxy-server의 역할을 하도록 설정할 수 있었고, Nginx에 위에 서술된 것처럼 letsencrypt를 통해 인증서를 발급받고 적용시킨뒤 proxy 설정을 해두었다. 이렇게 되었을 때 Nginx 외장 프록시 서버 뒤에 우리의 WAS서버가 위치하는 형태의 설계로 proxy 서버로서도 Nginx를 사용하고 road-balancing 설정을 넣어주면서 road-balancer로도 Nginx를 활용할 수 있었기 때문에 Nginx를 고려했고, 실제로 Nginx에는 road-balancing 기능이 꽤나 편리하고 강력하게 구현되어 있기 때문에 도입하게 되었다.
+>두번째로 곤란을 겪고 있던 https를 Nginx를 load-balancer로 사용하면서 간단하게 처리할 수 있었다. spring의 내부 톰캣에 ssl 설정을 넣는 부분에서 혼란을 겪고 있었던 https를 Nginx에 적용시키고 Nginx를 load-balancer이자 proxy-server의 역할을 하도록 설정할 수 있었고, Nginx에 위에 서술된 것처럼 letsencrypt를 통해 인증서를 발급받고 적용시킨뒤 proxy 설정을 해두었다. 이렇게 되었을 때 Nginx 외장 프록시 서버 뒤에 우리의 WAS서버가 위치하는 형태의 설계로 proxy 서버로서도 Nginx를 사용하고 load-balancing 설정을 넣어주면서 load-balancer로도 Nginx를 활용할 수 있었기 때문에 Nginx를 고려했고, 실제로 Nginx에는 road-balancing 기능이 꽤나 편리하고 강력하게 구현되어 있기 때문에 도입하게 되었다.
 
-### road-balancing
+### load-balancing
 > Nginx는 road-balancing을 간단한 방법으로 제공해주는데 upstream이라는 옵션을 config파일 안에 넣어주는 것으로 설정할 수 있다. 
-이러한 방식은 default로 Round-Robin 방식을 사용하여 road-balancing해주게 된다. 
+이러한 방식은 default로 Round-Robin 방식을 사용하여 load-balancing해주게 된다. 
 upstream에 우리가 가지고 있는 분산할 서버의 도메인 두개를 넣어주고 각각 마다 weight나 기타 balancing 설정들을 넣어줄 수 있다. least_conn이라는 설정을 넣어줄 경우 현재 트래픽이 가장 적은 서버로 매핑해주는 것으로 보이는데 우리는 일단 기본 설정인 Round-Robin방식을 사용하였고, main, sub서버가 구분되어 있는 것이 아니기 때문에 따로 가중치를 추가적으로 주지는 않았다. 
-upstream에 위의 설정을 잡아준 뒤 config 파일내의 server block에서 proxy_pass로 upstream 옵션이름을 지정해주는 것으로 설정을 마무리했고, road-balancing을 적용할 수 있었다.
+upstream에 위의 설정을 잡아준 뒤 config 파일내의 server block에서 proxy_pass로 upstream 옵션이름을 지정해주는 것으로 설정을 마무리했고, load-balancing을 적용할 수 있었다.
 
 ### 로드밸런싱을 했을 때 얻을 수 있는 장점
 1. 이렇게 서비스를 할 때 로드 밸런서를 두고 서버를 두개 놓고 서비스를 하게 되면 얻을 수 있는 가장 큰 이득은 중단 없는 재배포가 가능하다는 점이다.
